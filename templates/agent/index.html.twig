@@ -1,0 +1,212 @@
+{% extends 'agent/base.html.twig' %}
+{% block stylesheets %}
+    <link href="{{ asset('agent/search/css/main.css') }}" rel="stylesheet" />
+{% endblock %}
+{% block body %}
+        <!-- PAGE CONTENT-->
+        <div class="page-content--bgf7">
+
+            <!-- WELCOME-->
+            <section class="welcome p-t-10">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="title-4">
+                                Espace agent de joueur et club
+                            </h1>
+                            <hr class="line-seprate">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END WELCOME-->
+
+            <!-- STATISTIC-->
+            <section class="statistic statistic2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--green">
+                                <h2 class="number">60</h2>
+                                <span class="desc">Joueurs amateurs</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-account-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--orange">
+                                <h2 class="number">20</h2>
+                                <span class="desc">Joueurs professionnels</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-account-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--blue">
+                                <h2 class="number">15</h2>
+                                <span class="desc">Attaquant</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-account-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--red">
+                                <h2 class="number">10</h2>
+                                <span class="desc">Défenseurs</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-account-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <div class="s012">
+                    <form>
+                        <fieldset>
+                            <legend>Trouver des joueurs</legend>
+                        </fieldset>
+                        <div class="inner-form">
+                            <header>
+                                <div class="travel-type-wrap">
+                                    <div class="item active">
+                                        <div class="group-icon">
+                                            <img width="30px" src="{{ asset('agent/search/images/goalkeeper.svg') }}" alt="">
+                                        </div>
+                                        <span>Gardien de but</span>
+                                    </div>
+                                    <div class="item">
+                                        <div class="group-icon">
+                                            <img width="30px" src="{{ asset('agent/search/images/defender.svg') }}" alt="">
+                                        </div>
+                                        <span>Défenseur</span>
+                                    </div>
+                                    <div class="item">
+                                        <div class="group-icon">
+                                            <img width="30px" src="{{ asset('agent/search/images/midfielder.svg') }}" alt="">
+                                        </div>
+                                        <span>Milieu de terrain</span>
+                                    </div>
+                                    <div class="item">
+                                        <div class="group-icon">
+                                            <img width="30px" src="{{ asset('agent/search/images/forward.svg') }}" alt="">
+                                        </div>
+                                        <span>Attaquant</span>
+                                    </div>
+                                </div>
+                            </header>
+                            <div class="main-form" id="main-form">
+                                <div class="row second">
+                                    <div class="input-wrap">
+                                        <div class="input-field">
+                                            <label>Ville</label>
+                                            <div class="input-select">
+                                                <select data-trigger="" name="choices-single-defaul">
+                                                    <option placeholder="">Marseille</option>
+                                                    <option>Paris</option>
+                                                    <option>Bordeaux</option>
+                                                    <option>Nice</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-wrap">
+                                        <div class="input-field">
+                                            <label>Age maximum</label>
+                                            <div class="input-select">
+                                                <select data-trigger="" name="choices-single-defaul">
+                                                    <option placeholder="">Pas d'âge maximum</option>
+                                                    <option>10</option>
+                                                    <option>15</option>
+                                                    <option>20</option>
+                                                    <option>25</option>
+                                                    <option>30</option>
+                                                    <option>35</option>
+                                                    <option>40</option>
+                                                    <option>45</option>
+                                                    <option>50</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-wrap">
+                                        <div class="input-field">
+                                            <label>Meilleur pied</label>
+                                            <div class="input-select">
+                                                <select data-trigger="" name="choices-single-defaul">
+                                                    <option placeholder="">Peu importe</option>
+                                                    <option>Droit</option>
+                                                    <option>Gauche</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row third">
+                                    <div class="input-checkbox-group">
+                                        <div class="input-checkbox">
+                                            <input id="yes" type="checkbox" name="customer" value="yes" checked="checked" />
+                                            <label for="yes">Professionnel</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row last">
+                                    <button class="btn-search" type="button">Trouver des joueurs</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- COPYRIGHT-->
+            <section class="p-t-60 p-b-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="copyright">
+                                <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END COPYRIGHT-->
+        </div>
+{% endblock %}
+{% block javascripts %}
+<script src="{{ asset('agent/search/js/extention/choices.js') }}"></script>
+<script>
+    const choices = new Choices('[data-trigger]',
+        {
+            searchEnabled: false,
+            itemSelectText: '',
+        });
+
+</script>
+<script src="{{ asset('agent/search/js/extention/flatpickr.js') }}"></script>
+<script>
+    flatpickr(".datepicker",
+        {
+            dateFormat: "m/d/y"
+        });
+    var btnTypes = document.querySelectorAll('.travel-type-wrap .item')
+    for (var i = 0; i < btnTypes.length; i++)
+    {
+        btnTypes[i].addEventListener('click', function()
+        {
+            for (var i = 0; i < btnTypes.length; i++)
+            {
+                btnTypes[i].classList.remove('active')
+            }
+            btnTypes[i].classList.add('active')
+        })
+    }
+
+</script>
+{% endblock %}

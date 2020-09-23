@@ -30,5 +30,5 @@ security:
         - { path: ^/connexion, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         - { path: ^/agent, role: ROLE_AGENT, requires_channel: https }
         - { path: ^/footballer, role: ROLE_USER, requires_channel: https }
-        - { path: ^/admin, role: ROLE_ADMIN, requires_channel: https }
+        - { path: ^/agent, role: ROLE_ADMIN, requires_channel: https }
         - { path: '^/', roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

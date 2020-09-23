@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FootballerController extends AbstractController
 {
     /**
-     * @Route("/show-footballer", name="footballer")
+     * @Route("/show-footballer", name="footballer_home")
      */
     public function index()
     {
