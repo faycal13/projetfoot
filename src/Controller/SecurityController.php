@@ -2,9 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Account;
+use App\Form\SignupType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
@@ -37,10 +41,37 @@ class SecurityController extends AbstractController
     /**
      * @Route("/inscription/{who}", name="signup")
      */
-    public function showSignup($who)
+    public function showSignup($who, Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
+        $account = new Account();
+        $form = $this->createForm(SignupType::Class, $account);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            // $form->getData() holds the submitted values
+            // but, the original `$task` variable has also been updated
+            if($who == 'agent') $role = ['ROLE_AGENT'];
+            else if($who == 'footballer') $role = ['ROLE_USER'];
+            else $role = [];
+            $hash = $encoder->encodePassword($account, $account->getPassword());
+            $today = new \DateTime();
+            $account->setPassword($hash);
+            $account->setRoles($role);
+            $account->setCreationDate($today);
+            $manager->persist($account);
+            $manager->flush();
+            // ... perform some action, such as saving the task to the database
+            // for example, if Task is a Doctrine entity, save it!
+            // $entityManager = $this->getDoctrine()->getManager();
+            // $entityManager->persist($task);
+            // $entityManager->flush();
+
+            return $this->render('security/post-signup.html.twig');
+        }
+
         return $this->render('security/signup.html.twig',[
-            'who' => $who
+            'who' => $who,
+            'form' => $form->createView()
         ]);
     }
 

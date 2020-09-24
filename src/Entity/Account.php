@@ -5,9 +5,15 @@ namespace App\Entity;
 use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=AccountRepository::class)
+ * @UniqueEntity(
+ *     fields={"username"},
+ *     message="Le compte est existant !"
+ * )
  */
 class Account implements UserInterface
 {
@@ -20,6 +26,7 @@ class Account implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
      */
     private $username;
 
@@ -27,6 +34,11 @@ class Account implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $password;
+
+    /**
+     * @Assert\EqualTo(propertyPath="password", message="Les mots de passes ne sont pas identiques")
+     */
+    public $confirmPassword;
 
     /**
      * @ORM\Column(type="datetime")
