@@ -21,26 +21,27 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Newsfeed <span><img src="images/down-arrow.png" alt="" /></span></a>
                         <ul class="dropdown-menu newsfeed-home">
-{#                            <li><a href="{{ path('newsfeed') }}">Fil d'actualité</a></li>#}
-                            <li><a href="{{ path('addfriend') }}">Ajout amis</a></li>
-                            <li><a href="{{ path('myfriends') }}">Mes amis</a></li>
-                            <li><a href="{{ path('message') }}">Chatroom</a></li>
-                            <li><a href="{{ path('picture') }}">Images</a></li>
-                            <li><a href="{{ path('video') }}">Videos</a></li>
+{#                            <li><a href="{{ path('footballer_newsfeed') }}">Fil d'actualité</a></li>#}
+                            <li><a href="{{ path('footballer_addfriend') }}">Ajout amis</a></li>
+                            <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
+                            <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>
+                            <li><a href="{{ path('footballer_chatroom') }}">Chatroom</a></li>
+                            <li><a href="{{ path('footballer_picture') }}">Images</a></li>
+                            <li><a href="{{ path('footballer_video') }}">Videos</a></li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mon profil <span><img src="images/down-arrow.png" alt="" /></span></a>
                         <ul class="dropdown-menu login">
-{#                            <li><a href="{{ path('profil') }}">Mon profil</a></li>#}
-                            <li><a href="{{ path('aboutProfil') }}">Mon profil </a></li>
+{#                            <li><a href="{{ path('footballer_profil') }}">Mon profil</a></li>#}
+                            <li><a href="{{ path('footballer_aboutProfil') }}">Mon profil </a></li>
 {#                            <li><a href="timeline-album.html">Timeline Album</a></li>#}
 {#                            <li><a href="timeline-friends.html">Timeline Friends</a></li>#}
-                            <li><a href="{{ path('editProfil') }}">Modifier profil</a></li>
+                            <li><a href="{{ path('footballer_editProfil') }}">Modifier profil</a></li>
 {#                            <li><a href="edit-profile-work-edu.html">Edit: Work</a></li>#}
-                            <li><a href="{{path('editInterests')}}">Modifier mes compétences</a></li>
+                            <li><a href="{{ path('footballer_editInterests')}}">Modifier mes compétences</a></li>
 {#                            <li><a href="edit-profile-settings.html">Account Settings</a></li>#}
-                            <li><a href="{{ path('editPassword') }}">Modifier mot de passe</a></li>
+                            <li><a href="{{ path('footballer_editPassword') }}">Modifier mot de passe</a></li>
                         </ul>
                     </li>
                 </ul>

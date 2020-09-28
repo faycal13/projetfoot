@@ -1578,7 +1578,8 @@ span.flatpickr-weekday {
   width: 100%;
   max-width: 940px;
   margin: 0;
-  background: linear-gradient(rgba(79, 172, 254, 0.8) 0%, rgba(0, 242, 254, 0.8) 100%);
+  /*background: linear-gradient(rgba(79, 172, 254, 0.8) 0%, rgba(0, 242, 254, 0.8) 100%);*/
+  background: linear-gradient(to bottom, #ff1313, #ff6054) no-repeat;
   padding: 50px 70px 80px 70px;
   border-radius: 10px;
 }
@@ -1590,7 +1591,7 @@ span.flatpickr-weekday {
 .s012 form fieldset legend {
   font-size: 36px;
   font-weight: bold;
-  color: #333;
+  color: #f9f9ff;
   font-family: 'Poppins', sans-serif;
 }
 
@@ -1621,7 +1622,7 @@ span.flatpickr-weekday {
   height: 0;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-top: 10px solid #002c71;
+  border-top: 10px solid #596153;
   position: absolute;
   top: 100%;
   left: 50%;
@@ -1653,7 +1654,7 @@ span.flatpickr-weekday {
 
 .s012 form .inner-form header .travel-type-wrap .item.active {
   color: #fff;
-  background: #002c71;
+  background: #596153;
 }
 
 .s012 form .inner-form header .travel-type-wrap .item.active:after {
@@ -1665,7 +1666,7 @@ span.flatpickr-weekday {
 }
 
 .s012 form .inner-form header .travel-type-wrap .item:hover, .s012 form .inner-form header .travel-type-wrap .item:focus {
-  background: #002c71;
+  background: #596153;
   color: #fff;
 }
 
@@ -1870,11 +1871,11 @@ span.flatpickr-weekday {
   min-width: 100px;
   height: 50px;
   padding: 0 15px;
-  background: #ff8300;
+  background: #f5fff5;
   white-space: nowrap;
   border-radius: 3px;
   font-size: 16px;
-  color: #fff;
+  color: #ff5244;
   transition: all .2s ease-out, color .2s ease-out;
   border: 0;
   cursor: pointer;
@@ -1882,7 +1883,7 @@ span.flatpickr-weekday {
 }
 
 .s012 form .btn-search:hover {
-  background: #e67600;
+  background: rgba(89, 97, 83, 0.57);
 }
 
 @media screen and (max-width: 767px) {

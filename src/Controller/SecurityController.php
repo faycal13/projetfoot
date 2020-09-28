@@ -82,7 +82,7 @@ class SecurityController extends AbstractController
 
         $role = $this->getUser()->getRoles()[0];
         if($role == 'ROLE_ADMIN') return $this->redirectToRoute('agent_home');
-        if($role == 'ROLE_USER') return $this->redirectToRoute('footballer_home');
+        if($role == 'ROLE_USER') return $this->redirectToRoute('footballer_profil');
         if($role == 'ROLE_AGENT') return $this->redirectToRoute('agent_home');
 
     }

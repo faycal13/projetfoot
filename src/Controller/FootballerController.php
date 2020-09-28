@@ -5,10 +5,11 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/** @Route("/footballer", name="footballer_") */
 class FootballerController extends AbstractController
 {
     /**
-     * @Route("/show-footballer", name="footballer_home")
+     * @Route("/show-footballer", name="home")
      */
     public function footballerHome()
     {
@@ -18,7 +19,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/show-profil", name="footballer_profil")
+     * @Route("/show-profil", name="profil")
      */
     public function index()
     {
@@ -26,7 +27,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/edit-profil", name="footballer_editProfil")
+     * @Route("/edit-profil", name="editProfil")
      */
     public function editProfil()
     {
@@ -34,7 +35,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/edit-interests", name="footballer_editInterests")
+     * @Route("/edit-interests", name="editInterests")
      */
     public function changeIntersert()
     {
@@ -42,7 +43,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/change-password", name="footballer_editPassword")
+     * @Route("/change-password", name="editPassword")
      */
     public function changePassword()
     {
@@ -50,7 +51,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/about-profil", name="footballer_aboutProfil")
+     * @Route("/about-profil", name="aboutProfil")
      */
     public function aboutProfil()
     {
@@ -58,7 +59,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/newsfeed", name="footballer_newsfeed")
+     * @Route("/newsfeed", name="newsfeed")
      */
     public function newsfeed()
     {
@@ -66,7 +67,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/friend-list", name="footballer_myfriends")
+     * @Route("/friend-list", name="myfriends")
      */
     public function findFriend()
     {
@@ -74,7 +75,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/message", name="footballer_message")
+     * @Route("/message", name="message")
      */
     public function mymessage()
     {
@@ -82,7 +83,24 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/add-friend", name="footballer_addfriend")
+     * @Route("/chatroom", name="chatroom")
+     */
+    public function mychatroom()
+    {
+        return $this->render('socialNetwork/newsfeed/chatroom.html.twig');
+    }
+
+    /**
+     * @Route("/chatroom-message", name="chatroom-message")
+     */
+    public function mymessagechatroom()
+    {
+        return $this->render('socialNetwork/newsfeed/chatroom-messages.html.twig');
+    }
+
+
+    /**
+     * @Route("/add-friend", name="addfriend")
      */
     public function peopleNearby()
     {
@@ -90,7 +108,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/video", name="footballer_video")
+     * @Route("/video", name="video")
      */
     public function myvideo()
     {
@@ -98,7 +116,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/picture", name="footballer_picture")
+     * @Route("/picture", name="picture")
      */
     public function mypicture()
     {

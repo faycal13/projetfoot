@@ -30,7 +30,11 @@
 {% include ('socialNetwork/inc/header.html.twig') %}
 {% block body %}
 {% endblock %}
-{% include ('socialNetwork/inc/footer.html.twig') %}
+
+{% block footer %}
+    {% include ('socialNetwork/inc/footer.html.twig') %}
+{% endblock %}
+
 <!-- Scripts
  ================================================= -->
 <script src="{{ asset("socialNetwork/js/jquery-3.1.1.min.js") }}"></script>
