@@ -75,10 +75,40 @@ class Footballer
      */
     private $betterFoot;
 
+    /**
+     * @ORM\OneToMany(targetEntity=FriendsList::class, mappedBy="footballer", orphanRemoval=true)
+     */
+    private $friendsLists;
+
+    /**
+     * @ORM\OneToMany(targetEntity=BlockFriendsList::class, mappedBy="footballer", orphanRemoval=true)
+     */
+    private $blockFriendsLists;
+
+    /**
+     * @ORM\OneToMany(targetEntity=FootballerSkills::class, mappedBy="footballer")
+     */
+    private $footballerSkills;
+
+    /**
+     * @ORM\OneToMany(targetEntity=FootballerCarrer::class, mappedBy="footballer")
+     */
+    private $footballerCarrers;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PrivateMessage::class, mappedBy="sender")
+     */
+    private $privateMessages;
+
     public function __construct()
     {
         $this->footballerVideos = new ArrayCollection();
         $this->footballerPhotos = new ArrayCollection();
+        $this->friendsLists = new ArrayCollection();
+        $this->blockFriendsLists = new ArrayCollection();
+        $this->footballerSkills = new ArrayCollection();
+        $this->footballerCarrers = new ArrayCollection();
+        $this->privateMessages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -252,6 +282,161 @@ class Footballer
     public function setBetterFoot(?string $betterFoot): self
     {
         $this->betterFoot = $betterFoot;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FriendsList[]
+     */
+    public function getFriendsLists(): Collection
+    {
+        return $this->friendsLists;
+    }
+
+    public function addFriendsList(FriendsList $friendsList): self
+    {
+        if (!$this->friendsLists->contains($friendsList)) {
+            $this->friendsLists[] = $friendsList;
+            $friendsList->setFootballer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFriendsList(FriendsList $friendsList): self
+    {
+        if ($this->friendsLists->contains($friendsList)) {
+            $this->friendsLists->removeElement($friendsList);
+            // set the owning side to null (unless already changed)
+            if ($friendsList->getFootballer() === $this) {
+                $friendsList->setFootballer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BlockFriendsList[]
+     */
+    public function getBlockFriendsLists(): Collection
+    {
+        return $this->blockFriendsLists;
+    }
+
+    public function addBlockFriendsList(BlockFriendsList $blockFriendsList): self
+    {
+        if (!$this->blockFriendsLists->contains($blockFriendsList)) {
+            $this->blockFriendsLists[] = $blockFriendsList;
+            $blockFriendsList->setFootballer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBlockFriendsList(BlockFriendsList $blockFriendsList): self
+    {
+        if ($this->blockFriendsLists->contains($blockFriendsList)) {
+            $this->blockFriendsLists->removeElement($blockFriendsList);
+            // set the owning side to null (unless already changed)
+            if ($blockFriendsList->getFootballer() === $this) {
+                $blockFriendsList->setFootballer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FootballerSkills[]
+     */
+    public function getFootballerSkills(): Collection
+    {
+        return $this->footballerSkills;
+    }
+
+    public function addFootballerSkill(FootballerSkills $footballerSkill): self
+    {
+        if (!$this->footballerSkills->contains($footballerSkill)) {
+            $this->footballerSkills[] = $footballerSkill;
+            $footballerSkill->setFootballer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFootballerSkill(FootballerSkills $footballerSkill): self
+    {
+        if ($this->footballerSkills->contains($footballerSkill)) {
+            $this->footballerSkills->removeElement($footballerSkill);
+            // set the owning side to null (unless already changed)
+            if ($footballerSkill->getFootballer() === $this) {
+                $footballerSkill->setFootballer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|FootballerCarrer[]
+     */
+    public function getFootballerCarrers(): Collection
+    {
+        return $this->footballerCarrers;
+    }
+
+    public function addFootballerCarrer(FootballerCarrer $footballerCarrer): self
+    {
+        if (!$this->footballerCarrers->contains($footballerCarrer)) {
+            $this->footballerCarrers[] = $footballerCarrer;
+            $footballerCarrer->setFootballer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFootballerCarrer(FootballerCarrer $footballerCarrer): self
+    {
+        if ($this->footballerCarrers->contains($footballerCarrer)) {
+            $this->footballerCarrers->removeElement($footballerCarrer);
+            // set the owning side to null (unless already changed)
+            if ($footballerCarrer->getFootballer() === $this) {
+                $footballerCarrer->setFootballer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PrivateMessage[]
+     */
+    public function getPrivateMessages(): Collection
+    {
+        return $this->privateMessages;
+    }
+
+    public function addPrivateMessage(PrivateMessage $privateMessage): self
+    {
+        if (!$this->privateMessages->contains($privateMessage)) {
+            $this->privateMessages[] = $privateMessage;
+            $privateMessage->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrivateMessage(PrivateMessage $privateMessage): self
+    {
+        if ($this->privateMessages->contains($privateMessage)) {
+            $this->privateMessages->removeElement($privateMessage);
+            // set the owning side to null (unless already changed)
+            if ($privateMessage->getSender() === $this) {
+                $privateMessage->setSender(null);
+            }
+        }
 
         return $this;
     }
