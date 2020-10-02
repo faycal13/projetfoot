@@ -18,7 +18,7 @@ class PrivateMessage
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=conversation::class, inversedBy="privateMessages")
+     * @ORM\ManyToOne(targetEntity=Conversation::class, inversedBy="privateMessages")
      * @ORM\JoinColumn(nullable=false)
      */
     private $conversation;
