@@ -38,15 +38,13 @@
       <change beforePath="$PROJECT_DIR$/../hellomycake/templates/security/signup-pastry-chef.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../hellomycake/templates/security/signup-pastry-chef.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../hellomycake/templates/security/signup.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../hellomycake/templates/security/signup.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/packages/twig.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/twig.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/socialNetwork/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/socialNetwork/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/FootballerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/FootballerController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/PrivateMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/PrivateMessage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Footballer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Footballer.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profile-basic.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profile-basic.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profile-interests.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profile-interests.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profile-password.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profile-password.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profile-interests.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profil-footballer.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/socialNetwork/inc/edit-menu-profil.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/inc/edit-menu-profil.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/inc/header.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/inc/header.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/inc/timeline-footballer.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/inc/timeline-footballer.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -199,7 +197,8 @@
       <option name="presentableId" value="Default" />
       <updated>1601230148673</updated>
       <workItem from="1601230154498" duration="5714000" />
-      <workItem from="1601587105863" duration="7730000" />
+      <workItem from="1601587105863" duration="12371000" />
+      <workItem from="1601711370948" duration="7853000" />
     </task>
     <servers />
   </component>
@@ -211,18 +210,22 @@
       <screen x="1920" y="5" width="1920" height="1040" />
     </state>
     <state x="2614" y="209" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1600895169386" />
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1601407459459">
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1601712730587">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1601407459459" />
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1601712730587" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1601713327850">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="498" height="446" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1601713327850" />
     <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1601230198511">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1601230198511" />
-    <state x="2587" y="258" width="585" height="534" key="find.popup" timestamp="1601662275903">
+    <state x="2587" y="258" width="585" height="534" key="find.popup" timestamp="1601835328313">
       <screen x="1920" y="5" width="1920" height="1040" />
     </state>
-    <state x="2587" y="258" width="585" height="534" key="find.popup/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1601662275903" />
+    <state x="2587" y="258" width="585" height="534" key="find.popup/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1601835328313" />
     <state x="667" y="253" width="585" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1601589449449" />
     <state x="425" y="187" key="run.anything.popup" timestamp="1601241084582">
       <screen x="0" y="0" width="1536" height="824" />

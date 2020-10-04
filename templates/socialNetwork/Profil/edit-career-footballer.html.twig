@@ -1,0 +1,80 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+    <div class="container">
+
+      <!-- Timeline
+      ================================================= -->
+      <div class="timeline">
+        {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
+        <div id="page-contents">
+          <div class="row">
+            <div class="col-md-3">
+              
+              <!--Edit Profile Menu-->
+              {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
+            </div>
+            <div class="col-md-7">
+
+              <!-- Edit Interests
+              ================================================= -->
+              <div class="edit-profile-container">
+                <div class="block-title">
+                  <h4 class="grey"><i class="icon ion-ios-heart-outline"></i>Ma carrière</h4>
+                  {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                  {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                </div>
+                <div class="edit-block">
+                  <table style="width: 100%;">
+                    <tr>
+                      <th>Années</th>
+                      <th>Club</th>
+                      <th>Poste</th>
+                    </tr>
+                    <tbody>
+                    <tr>
+                      <td>2017-2018</td>
+                      <td>Endoume FC</td>
+                      <td>Attaquant</td>
+                    </tr>
+                    <tr>
+                      <td>2017-2018</td>
+                      <td>Endoume FC</td>
+                      <td>Attaquant</td>
+                    </tr>
+                    <tr>
+                      <td>2017-2018</td>
+                      <td>Endoume FC</td>
+                      <td>Attaquant</td>
+                    </tr>
+                    <tr>
+                      <td>2017-2018</td>
+                      <td>Endoume FC</td>
+                      <td>Attaquant</td>
+                    </tr>
+                    <tr>
+                      <td>2017-2018</td>
+                      <td>Endoume FC</td>
+                      <td>Attaquant</td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 static">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

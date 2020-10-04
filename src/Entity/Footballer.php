@@ -50,8 +50,7 @@ class Footballer
     private $footballerPhotos;
 
     /**
-     * @ORM\OneToOne(targetEntity=user::class, inversedBy="footballer", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="footballer", cascade={"persist", "remove"})
      */
     private $user;
 

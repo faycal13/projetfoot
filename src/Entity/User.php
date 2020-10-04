@@ -44,6 +44,11 @@ class User
     private $account;
 
     /**
+     * @ORM\OneToOne(targetEntity=Footballer::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $footballer;
+
+    /**
      * @ORM\ManyToOne(targetEntity=City::class)
      */
     private $city;
@@ -155,6 +160,23 @@ class User
     public function setLanguage(?string $language): self
     {
         $this->language = $language;
+
+        return $this;
+    }
+
+    public function getFootballer(): ?Footballer
+    {
+        return $this->footballer;
+    }
+
+    public function setFootballer(Footballer $footballer): self
+    {
+        $this->footballer = $footballer;
+
+        // set the owning side of the relation if necessary
+        if ($footballer->getUser() !== $this) {
+            $footballer->setUser($this);
+        }
 
         return $this;
     }

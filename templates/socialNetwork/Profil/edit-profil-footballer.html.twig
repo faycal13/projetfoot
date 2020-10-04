@@ -1,0 +1,69 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+    <div class="container">
+
+      <!-- Timeline
+      ================================================= -->
+      <div class="timeline">
+        {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
+        <div id="page-contents">
+          <div class="row">
+            <div class="col-md-3">
+              
+              <!--Edit Profile Menu-->
+              {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
+            </div>
+            <div class="col-md-7">
+
+              <!-- Edit Interests
+              ================================================= -->
+              <div class="edit-profile-container">
+                <div class="block-title">
+                  <h4 class="grey"><i class="icon ion-ios-heart-outline"></i>Mon profil de footballeur</h4>
+                  {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                  {% for message in app.flashes('error') %}
+                    <div class="alert alert-danger">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                </div>
+                <div class="edit-block">
+                  {{ form_start(form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}
+                  <div class="row">
+                    <label>Présentez vous !</label>
+                    {{ form_row(form.description, {'label': false,'attr': {'placeholder': 'Présentez vous en quelques lignes', 'class': ''}}) }}
+
+                    <label>Votre objectif</label>
+                    {{ form_row(form.goal, {'label': false,'attr': {'placeholder': 'Quel est votre objectif ?', 'class': ''}}) }}
+
+                    <label>Votre poids (en kg)</label>
+                    {{ form_row(form.weight, { 'type':'number' },{'label': false,'attr': {'placeholder': 'Ex : 75', 'class': ''}}) }}
+
+                    <label>Votre taille (en cm)</label>
+                    {{ form_row(form.height, { 'type':'number' }, {'label': false,'attr': {'placeholder': 'Ex : 180', 'class': ''}}) }}
+
+                    <label>Votre poste</label>
+                    {{ form_row(form.position, {'label': false,'attr': {'placeholder': '', 'class': ''}}) }}
+
+                    <label>Votre meilleur pied</label>
+                    {{ form_row(form.betterFoot, {'label': false,'attr': {'placeholder': '', 'class': ''}}) }}
+
+                    <button class="btn btn-primary">Enregistrer</button>
+                    {{ form_end(form) }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2 static">
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}
