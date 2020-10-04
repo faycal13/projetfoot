@@ -1549,10 +1549,10 @@ ul.online-users li span.online-dot{
 /*Timeline Menu for Large Screens*/
 
 .timeline-cover .timeline-nav-bar{
-  background: rgba(0,0,0, .7);
-  width: 100%;
-  position: absolute;
-  bottom: 25px;
+    background: rgb(35 31 32);
+    width: 100%;
+    position: absolute;
+    bottom: 0px;
 }
 
 .timeline-cover .timeline-nav-bar .profile-info{

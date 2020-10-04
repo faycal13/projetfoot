@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Footballer;
 use App\Entity\User;
+use App\Form\FootballerType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -58,11 +60,43 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/edit-interests", name="editCareer")
+     * @Route("/edit-footballer-profil", name="editFootballerProfil")
      */
-    public function changeIntersert()
+    public function editFootballerProfil(Request $request, EntityManagerInterface $manager)
     {
-        return $this->render('socialNetwork/profil/edit-profile-interests.html.twig');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        if(is_null($user)){
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
+            return $this->redirectToRoute('footballer_editProfil');
+        }
+        $footballer = $footballer_repo->findOneByUser($this->getUser()->getUser());
+        if(is_null($footballer)){
+            $footballer = new Footballer();
+        }
+        $form = $this->createForm(FootballerType::Class, $footballer);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $footballer->setUser($user);
+            $manager->persist($footballer);
+            $manager->flush();
+            $this->addFlash('success', 'Modification effectuée !');
+
+        }
+        return $this->render('socialNetwork/profil/edit-profil-footballer.html.twig',[
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/edit-career", name="editCareer")
+     */
+    public function editCareer(Request $request, EntityManagerInterface $manager)
+    {
+        $footballer_career_repo = $manager->getRepository('App:FootballerCareer');
+        $footballer_career = $footballer_career_repo->findByFootballer();
+        return $this->render('socialNetwork/profil/edit-career-footballer.html.twig',[
+        ]);
     }
 
     /**
@@ -75,18 +109,21 @@ class FootballerController extends AbstractController
             $account_repo = $manager->getRepository('App:Account');
             $account = $account_repo->findOneById($this->getUser()->getId());
             $hash = $encoder->encodePassword($account, $params['new-password']);
-            if($encoder->isPasswordValid($account, $params['old-password']) && ($params['new-password'] === $params['confirm-new-password'])){
-                if(strlen($params['new-password']) >= 8){
-                    $account->setPassword($hash);
-                    $manager->persist($account);
-                    $manager->flush();
-                    $this->addFlash('success', 'Modification effectuée !');
+            if($encoder->isPasswordValid($account, $params['old-password'])){
+                if($params['new-password'] === $params['confirm-new-password']){
+                    if(strlen($params['new-password']) >= 8){
+                        $account->setPassword($hash);
+                        $manager->persist($account);
+                        $manager->flush();
+                        $this->addFlash('success', 'Modification effectuée !');
+                    }else{
+                        $this->addFlash('error', 'Les mots de passe doit contenir au minimum 8 caractères !');
+                    }
                 }else{
-                    $this->addFlash('error', 'Le mot de passe doit contenir au minimum 8 caractères !');
+                    $this->addFlash('error', 'Les mots de passe ne sont pas identiques !');
                 }
-
             }else{
-                $this->addFlash('error', 'Erreur lors de la modification');
+                $this->addFlash('error', 'Le mot de passe n\'est pas correct !');
             }
         }
 
