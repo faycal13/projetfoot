@@ -5,10 +5,11 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
+/** @Route("/admin", name="admin_") */
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/admin/home", name="admin_home")
+     * @Route("/home", name="admin_home")
      */
     public function index()
     {
@@ -16,23 +17,30 @@ class AdminController extends AbstractController
     }
 
     /**
-     * @Route("/admin/footballeurs", name="footballeur_list")
+     * @Route("/footballeurs", name="footballeur_list")
      */
     public function footballers()
     {
-
         $em = $this->getDoctrine()->getManager();
         $account_repo = $em->getRepository('App:Account');
         $footballers = $account_repo->getFootballers();
-        dd($footballers[0].getUser());
-        return $this->render('admin/footballeurs.html.twig');
+//        dd($footballers);
+        return $this->render('admin/footballeurs.html.twig', array(
+            'footballers' => $footballers
+        ));
     }
 
     /**
-     * @Route("/admin/recruteurs", name="recruteur_list")
+     * @Route("/recruteurs", name="recruteur_list")
      */
     public function recruteurs()
     {
-        return $this->render('admin/recruteurs.html.twig');
+        $em = $this->getDoctrine()->getManager();
+        $account_repo = $em->getRepository('App:Account');
+        $recruteurs = $account_repo->getrecruteurs();
+       // dd($recruteurs);
+        return $this->render('admin/recruteurs.html.twig', array(
+            'recruteurs' => $recruteurs
+        ));
     }
 }

@@ -38,9 +38,21 @@ class AccountRepository extends ServiceEntityRepository
 
     public function getFootballers()
     {
-        return $this->createQueryBuilder('u')
-            ->where('u.aroles LIKE :role')
+        return $this->createQueryBuilder('a')
+            ->join('a.user', 'u')
+            ->where('a.aroles LIKE :role')
             ->setParameter('role', '%"'.'ROLE_USER'.'"%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getRecruteurs()
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.user', 'u')
+            ->where('a.aroles LIKE :role')
+            ->setParameter('role', '%"'.'ROLE_AGENT'.'"%')
             ->getQuery()
             ->getResult()
             ;
