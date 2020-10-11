@@ -42,6 +42,18 @@
 <script src="{{ asset("socialNetwork/js/jquery.appear.min.js") }}"></script>
 <script src="{{ asset("socialNetwork/js/jquery.incremental-counter.js") }}"></script>
 <script src="{{ asset("socialNetwork/js/script.js") }}"></script>
+<script>
+    $(function (){
+        $('.img-wrapper-profil').click(function (){
+            $('#profil_photo_footballer_profilPhoto').trigger('click');
+        })
+
+        $('#profil_photo_footballer_profilPhoto').change(function (){
+            $('form[name=profil_photo_footballer]').submit();
+        })
+
+    })
+</script>
 {% block javascripts %}{% endblock %}
 </body>
 </html>

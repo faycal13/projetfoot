@@ -10,6 +10,7 @@ use App\Entity\User;
 use App\Form\FootballerCareerType;
 use App\Form\FootballerPhotoType;
 use App\Form\FootballerType;
+use App\Form\ProfilPhotoFootballerType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,6 +24,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 /** @Route("/footballer", name="footballer_") */
 class FootballerController extends AbstractController
 {
+
     /**
      * @Route("/show-footballer", name="home")
      */
@@ -30,6 +32,55 @@ class FootballerController extends AbstractController
     {
         return $this->render('footballer/index.html.twig', [
             'controller_name' => 'FootballerController',
+        ]);
+    }
+
+    /**
+     * @Route("/profil-photo", name="profil_photo")
+     */
+    public function footballerProfilPhoto(EntityManagerInterface $manager)
+    {
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        $form = $this->createForm(ProfilPhotoFootballerType::Class, $footballer);
+
+        return $this->render('socialNetwork/profil/profil-photo.html.twig',[
+            'form_profil_photo' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/profil-photo-submission", name="photo_profil_submission")
+     */
+    public function footballerProfilPhotoSubmission(Request $request, EntityManagerInterface $manager)
+    {
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        $form = $this->createForm(ProfilPhotoFootballerType::Class, $footballer);
+        $form->handleRequest($request);
+        $session = $this->get('session');
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $photo = $form->get('profilPhoto')->getData();
+            if ($photo) {
+                $newFilename = $this->uploadFile(
+                    $footballer, $photo, 'footballer_photo_profil_directory', 200
+                );
+
+                $footballer->setProfilPhoto($newFilename);
+                $manager->persist($footballer);
+                $manager->flush();
+                $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
+                $this->addFlash('success', 'La photo de profil a été mise à jour');
+                return $this->redirectToRoute('footballer_editProfil');
+            }
+        }
+
+
+        return $this->render('socialNetwork/profil/profil-photo.html.twig',[
+            'form_profil_photo' => $form->createView()
         ]);
     }
 
@@ -334,7 +385,7 @@ class FootballerController extends AbstractController
             $photo = $form->get('internalLink')->getData();
             if ($photo) {
                 $newFilename = $this->uploadFile(
-                    $photo, 'footballer_photo_directory', 1500, 'footballer_photo_compressed_directory', 800
+                    $footballer, $photo, 'footballer_photo_directory', 1500, 'footballer_photo_compressed_directory', 800
                 );
                 $footballer_photo->setFootballer($footballer);
                 $footballer_photo->setInternalLink($newFilename);
@@ -372,11 +423,10 @@ class FootballerController extends AbstractController
             $this->addFlash('error', 'Une erreur est survenue !');
         }
 
-
         return $this->redirectToRoute('footballer_picture');
     }
 
-    private function uploadFile($photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){
+    private function uploadFile($footballer, $photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){
         $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
         // this is needed to safely include the file name as part of the URL
         $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
@@ -385,17 +435,17 @@ class FootballerController extends AbstractController
         try {
             $filesystem = new Filesystem();
             $photo->move(
-                $this->getParameter($photo_directory),
+                $this->getParameter($photo_directory). '/' .$footballer->getId(),
                 $newFilename
             );
 
-            $manager_picture = Image::make($this->getParameter($photo_directory) . '/' . $newFilename);
+            $manager_picture = Image::make($this->getParameter($photo_directory) . '/' .$footballer->getId(). '/' .$newFilename);
 // to finally create image instances
             $manager_picture->resize($width, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
 
-            $manager_picture->save($this->getParameter($photo_directory) . '/' . $newFilename);
+            $manager_picture->save($this->getParameter($photo_directory) . '/' .$footballer->getId(). '/' . $newFilename);
 
             if(!is_null($photo_compress_directory)){
                 $filesystem->copy(
@@ -403,14 +453,16 @@ class FootballerController extends AbstractController
                     $this->getParameter($photo_compress_directory).'/'.$newFilename
                 );
                 //http://image.intervention.io/api/resize
-                $manager_picture2 = Image::make($this->getParameter($photo_compress_directory) . '/' . $newFilename);
+                $manager_picture2 = Image::make($this->getParameter($photo_compress_directory) . '/' .$footballer->getId(). '/' . $newFilename);
                 $manager_picture2->resize($width_compressed, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
 
-                $manager_picture2->save($this->getParameter($photo_compress_directory) . '/' . $newFilename);
-                return $newFilename;
+                $manager_picture2->save($this->getParameter($photo_compress_directory) . '/' .$footballer->getId(). '/' . $newFilename);
             }
+
+            return $newFilename;
+
 
         } catch (FileException $e) {
             // ... handle exception if something happens during file upload

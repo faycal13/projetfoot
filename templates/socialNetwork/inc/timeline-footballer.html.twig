@@ -5,33 +5,16 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="profile-info">
-                    <div class="img-wrapper-profil" data-toggle="modal" data-target="#modal-photo-profil">
-                        <img src="https://staticg.sportskeeda.com/wp-content/uploads/2016/06/2016-06-22t044321z_1_lynxnpec5l0ag_rtroptp_3_soccer-500.jpg" alt="" class="img-responsive profile-photo" />
+                    <div class="img-wrapper-profil">
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~app.session.get('footballer_id')~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
                     </div>
+                    {{ render(controller(
+                        'App\\Controller\\FootballerController::footballerProfilPhoto'
+                    )) }}
                     {% if app.user.user is not null %}
                         <h3>{{ app.user.user.name }} {{ app.user.user.firstName }}</h3>
                     {% endif %}
                     <p class="text-muted">Footballeur</p>
-                </div>
-            </div>
-            <div class="modal fade" id="modal-photo-profil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Changement de la photo de profil</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="modal-body">
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                            <a type="button" href="" class="btn btn-primary">Supprimer</a>
-                        </div>
-                    </div>
                 </div>
             </div>
 

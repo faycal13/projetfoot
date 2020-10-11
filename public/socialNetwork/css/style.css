@@ -240,6 +240,11 @@ img.profile-photo-xs{
 
 .img-wrapper-profil{
     position: relative;
+    background-color: white;
+    border-radius: 50%;
+    width: 200px;
+    border: 1px solid;
+    box-shadow: 2px 0px 5px black;
 }
 
 .img-wrapper-profil::after{
@@ -257,6 +262,10 @@ img.profile-photo-xs{
 }
 .img-wrapper-profil:hover:after{
     background-color: rgba(0,0,0, 0.4);
+}
+
+input#profil_photo_footballer_profilPhoto {
+    display: none;
 }
 
 .video-wrapper {

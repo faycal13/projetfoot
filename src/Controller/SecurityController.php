@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Account;
+use App\Form\ProfilPhotoFootballerType;
 use App\Form\SignupType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -78,11 +79,20 @@ class SecurityController extends AbstractController
     /**
      * @Route("/redirection", name="redirection")
      */
-    public function redirection(){
+    public function redirection(EntityManagerInterface $manager){
 
         $role = $this->getUser()->getRoles()[0];
         if($role == 'ROLE_ADMIN') return $this->redirectToRoute('admin_home');
-        if($role == 'ROLE_USER') return $this->redirectToRoute('footballer_profil');
+        if($role == 'ROLE_USER') {
+            //Enregistrement de variable en session
+            $session = $this->get('session');
+            $footballer_repo = $manager->getRepository('App:Footballer');
+            $user = $this->getUser()->getUser();
+            $footballer = $footballer_repo->findOneByUser($user);
+            $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
+            $session->set('footballer_id',$footballer->getId());
+            return $this->redirectToRoute('footballer_profil');
+        }
         if($role == 'ROLE_AGENT') return $this->redirectToRoute('agent_home');
 
     }
