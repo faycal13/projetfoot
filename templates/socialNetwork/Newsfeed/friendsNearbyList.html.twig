@@ -1,0 +1,80 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+  <div class="container">
+    <div class="timeline">
+      {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
+      <div id="page-contents">
+        <div class="row">
+          <div class="col-md-3">
+            {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
+          </div>
+          <div class="col-md-7">
+            <div class="edit-career-container">
+              <div class="block-title">
+                <h4 class="grey">Mes amis</h4>
+                {% for message in app.flashes('success') %}
+                  <div class="alert alert-success">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                  <div class="alert alert-danger">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="edit-block">
+                {% for friend in friends %}
+                  <div class="nearby-user">
+                    <div class="row">
+                      <div class="col-md-2 col-sm-2">
+                        <img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
+                      </div>
+                      <div class="col-md-7 col-sm-7">
+                        <h5><a href="#" class="profile-link">{{ friend.friend.user.name }} {{ friend.friend.user.firstName }}</a></h5>
+                        <p>{{ friend.friend.position }}</p>
+                        <p class="text-muted">Marseille</p>
+                      </div>
+                      <div class="col-md-3 col-sm-3">
+                        <button class="btn btn-primary pull-right add-friend inactive" data-id="{{ friend.friend.id }}">Ajouter</button>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 static">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block javascripts %}
+  <script>
+    $(function (){
+      $('.add-friend.inactive').click(function (){
+        var button = $(this);
+        button.addClass('active');
+        button.removeClass('inactive');
+        $.ajax({
+          url : "{{ path('footballer_add_friend_submission') }}",
+          type : "POST",
+          data: {
+            "id":$(this).attr('data-id')
+          },
+          success : function (serverResponse){
+            $('.add-friend.active').text('Invitation envoyée');
+            $('.add-friend.active').css('background-color' , 'green');
+          },
+          error : function (){
+            alert('Une erreur est survenue')
+          }
+        })
+      });
+    });
+  </script>
+{% endblock %}

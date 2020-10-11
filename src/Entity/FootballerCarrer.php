@@ -23,26 +23,36 @@ class FootballerCarrer
     private $club;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string", length=4)
      */
     private $startDate;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string", length=4)
      */
     private $endDate;
 
     /**
      * @ORM\ManyToOne(targetEntity=city::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
-    private $ville;
+    private $city;
 
     /**
      * @ORM\ManyToOne(targetEntity=footballer::class, inversedBy="footballerCarrers")
      * @ORM\JoinColumn(nullable=false)
      */
     private $footballer;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $position;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $categorie;
 
     public function getId(): ?int
     {
@@ -61,38 +71,46 @@ class FootballerCarrer
         return $this;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getStartDate()
     {
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): self
+    /**
+     * @param mixed $startDate
+     */
+    public function setStartDate($startDate): void
     {
         $this->startDate = $startDate;
-
-        return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    /**
+     * @return mixed
+     */
+    public function getEndDate()
     {
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    /**
+     * @param mixed $endDate
+     */
+    public function setEndDate($endDate): void
     {
         $this->endDate = $endDate;
-
-        return $this;
     }
 
-    public function getVille(): ?city
+    public function getCity(): ?city
     {
-        return $this->ville;
+        return $this->city;
     }
 
-    public function setVille(?city $ville): self
+    public function setCity(?city $city): self
     {
-        $this->ville = $ville;
+        $this->city = $city;
 
         return $this;
     }
@@ -105,7 +123,27 @@ class FootballerCarrer
     public function setFootballer(?footballer $footballer): self
     {
         $this->footballer = $footballer;
-
         return $this;
     }
+
+    public function getPosition()
+    {
+        return $this->position;
+    }
+
+    public function setPosition($position): void
+    {
+        $this->position = $position;
+    }
+
+    public function getCategorie()
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie($categorie): void
+    {
+        $this->categorie = $categorie;
+    }
+
 }

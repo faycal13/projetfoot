@@ -37,13 +37,34 @@
       <change beforePath="$PROJECT_DIR$/../hellomycake/templates/review.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../hellomycake/templates/review.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../hellomycake/templates/security/signup-pastry-chef.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../hellomycake/templates/security/signup-pastry-chef.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../hellomycake/templates/security/signup.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../hellomycake/templates/security/signup.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/projetfoot.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/projetfoot.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/packages/twig.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/packages/twig.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200919101855.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200919120145.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200919124832.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200919130025.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200920141559.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200920142056.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200922214511.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200923214145.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20200927212035.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20201003084014.php" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/public/socialNetwork/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/socialNetwork/css/style.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/FootballerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/FootballerController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Footballer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Footballer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profile-interests.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profil-footballer.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/FootballerCarrer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/FootballerCarrer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/Newsfeed/newsfeed-people-nearby.html.twig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-career-footballer.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-career-footballer.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profil-footballer.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/Profil/edit-profil-footballer.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/base.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/socialNetwork/inc/edit-menu-profil.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/inc/edit-menu-profil.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/socialNetwork/inc/header.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/inc/header.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/socialNetwork/inc/timeline-footballer.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/socialNetwork/inc/timeline-footballer.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,9 +74,7 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <execution>
-      <executable />
-    </execution>
+    <execution />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -163,6 +182,10 @@
       <path value="$PROJECT_DIR$/vendor/symfony/config" />
       <path value="$PROJECT_DIR$/vendor/symfony/http-foundation" />
       <path value="$PROJECT_DIR$/vendor/symfony/apache-pack" />
+      <path value="$PROJECT_DIR$/vendor/intervention/image" />
+      <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
+      <path value="$PROJECT_DIR$/vendor/psr/http-message" />
+      <path value="$PROJECT_DIR$/vendor/ralouphie/getallheaders" />
     </include_path>
   </component>
   <component name="ProjectId" id="1i6ZkqkNwizB604BadYQfXTuiyF" />
@@ -175,7 +198,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/socialNetwork/Newsfeed" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../hellomycake" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
@@ -196,7 +219,9 @@
       <updated>1601230148673</updated>
       <workItem from="1601230154498" duration="5714000" />
       <workItem from="1601587105863" duration="12371000" />
-      <workItem from="1601711370948" duration="7853000" />
+      <workItem from="1601711370948" duration="11042000" />
+      <workItem from="1602190521606" duration="14066000" />
+      <workItem from="1602313544759" duration="20889000" />
     </task>
     <servers />
   </component>
@@ -204,34 +229,44 @@
     <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="753" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1602192631624">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="753" y="229" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1602192631624" />
     <state x="2614" y="209" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1600895169386">
       <screen x="1920" y="5" width="1920" height="1040" />
     </state>
     <state x="2614" y="209" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1600895169386" />
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1601712730587">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="2610" y="280" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1602443571998">
+      <screen x="1920" y="5" width="1920" height="1040" />
     </state>
+    <state x="2610" y="280" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1602443571998" />
     <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1601712730587" />
-    <state width="498" height="446" key="SwitcherDM" timestamp="1601713327850">
+    <state x="2660" y="280" key="FileChooserDialogImpl" timestamp="1602349663821">
+      <screen x="1920" y="5" width="1920" height="1040" />
+    </state>
+    <state x="2660" y="280" key="FileChooserDialogImpl/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1602349663821" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1602191449953">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="498" height="446" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1601713327850" />
+    <state width="498" height="446" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1602191449953" />
     <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1601230198511">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1601230198511" />
-    <state x="2587" y="258" width="585" height="534" key="find.popup" timestamp="1601835328313">
+    <state x="2587" y="258" width="585" height="534" key="find.popup" timestamp="1602442598152">
       <screen x="1920" y="5" width="1920" height="1040" />
     </state>
-    <state x="2587" y="258" width="585" height="534" key="find.popup/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1601835328313" />
-    <state x="667" y="253" width="585" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1601589449449" />
+    <state x="2587" y="258" width="585" height="534" key="find.popup/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1602442598152" />
+    <state x="667" y="253" width="585" height="534" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1601938503996" />
     <state x="425" y="187" key="run.anything.popup" timestamp="1601241084582">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="425" y="187" key="run.anything.popup/0.0.1536.824@0.0.1536.824" timestamp="1601241084582" />
-    <state x="431" y="145" width="672" height="678" key="search.everywhere.popup" timestamp="1601242345765">
-      <screen x="0" y="0" width="1536" height="824" />
+    <state x="2459" y="188" width="840" height="856" key="search.everywhere.popup" timestamp="1602343041270">
+      <screen x="1920" y="5" width="1920" height="1040" />
     </state>
     <state x="431" y="145" width="672" height="678" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1601242345765" />
+    <state x="2459" y="188" width="840" height="856" key="search.everywhere.popup/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1602343041270" />
   </component>
 </project>

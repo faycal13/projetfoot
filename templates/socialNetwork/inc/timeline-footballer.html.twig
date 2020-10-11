@@ -5,23 +5,44 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="profile-info">
-                    <img src="https://staticg.sportskeeda.com/wp-content/uploads/2016/06/2016-06-22t044321z_1_lynxnpec5l0ag_rtroptp_3_soccer-500.jpg" alt="" class="img-responsive profile-photo" />
+                    <div class="img-wrapper-profil" data-toggle="modal" data-target="#modal-photo-profil">
+                        <img src="https://staticg.sportskeeda.com/wp-content/uploads/2016/06/2016-06-22t044321z_1_lynxnpec5l0ag_rtroptp_3_soccer-500.jpg" alt="" class="img-responsive profile-photo" />
+                    </div>
                     {% if app.user.user is not null %}
-                    <h3>{{ app.user.user.name }} {{ app.user.user.firstName }}</h3>
+                        <h3>{{ app.user.user.name }} {{ app.user.user.firstName }}</h3>
                     {% endif %}
                     <p class="text-muted">Footballeur</p>
                 </div>
             </div>
+            <div class="modal fade" id="modal-photo-profil" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Changement de la photo de profil</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="modal-body">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                            <a type="button" href="" class="btn btn-primary">Supprimer</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-md-9">
                 <ul class="list-inline profile-menu">
-                    <li><a href="timeline.html">Chatroom</a></li>
-                    <li><a href="timeline.html">Mes photos</a></li>
-                    <li><a href="timeline-about.html" class="active">Mes vidéos</a></li>
-                    <li><a href="timeline-friends.html">Mes amis</a></li>
-                </ul>
-                <ul class="follow-me list-inline">
-                    <li>3 amis</li>
-                    <li><button class="btn-primary">Ajouter un ami</button></li>
+                    <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>
+                    <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
+                    <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
+                    <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
+                    <li style="color: white; font-weight: bold;font-size: 20px;">3 amis</li>
+                    <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom-message')}}" target="_blank" class="btn-primary">Chatroom</a></li>
                 </ul>
             </div>
         </div>
@@ -36,12 +57,13 @@
         </div>
         <div class="mobile-menu">
             <ul class="list-inline">
-                <li><a href="timeline.html">Chatroom</a></li>
-                <li><a href="timeline.html">Mes photos</a></li>
-                <li><a href="timeline-about.html" class="active">Mes vidéos</a></li>
-                <li><a href="timeline-friends.html">Mes amis</a></li>
+                <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>
+                <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
+                <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
+                <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
+                <li style="color: white; font-weight: bold;font-size: 20px;">3 amis</li>
+                <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom') }}" class="btn-primary">Chatroom</a></li>
             </ul>
-            <button class="btn-primary">Ajouter un ami</button>
         </div>
     </div><!--Timeline Menu for Small Screens End-->
 

@@ -1,0 +1,59 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+  <div class="container">
+
+    <!-- Timeline
+    ================================================= -->
+    <div class="timeline">
+      {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
+      <div id="page-contents">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!--Edit Profile Menu-->
+            {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
+          </div>
+          <div class="col-md-7">
+
+            <!-- Edit Interests
+            ================================================= -->
+            <div class="edit-career-container">
+              <div class="block-title">
+                <h4 class="grey">Mes amis</h4>
+                {% for message in app.flashes('success') %}
+                  <div class="alert alert-success">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                  <div class="alert alert-danger">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="edit-block">
+                {% for friend in friends %}
+                <div class="col-md-6 col-sm-6">
+                  <div class="friend-card">
+                    <div class="card-info">
+                      <img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
+                      <div class="friend-info">
+                        <h5><a href="timeline.html" class="profile-link">{{ friend.friend.user.name }} {{ friend.friend.user.firstName }}</a></h5>
+                        <p>{{ friend.friend.position }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 static">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
