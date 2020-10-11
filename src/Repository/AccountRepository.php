@@ -36,6 +36,27 @@ class AccountRepository extends ServiceEntityRepository
     }
     */
 
+    public function getFootballers()
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.user', 'u')
+            ->where('a.aroles LIKE :role')
+            ->setParameter('role', '%"'.'ROLE_USER'.'"%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function getRecruteurs()
+    {
+        return $this->createQueryBuilder('a')
+            ->join('a.user', 'u')
+            ->where('a.aroles LIKE :role')
+            ->setParameter('role', '%"'.'ROLE_AGENT'.'"%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     /*
     public function findOneBySomeField($value): ?Account
     {

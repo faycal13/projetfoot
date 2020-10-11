@@ -14,4 +14,28 @@ class AgentController extends AbstractController
     {
         return $this->render('agent/index.html.twig');
     }
+
+    /**
+     * @Route("/agent/rechercheFootballer", name="recherche_footballer")
+     */
+    public function recherche()
+    {
+        return $this->render('agent/rechercher-footballer.html.twig');
+    }
+
+    /**
+     * @Route("/agent/setting", name="agent_setting")
+     */
+    public function setting()
+    {
+        return $this->render('agent/setting.html.twig');
+    }
+
+    /**
+     * @Route("/agent/mdp", name="agent_password")
+     */
+    public function motdepasse()
+    {
+        return $this->render('agent/motdepasse.html.twig');
+    }
 }

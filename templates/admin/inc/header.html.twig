@@ -7,43 +7,25 @@
                     <img src="images/icon/logo-white.png" alt="CoolAdmin" />
                 </a>
             </div>
-            {% if not is_granted('ROLE_ADMIN') %}
-                <div class="header__navbar">
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-user"></i>
-                                <span class="bot-line"></span>Voir les joueurs</a>
-                        </li>
-                        <li>
-                            <a href="table.html">
-                                <i class="fas fa-shopping-basket"></i>
-                                <span class="bot-line"></span>Abonnement</a>
-                        </li>
-                    </ul>
-                </div>
-            {% else %}
-                <div class="header__navbar">
-                    <ul class="list-unstyled">
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-user"></i>
-                                <span class="bot-line"></span>Tableau de bord</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-user"></i>
-                                <span class="bot-line"></span>Les footballeurs</a>
-                        </li>
-                        <li>
-                            <a href="#">
-                                <i class="fas fa-user"></i>
-                                <span class="bot-line"></span>Les recruteurs</a>
-                        </li>
-                    </ul>
-                </div>
-            {% endif %}
-            {% if not is_granted('ROLE_ADMIN') %}
+            <div class="header__navbar">
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="{{ path('admin_admin_home')}}">
+                            <i class="fas fa-shopping-basket"></i>
+                            <span class="bot-line"></span>tableau de bord</a>
+                    </li>
+                    <li>
+                        <a href="{{  path('admin_footballeur_list')}}">
+                            <i class="fas fa-user"></i>
+                            <span class="bot-line"></span>Voir les joueurs</a>
+                    </li>
+                    <li>
+                        <a href="{{  path('admin_recruteur_list')}}">
+                            <i class="fas fa-shopping-basket"></i>
+                            <span class="bot-line"></span>Voir les recruteurs</a>
+                    </li>
+                </ul>
+            </div>
             <div class="header__tool">
                 <div class="account-wrap">
                     <div class="account-item account-item--style2 clearfix js-item-menu">
@@ -69,65 +51,26 @@
                             </div>
                             <div class="account-dropdown__body">
                                 <div class="account-dropdown__item">
-                                    <a href="{{ path ("agent_setting") }}">
-                                        <i class="zmdi zmdi-account"></i>Modifier mon compte</a>
-                                </div>
-                                <div class="account-dropdown__item">
-                                    <a href="{{ path ("agent_password") }}">
-                                        <i class="zmdi zmdi-settings"></i>Modifier mon mot de passe</a>
-                                </div>
-                            </div>
-                            <div class="account-dropdown__footer">
-                                <a href="{{ path('logout')}}">
-                                    <i class="zmdi zmdi-power"></i>Logout</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% else %}
-            <div class="header__tool">
-                <div class="account-wrap">
-                    <div class="account-item account-item--style2 clearfix js-item-menu">
-                        <div class="image">
-                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                        </div>
-                        <div class="content">
-                            <a class="js-acc-btn" href="#">john doe</a>
-                        </div>
-                        <div class="account-dropdown js-dropdown">
-                            <div class="info clearfix">
-                                <div class="image">
                                     <a href="#">
-                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h5 class="name">
-                                        <a href="#">john doe</a>
-                                    </h5>
-                                    <span class="email">johndoe@example.com</span>
-                                </div>
-                            </div>
-                            <div class="account-dropdown__body">
-                                <div class="account-dropdown__item">
-                                    <a href="{{ path ("admin_setting") }}">
-                                        <i class="zmdi zmdi-account"></i>Modifier mon compte</a>
+                                        <i class="zmdi zmdi-account"></i>Account</a>
                                 </div>
                                 <div class="account-dropdown__item">
-                                    <a href="{{ path ("admin_password") }}">
-                                        <i class="zmdi zmdi-settings"></i>Modifier mon mot de passe</a>
+                                    <a href="#">
+                                        <i class="zmdi zmdi-settings"></i>Setting</a>
+                                </div>
+                                <div class="account-dropdown__item">
+                                    <a href="#">
+                                        <i class="zmdi zmdi-money-box"></i>Billing</a>
                                 </div>
                             </div>
                             <div class="account-dropdown__footer">
-                                <a href="{{ path('logout')}}">
+                                <a href="#">
                                     <i class="zmdi zmdi-power"></i>Logout</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endif %}
         </div>
     </div>
 </header>

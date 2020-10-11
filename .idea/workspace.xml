@@ -198,15 +198,22 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+<<<<<<< HEAD
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../hellomycake" />
+=======
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/admin" />
+>>>>>>> master
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\projetfoot\templates\admin" />
+      <recent name="C:\xampp\htdocs\projetfoot\templates\agent" />
+      <recent name="C:\xampp\htdocs\projetfoot\src\Controller" />
       <recent name="C:\xampp\htdocs\projetfoot\templates\socialNetwork\Newsfeed" />
     </key>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -219,14 +226,19 @@
       <updated>1601230148673</updated>
       <workItem from="1601230154498" duration="5714000" />
       <workItem from="1601587105863" duration="12371000" />
+<<<<<<< HEAD
       <workItem from="1601711370948" duration="11042000" />
       <workItem from="1602190521606" duration="14066000" />
       <workItem from="1602313544759" duration="20889000" />
+=======
+      <workItem from="1601711370948" duration="7853000" />
+      <workItem from="1602343539678" duration="9846000" />
+>>>>>>> master
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
+    <option name="version" value="1" />
   </component>
   <component name="WindowStateProjectService">
     <state x="753" y="229" key="#com.intellij.ide.util.MemberChooser" timestamp="1602192631624">
@@ -249,12 +261,21 @@
     <state width="498" height="446" key="SwitcherDM" timestamp="1602191449953">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+<<<<<<< HEAD
     <state width="498" height="446" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1602191449953" />
     <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1601230198511">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1601230198511" />
     <state x="2587" y="258" width="585" height="534" key="find.popup" timestamp="1602442598152">
+=======
+    <state width="498" height="446" key="SwitcherDM/0.0.1920.1040@0.0.1920.1040" timestamp="1601713327850" />
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1602343543891">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1602343543891" />
+    <state x="2587" y="258" width="585" height="534" key="find.popup" timestamp="1601835328313">
+>>>>>>> master
       <screen x="1920" y="5" width="1920" height="1040" />
     </state>
     <state x="2587" y="258" width="585" height="534" key="find.popup/0.0.1920.1040/1920.5.1920.1040@1920.5.1920.1040" timestamp="1602442598152" />
