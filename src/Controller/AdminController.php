@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
     /**
-     * @Route("/home", name="admin_home")
+     * @Route("/home", name="home")
      */
     public function index()
     {
@@ -42,5 +42,21 @@ class AdminController extends AbstractController
         return $this->render('admin/recruteurs.html.twig', array(
             'recruteurs' => $recruteurs
         ));
+    }
+
+    /**
+     * @Route("/setting", name="setting")
+     */
+    public function setting()
+    {
+        return $this->render('admin/setting.html.twig');
+    }
+
+    /**
+     * @Route("/mdp", name="password")
+     */
+    public function motdepasse()
+    {
+        return $this->render('admin/motdepasse.html.twig');
     }
 }
