@@ -238,6 +238,36 @@ img.profile-photo-xs{
   background-color: rgba(0,0,0, 0.4);
 }
 
+.img-wrapper-profil{
+    position: relative;
+    background-color: white;
+    border-radius: 50%;
+    width: 200px;
+    border: 1px solid;
+    box-shadow: 2px 0px 5px black;
+}
+
+.img-wrapper-profil::after{
+    content: "";
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: all 1s ease 0s;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+.img-wrapper-profil:hover:after{
+    background-color: rgba(0,0,0, 0.4);
+}
+
+input#profil_photo_footballer_profilPhoto {
+    display: none;
+}
+
 .video-wrapper {
 	position: relative;
 }
@@ -1696,17 +1726,6 @@ ul.online-users li span.online-dot{
   overflow: visible;
 }
 
-.timeline .post-content::before{
-  content: "";
-  position: absolute;
-  background: none;
-  width: 1px;
-  height: 98%;
-  left: -145px;
-  border-left: 2px solid #212529;
-  top: 15px;
-}
-
 .timeline .post-content .post-date{
   position: absolute;
   margin-left: -125px;
@@ -1898,10 +1917,6 @@ ul.edit-menu li.active a{
 
 .edit-block ul.interests li a i.icon{
   font-size: 18px;
-}
-
-.edit-block .btn-primary{
-  width: 100%;
 }
 
 .gender .custom-label{
@@ -2666,6 +2681,18 @@ ul.contact li i{
   bottom: 0;
   background-color: #fff;
   z-index: 9999999;
+}
+
+.edit-career-container table tr{
+    border-bottom: 1px solid #dadada;
+}
+
+.edit-career-container table tr th{
+    padding: 10px;
+}
+
+.edit-career-container table tr td{
+    padding: 10px;
 }
 
 

@@ -1,80 +1,148 @@
 {% extends 'socialNetwork/base.html.twig' %}
 {% block body %}
 
-    <div class="container">
+  <div class="container">
 
-      <!-- Timeline
-      ================================================= -->
-      <div class="timeline">
-        {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
-        <div id="page-contents">
-          <div class="row">
-            <div class="col-md-3">
-              
-              <!--Edit Profile Menu-->
-              {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
+    <!-- Timeline
+    ================================================= -->
+    <div class="timeline">
+      {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
+      <div id="page-contents">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!--Edit Profile Menu-->
+            {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
+          </div>
+          <div class="col-md-7">
+
+            <!-- Edit Interests
+            ================================================= -->
+            <div class="edit-career-container">
+              <div class="block-title">
+                <h4 class="grey">Ma carrière</h4>
+                {% for message in app.flashes('success') %}
+                  <div class="alert alert-success">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                  <div class="alert alert-danger">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="edit-block">
+                <button class="btn btn-danger" data-toggle="modal" data-target="#add-career">Ajouter un club</button>
+                <table style="width: 100%;">
+                  <tr>
+                    <th>Années</th>
+                    <th>Club</th>
+                    <th>Catégorie</th>
+                    <th>Poste</th>
+                    <th>Ville</th>
+                    <th>Options</th>
+                  </tr>
+                  <tbody>
+                  {% for career in careers %}
+                    <tr>
+                      <td>{{ career.startDate }}-{{ career.endDate }}</td>
+                      <td>{{ career.club }}</td>
+                      <td>{{ career.categorie }}</td>
+                      <td>{{ career.position }}</td>
+                      <td>{% if career.city is not null %}{{ career.city.name }}{% endif %}</td>
+                      <td>
+                        <i class="fa fa-edit" data-toggle="modal" data-target="#edit-{{ career.id }}"></i>
+                        <i class="fa fa-close" data-toggle="modal" data-target="#remove-{{ career.id }}"></i>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div class="col-md-7">
+          </div>
+          <div class="col-md-2 static">
 
-              <!-- Edit Interests
-              ================================================= -->
-              <div class="edit-profile-container">
-                <div class="block-title">
-                  <h4 class="grey"><i class="icon ion-ios-heart-outline"></i>Ma carrière</h4>
-                  {% for message in app.flashes('success') %}
-                    <div class="alert alert-success">
-                      {{ message }}
+          </div>
+          {% for key,form in forms %}
+            <!-- Modal -->
+            <div class="modal fade" id="edit-{{ key }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modifier un club</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+
+                    {{ form_start(form, {'attr': {'action': path('footballer_editCareerSubmission',{'id':key})} }) }}
+                    <div class="row" style="padding: 30px">
+                      {{ form_row(form.club, {'label': 'Club','attr': {'placeholder': 'Le nom du club'}}) }}
+                      {{ form_row(form.categorie, {'label': 'Club','attr': {'placeholder': 'Ex : U21'}}) }}
+                      {{ form_row(form.startDate, {'label': 'Année de début','attr': {'placeholder': '2017'}}) }}
+                      {{ form_row(form.endDate, {'label': 'Année de fin','attr': {'placeholder': '2019'}}) }}
+                      {{ form_row(form.position, {'label': 'Poste','attr': {'placeholder': 'Milieu'}}) }}
+                      <button class="btn" data-dismiss="modal">Annuler</button>
+                      <button class="btn btn-primary">Enregistrer</button>
                     </div>
-                  {% endfor %}
-                  {% for message in app.flashes('error') %}
-                    <div class="alert alert-danger">
-                      {{ message }}
-                    </div>
-                  {% endfor %}
-                </div>
-                <div class="edit-block">
-                  <table style="width: 100%;">
-                    <tr>
-                      <th>Années</th>
-                      <th>Club</th>
-                      <th>Poste</th>
-                    </tr>
-                    <tbody>
-                    <tr>
-                      <td>2017-2018</td>
-                      <td>Endoume FC</td>
-                      <td>Attaquant</td>
-                    </tr>
-                    <tr>
-                      <td>2017-2018</td>
-                      <td>Endoume FC</td>
-                      <td>Attaquant</td>
-                    </tr>
-                    <tr>
-                      <td>2017-2018</td>
-                      <td>Endoume FC</td>
-                      <td>Attaquant</td>
-                    </tr>
-                    <tr>
-                      <td>2017-2018</td>
-                      <td>Endoume FC</td>
-                      <td>Attaquant</td>
-                    </tr>
-                    <tr>
-                      <td>2017-2018</td>
-                      <td>Endoume FC</td>
-                      <td>Attaquant</td>
-                    </tr>
-                    </tbody>
-                  </table>
+                    {{ form_end(form) }}
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="col-md-2 static">
+            <!-- Modal -->
+            <div class="modal fade" id="remove-{{ key }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Supprimer un club</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    Attention, la suppression est irréversible !
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                    <a type="button" href="{{ path('footballer_editCareerDelete',{'id':key}) }}" class="btn btn-primary">Supprimer</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
 
+          <!-- Modal -->
+          <div class="modal fade" id="add-career" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Ajouter un club</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  {{ form_start(new_form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}
+                  <div class="row" style="padding: 30px">
+                    {{ form_row(new_form.club, {'label': 'Club','attr': {'placeholder': 'Le nom du club'}}) }}
+                    {{ form_row(new_form.categorie, {'label': 'Club','attr': {'placeholder': 'Ex : U21'}}) }}
+                    {{ form_row(new_form.startDate, {'label': 'Année de début','attr': {'placeholder': '2017'}}) }}
+                    {{ form_row(new_form.endDate, {'label': 'Année de fin','attr': {'placeholder': '2019'}}) }}
+                    {{ form_row(new_form.position, {'label': 'Poste','attr': {'placeholder': 'Milieu'}}) }}
+                    <button class="btn" data-dismiss="modal">Annuler</button>
+                    <button class="btn btn-primary">Enregistrer</button>
+                  </div>
+                  {{ form_end(new_form) }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 {% endblock %}

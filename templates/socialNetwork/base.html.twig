@@ -6,7 +6,7 @@
     <meta name="description" content="This is social network html5 template available in themeforest......" />
     <meta name="keywords" content="Social Network, Social Media, Make Friends, Newsfeed, Profile Page" />
     <meta name="robots" content="index, follow" />
-    <title>Friend Finder | A Complete Social Network Template</title>
+    <title>SkillFoot - Réseau social - Footballer</title>
 
     <!-- Stylesheets
     ================================================= -->
@@ -24,9 +24,9 @@
 <body>
 
 <!--preloader-->
-<div id="spinner-wrapper">
-    <div class="spinner"></div>
-</div>
+{#<div id="spinner-wrapper">#}
+{#    <div class="spinner"></div>#}
+{#</div>#}
 {% include ('socialNetwork/inc/header.html.twig') %}
 {% block body %}
 {% endblock %}
@@ -42,5 +42,18 @@
 <script src="{{ asset("socialNetwork/js/jquery.appear.min.js") }}"></script>
 <script src="{{ asset("socialNetwork/js/jquery.incremental-counter.js") }}"></script>
 <script src="{{ asset("socialNetwork/js/script.js") }}"></script>
+<script>
+    $(function (){
+        $('.img-wrapper-profil').click(function (){
+            $('#profil_photo_footballer_profilPhoto').trigger('click');
+        })
+
+        $('#profil_photo_footballer_profilPhoto').change(function (){
+            $('form[name=profil_photo_footballer]').submit();
+        })
+
+    })
+</script>
+{% block javascripts %}{% endblock %}
 </body>
 </html>

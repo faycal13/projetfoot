@@ -4,6 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    footballer_photo_directory: '%kernel.project_dir%/public/img/footballer/photo'
+    footballer_photo_compressed_directory: '%kernel.project_dir%/public/img/footballer/photo-compressed'
+    footballer_photo_profil_directory: '%kernel.project_dir%/public/img/footballer/photo-profil'
+    footballer_video_directory: '%kernel.project_dir%/public/img/footballer/video'
 
 services:
     # default configuration for services in *this* file

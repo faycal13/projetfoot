@@ -18,19 +18,19 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right main-menu">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Newsfeed <span><img src="images/down-arrow.png" alt="" /></span></a>
-                        <ul class="dropdown-menu newsfeed-home">
+{#                    <li class="dropdown">#}
+{#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Newsfeed <span><img src="images/down-arrow.png" alt="" /></span></a>#}
+{#                        <ul class="dropdown-menu newsfeed-home">#}
 {#                            <li><a href="{{ path('footballer_newsfeed') }}">Fil d'actualité</a></li>#}
-                            <li><a href="{{ path('footballer_addfriend') }}">Ajout amis</a></li>
-                            <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
-                            <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>
-                            <li><a href="{{ path('footballer_chatroom') }}">Chatroom</a></li>
-                            <li><a href="{{ path('footballer_picture') }}">Images</a></li>
-                            <li><a href="{{ path('footballer_video') }}">Videos</a></li>
+{#                            <li><a href="{{ path('footballer_addfriend') }}">Ajout amis</a></li>#}
+{#                            <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>#}
+{#                            <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>#}
+{#                            <li><a href="{{ path('footballer_chatroom') }}">Chatroom</a></li>#}
+{#                            <li><a href="{{ path('footballer_picture') }}">Images</a></li>#}
                             <li><a href="{{ path('footballer_abonnements') }}">Abonnements</a></li>
-                        </ul>
-                    </li>
+{#                            <li><a href="{{ path('footballer_video') }}">Videos</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mon profil <span><img src="images/down-arrow.png" alt="" /></span></a>
                         <ul class="dropdown-menu login">
@@ -40,7 +40,7 @@
 {#                            <li><a href="timeline-friends.html">Timeline Friends</a></li>#}
                             <li><a href="{{ path('footballer_editProfil') }}">Modifier profil</a></li>
 {#                            <li><a href="edit-profile-work-edu.html">Edit: Work</a></li>#}
-                            <li><a href="{{ path('footballer_editCareer')}}">Modifier mes compétences</a></li>
+{#                            <li><a href="{{ path('footballer_editCareer')}}">Modifier mes compétences</a></li>#}
 {#                            <li><a href="edit-profile-settings.html">Account Settings</a></li>#}
                             <li><a href="{{ path('footballer_editPassword') }}">Modifier mot de passe</a></li>
                         </ul>
@@ -49,7 +49,7 @@
                 <form class="navbar-form navbar-right hidden-sm">
                     <div class="form-group">
                         <i class="icon ion-android-search"></i>
-                        <input type="text" class="form-control" placeholder="Search friends, photos, videos">
+                        <input type="text" class="form-control" placeholder="Chercher un footballeur">
                     </div>
                 </form>
             </div><!-- /.navbar-collapse -->
