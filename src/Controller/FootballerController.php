@@ -203,6 +203,14 @@ class FootballerController extends AbstractController
         return $this->render('socialNetwork/newsfeed/newsfeed-images.html.twig');
     }
 
+    /**
+     * @Route("/abonnements", name="abonnements")
+     */
+    public function abonnement()
+    {
+        return $this->render('socialNetwork/newsfeed/pricing.html.twig');
+    }
+
     public function t($test){
         dump($test);
         die();

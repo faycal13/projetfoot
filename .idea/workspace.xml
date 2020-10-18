@@ -175,15 +175,19 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/templates/admin" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/public/socialNetwork" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\projetfoot\public\socialNetwork\css" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\projetfoot\templates\admin" />
-      <recent name="C:\xampp\htdocs\projetfoot\templates\agent" />
-      <recent name="C:\xampp\htdocs\projetfoot\src\Controller" />
+      <recent name="C:\xampp\htdocs\projetfoot\public\socialNetwork" />
+      <recent name="C:\xampp\htdocs\projetfoot\public\footballer\css" />
       <recent name="C:\xampp\htdocs\projetfoot\templates\socialNetwork\Newsfeed" />
+      <recent name="C:\xampp\htdocs\projetfoot\public\agent\css" />
+      <recent name="C:\xampp\htdocs\projetfoot\templates\agent" />
     </key>
   </component>
   <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
@@ -200,7 +204,7 @@
       <workItem from="1601230154498" duration="5714000" />
       <workItem from="1601587105863" duration="12371000" />
       <workItem from="1601711370948" duration="7853000" />
-      <workItem from="1602343539678" duration="9846000" />
+      <workItem from="1602343539678" duration="17202000" />
     </task>
     <servers />
   </component>

@@ -38,4 +38,12 @@ class HomeController extends AbstractController
     {
         return $this->render('pricing.html.twig');
     }
+
+    /**
+     * @Route("/paiement", name="paiement")
+     */
+    public function paiement()
+    {
+        return $this->render('paiement.html.twig');
+    }
 }
