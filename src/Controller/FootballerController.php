@@ -639,6 +639,14 @@ class FootballerController extends AbstractController
         }
     }
 
+    /**
+     * @Route("/abonnements", name="abonnements")
+     */
+    public function abonnement()
+    {
+        return $this->render('socialNetwork/newsfeed/pricing.html.twig');
+    }
+
     function convertYoutube($string) {
         return preg_replace(
             "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",

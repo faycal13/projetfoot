@@ -38,4 +38,12 @@ class AgentController extends AbstractController
     {
         return $this->render('agent/motdepasse.html.twig');
     }
+
+    /**
+     * @Route("/agent/abonnements", name="agent_abonnement")
+     */
+    public function paiement()
+    {
+        return $this->render('agent/pricing.html.twig');
+    }
 }
