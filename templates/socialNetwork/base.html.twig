@@ -44,12 +44,23 @@
 <script src="{{ asset("socialNetwork/js/script.js") }}"></script>
 <script>
     $(function (){
+
+        //PHOTO DE PROFIL
         $('.img-wrapper-profil').click(function (){
             $('#profil_photo_footballer_profilPhoto').trigger('click');
         })
 
         $('#profil_photo_footballer_profilPhoto').change(function (){
             $('form[name=profil_photo_footballer]').submit();
+        })
+
+        //PHOTO DE COUVERTURE
+        $('.cover-photo-button').click(function (){
+            $('#cover_photo_footballer_coverPhoto').trigger('click');
+        })
+
+        $('#cover_photo_footballer_coverPhoto').change(function (){
+            $('form[name=cover_photo_footballer]').submit();
         })
 
     })

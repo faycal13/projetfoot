@@ -19,7 +19,7 @@
                   <div class="modal-dialog" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ajouter un club</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Ajouter une photo</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -79,7 +79,7 @@
                         </div>
                       </div>
                       <div class="img-wrapper" data-toggle="modal" data-target="#modal-{{ photo.id }}">
-                        <img src="{{ asset(footballer_photo_compressed_directory~photo.internalLink) }}" alt="" class="img-responsive post-image" />
+                        <img src="{{ asset(footballer_photo_compressed_directory~'/'~app.session.get('footballer_id')~'/'~photo.internalLink) }}" alt="" class="img-responsive post-image" />
                       </div>
                       <!--Popup-->
                       <div class="modal fade" id="modal-{{ photo.id }}" tabindex="-{{ photo.id }}" role="dialog" aria-hidden="true">
@@ -93,7 +93,7 @@
                                     <p class="text-muted">{{ photo.description }}</p>
                                   </div>
                                 </div>
-                                <img src="{{ asset(footballer_photo_directory~photo.internalLink) }}" alt="post-image" class="img-responsive post-image" />
+                                <img src="{{ asset(footballer_photo_directory~'/'~app.session.get('footballer_id')~'/'~photo.internalLink) }}" alt="post-image" class="img-responsive post-image" />
                               </div>
                             </div>
                           </div>

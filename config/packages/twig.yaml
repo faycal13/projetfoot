@@ -5,4 +5,5 @@ twig:
         footballer_photo_directory: 'img/footballer/photo/'
         footballer_photo_compressed_directory: 'img/footballer/photo-compressed/'
         footballer_photo_profil_directory: 'img/footballer/photo-profil/'
-        footballer_video_directory: 'video'
+        footballer_photo_cover_directory: 'img/footballer/photo-cover/'
+        footballer_video_directory: 'video/footballer/'

@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\Footballer;
 use App\Entity\FootballerCarrer;
 use App\Entity\FootballerPhoto;
+use App\Entity\FootballerVideo;
 use App\Entity\FriendsList;
 use App\Entity\User;
+use App\Form\CoverPhotoFootballerType;
 use App\Form\FootballerCareerType;
 use App\Form\FootballerPhotoType;
 use App\Form\FootballerType;
+use App\Form\FootballerVideoType;
 use App\Form\ProfilPhotoFootballerType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -44,9 +47,11 @@ class FootballerController extends AbstractController
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
         $form = $this->createForm(ProfilPhotoFootballerType::Class, $footballer);
+        $form_cover = $this->createForm(CoverPhotoFootballerType::Class, $footballer);
 
         return $this->render('socialNetwork/profil/profil-photo.html.twig',[
-            'form_profil_photo' => $form->createView()
+            'form_profil_photo' => $form->createView(),
+            'form_cover_photo' => $form_cover->createView(),
         ]);
     }
 
@@ -65,6 +70,8 @@ class FootballerController extends AbstractController
 
             $photo = $form->get('profilPhoto')->getData();
             if ($photo) {
+                $filesystem = new Filesystem();
+                $filesystem->remove($this->getParameter('footballer_photo_profil_directory'). '/' .$footballer->getId());
                 $newFilename = $this->uploadFile(
                     $footballer, $photo, 'footballer_photo_profil_directory', 200
                 );
@@ -81,6 +88,42 @@ class FootballerController extends AbstractController
 
         return $this->render('socialNetwork/profil/profil-photo.html.twig',[
             'form_profil_photo' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/cover-photo-submission", name="photo_cover_submission")
+     */
+    public function footballerCoverPhotoSubmission(Request $request, EntityManagerInterface $manager)
+    {
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        $form = $this->createForm(CoverPhotoFootballerType::Class, $footballer);
+        $form->handleRequest($request);
+        $session = $this->get('session');
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $photo = $form->get('coverPhoto')->getData();
+            if ($photo) {
+                $filesystem = new Filesystem();
+                $filesystem->remove($this->getParameter('footballer_photo_cover_directory'). '/' .$footballer->getId());
+                $newFilename = $this->uploadFile(
+                    $footballer, $photo, 'footballer_photo_cover_directory', 1030
+                );
+
+                $footballer->setCoverPhoto($newFilename);
+                $manager->persist($footballer);
+                $manager->flush();
+                $session->set('footballer_cover_photo',$footballer->getCoverPhoto());
+                $this->addFlash('success', 'La photo de couverture a été mise à jour');
+                return $this->redirectToRoute('footballer_editProfil');
+            }
+        }
+
+
+        return $this->render('socialNetwork/profil/profil-photo.html.twig',[
+            'form_cover_photo' => $form->createView()
         ]);
     }
 
@@ -288,7 +331,7 @@ class FootballerController extends AbstractController
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
-        $friends = $friends_list_repo->findByFootballer($footballer);
+        $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
 
         return $this->render('socialNetwork/newsfeed/friendsList.html.twig',[
             'friends' => $friends
@@ -325,15 +368,23 @@ class FootballerController extends AbstractController
      */
     public function peopleNearby(Request $request, EntityManagerInterface $manager)
     {
-        $friends_list_repo = $manager->getRepository('App:FriendsList');
-        $footballer_repo = $manager->getRepository('App:Footballer');
-        $user = $this->getUser()->getUser();
-        $footballer = $footballer_repo->findOneByUser($user);
-        $friends = $friends_list_repo->findByFootballer($footballer);
+        $footballeur_list_repo = $manager->getRepository('App:Footballer');
+        $footballeur = $footballeur_list_repo->findAll();
 
         return $this->render('socialNetwork/newsfeed/friendsNearbyList.html.twig',[
-            'friends' => $friends
+            'friends' => $footballeur
         ]);
+    }
+
+    /**
+     * @Route("/remove-friend/{id}", name="removefriend")
+     */
+    public function removeFriend(FriendsList $friend, Request $request, EntityManagerInterface $manager)
+    {
+        $manager->remove($friend);
+        $manager->flush();
+
+        return $this->redirectToRoute('footballer_myfriends');
     }
 
     /**
@@ -351,6 +402,7 @@ class FootballerController extends AbstractController
         $friend->setFootballer($footballer_current);
         $friend->setFriend($footballer_friend);
         $friend->setCreationDate((new \DateTime('now')));
+        $friend->setAccept(0);
         $manager->persist($friend);
         $manager->flush();
 
@@ -358,11 +410,50 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/video", name="video")
+     * @Route("/add-friend-after-waiting-submission", name="add_friend_after_waiting_submission")
      */
-    public function myvideo()
+    public function addFriendAfterWaitingSubmission(Request $request, EntityManagerInterface $manager)
     {
-        return $this->render('socialNetwork/newsfeed/newsfeed-videos.html.twig');
+        $id = $request->request->get('id');
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $friend = $friends_list_repo->findOneById($id);
+
+        $friend->setAccept(1);
+        $manager->persist($friend);
+        $manager->flush();
+
+        return new JsonResponse(['result' => true]);
+    }
+
+    /**
+     * @Route("/remove-friend-after-waiting-submission", name="remove_friend_after_waiting_submission")
+     */
+    public function removeFriendAfterWaitingSubmission(Request $request, EntityManagerInterface $manager)
+    {
+        $id = $request->request->get('id');
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $friend = $friends_list_repo->findOneById($id);
+
+        $manager->remove($friend);
+        $manager->flush();
+
+        return new JsonResponse(['result' => true]);
+    }
+
+    /**
+     * @Route("/waiting-friend", name="waitingFriend")
+     */
+    public function peopleNearbyWaiting(Request $request, EntityManagerInterface $manager)
+    {
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        $friends = $friends_list_repo->findBy(array('friend' => $footballer, 'accept' => 0));
+
+        return $this->render('socialNetwork/newsfeed/friendsNearbyWaitingList.html.twig',[
+            'friends' => $friends
+        ]);
     }
 
     /**
@@ -409,13 +500,16 @@ class FootballerController extends AbstractController
     /**
      * @Route("/photo-delete/{id}", name="photoDelete")
      */
-    public function photoCareerDelete(FootballerPhoto $footballer_photo, Request $request, EntityManagerInterface $manager)
+    public function photoDelete(FootballerPhoto $footballer_photo, Request $request, EntityManagerInterface $manager)
     {
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
 
         if($footballer_photo->getFootballer()->getId() == $footballer->getId()){
+            $filesystem = new Filesystem();
+            $filesystem->remove($this->getParameter('footballer_photo_directory'). '/' .$footballer->getId(). '/'. $footballer_photo->getInternalLink());
+            $filesystem->remove($this->getParameter('footballer_photo_compressed_directory'). '/' .$footballer->getId(). '/'. $footballer_photo->getInternalLink());
             $manager->remove($footballer_photo);
             $manager->flush();
             $this->addFlash('success', 'La photo a été supprimé !');
@@ -424,6 +518,79 @@ class FootballerController extends AbstractController
         }
 
         return $this->redirectToRoute('footballer_picture');
+    }
+
+    /**
+     * @Route("/video-delete/{id}", name="videoDelete")
+     */
+    public function videoDelete(FootballerVideo $footballer_video, Request $request, EntityManagerInterface $manager)
+    {
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+
+        if($footballer_video->getFootballer()->getId() == $footballer->getId()){
+            $filesystem = new Filesystem();
+            $filesystem->remove($this->getParameter('footballer_video_directory'). '/' .$footballer->getId(). '/'. $footballer_video->getInternalLink());
+            $manager->remove($footballer_video);
+            $manager->flush();
+            $this->addFlash('success', 'La video a été supprimé !');
+        }else{
+            $this->addFlash('error', 'Une erreur est survenue !');
+        }
+
+        return $this->redirectToRoute('footballer_video');
+    }
+
+    /**
+     * @Route("/video", name="video")
+     */
+    public function myVideos (Request $request, EntityManagerInterface $manager)
+    {
+        $videos_repo = $manager->getRepository('App:FootballerVideo');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        $videos = $videos_repo->findByFootballer($footballer);
+        foreach ($videos as $video) {
+            if(!is_null($video->getExternalLink())){
+                $video->setExternalLink($this->convertYoutube($video->getExternalLink()));
+            }
+        }
+
+        $footballer_video = new FootballerVideo();
+
+        $form = $this->createForm(FootballerVideoType::Class, $footballer_video);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $video = $form->get('internalLink')->getData();
+            if ($video || $form->get('externalLink')) {
+                if(!is_null($video)){
+                    $newFilename = $this->uploadFile(
+                        $footballer, $video, 'footballer_video_directory', 0
+                    );
+                }else{
+                    $newFilename = null;
+                }
+
+                $footballer_video->setFootballer($footballer);
+                $footballer_video->setInternalLink($newFilename);
+                $footballer_video->setCreationDate((new \DateTime()));
+                $manager->persist($footballer_video);
+                $manager->flush();
+                $this->addFlash('success', 'La video a été ajouté');
+                return $this->redirectToRoute('footballer_video');
+            }else{
+                $this->addFlash('error', 'Une erreur est survenue');
+            }
+
+        }
+
+        return $this->render('socialNetwork/newsfeed/footballer-video.html.twig',[
+            'videos' => $videos,
+            'form' => $form->createView()
+        ]);
     }
 
     private function uploadFile($footballer, $photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){
@@ -439,27 +606,30 @@ class FootballerController extends AbstractController
                 $newFilename
             );
 
-            $manager_picture = Image::make($this->getParameter($photo_directory) . '/' .$footballer->getId(). '/' .$newFilename);
-// to finally create image instances
-            $manager_picture->resize($width, null, function ($constraint) {
-                $constraint->aspectRatio();
-            });
-
-            $manager_picture->save($this->getParameter($photo_directory) . '/' .$footballer->getId(). '/' . $newFilename);
-
-            if(!is_null($photo_compress_directory)){
-                $filesystem->copy(
-                    $this->getParameter($photo_directory).'/'.$newFilename,
-                    $this->getParameter($photo_compress_directory).'/'.$newFilename
-                );
-                //http://image.intervention.io/api/resize
-                $manager_picture2 = Image::make($this->getParameter($photo_compress_directory) . '/' .$footballer->getId(). '/' . $newFilename);
-                $manager_picture2->resize($width_compressed, null, function ($constraint) {
+            if($width > 0){
+                $manager_picture = Image::make($this->getParameter($photo_directory) . '/' .$footballer->getId(). '/' .$newFilename);
+                // to finally create image instances
+                $manager_picture->resize($width, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
 
-                $manager_picture2->save($this->getParameter($photo_compress_directory) . '/' .$footballer->getId(). '/' . $newFilename);
+                $manager_picture->save($this->getParameter($photo_directory) . '/' .$footballer->getId(). '/' . $newFilename);
+
+                if(!is_null($photo_compress_directory)){
+                    $filesystem->copy(
+                        $this->getParameter($photo_directory).'/' .$footballer->getId(). '/'.$newFilename,
+                        $this->getParameter($photo_compress_directory).'/' .$footballer->getId(). '/'.$newFilename
+                    );
+                    //http://image.intervention.io/api/resize
+                    $manager_picture2 = Image::make($this->getParameter($photo_compress_directory) . '/' .$footballer->getId(). '/' . $newFilename);
+                    $manager_picture2->resize($width_compressed, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $manager_picture2->save($this->getParameter($photo_compress_directory) . '/' .$footballer->getId(). '/' . $newFilename);
+                }
             }
+
 
             return $newFilename;
 
@@ -467,6 +637,14 @@ class FootballerController extends AbstractController
         } catch (FileException $e) {
             // ... handle exception if something happens during file upload
         }
+    }
+
+    function convertYoutube($string) {
+        return preg_replace(
+            "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
+            "www.youtube.com/embed/$2",
+            $string
+        );
     }
 
     public function t($test){

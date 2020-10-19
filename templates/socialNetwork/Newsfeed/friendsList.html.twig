@@ -20,7 +20,11 @@
             ================================================= -->
             <div class="edit-career-container">
               <div class="block-title">
+
                 <h4 class="grey">Mes amis</h4>
+                <a class="btn btn-danger" href="{{ path('footballer_addfriend') }}" style="margin-bottom: 10px">Ajouter des amis</a>
+                <a class="btn btn-danger" href="{{ path('footballer_waitingFriend') }}" style="margin-bottom: 10px">Mes demandes d'amis</a>
+
                 {% for message in app.flashes('success') %}
                   <div class="alert alert-success">
                     {{ message }}
@@ -36,6 +40,7 @@
                 {% for friend in friends %}
                 <div class="col-md-6 col-sm-6">
                   <div class="friend-card">
+                    <i class="fa fa-close" data-toggle="modal" style="cursor: pointer; color: red" data-target="#remove-{{ friend.id }}"></i>
                     <div class="card-info">
                       <img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
                       <div class="friend-info">
@@ -45,6 +50,26 @@
                     </div>
                   </div>
                 </div>
+                  <!-- Modal -->
+                  <div class="modal fade" id="remove-{{ friend.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Supprimer un ami</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Attention, la suppression est irréversible !
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                          <a type="button" href="{{ path('footballer_removefriend',{'id':friend.id}) }}" class="btn btn-primary">Supprimer</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 {% endfor %}
               </div>
             </div>

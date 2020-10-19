@@ -87,11 +87,14 @@ class SecurityController extends AbstractController
             //Enregistrement de variable en session
             $session = $this->get('session');
             $footballer_repo = $manager->getRepository('App:Footballer');
+            $friends_list_repo = $manager->getRepository('App:Friendslist');
             $user = $this->getUser()->getUser();
             $footballer = $footballer_repo->findOneByUser($user);
             $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
+            $session->set('footballer_cover_photo',$footballer->getCoverPhoto());
+            $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer)));
             $session->set('footballer_id',$footballer->getId());
-            return $this->redirectToRoute('footballer_profil');
+            return $this->redirectToRoute('footballer_editProfil');
         }
         if($role == 'ROLE_AGENT') return $this->redirectToRoute('agent_home');
 

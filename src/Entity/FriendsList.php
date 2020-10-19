@@ -34,6 +34,11 @@ class FriendsList
      */
     private $creationDate;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $accept;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,6 +76,18 @@ class FriendsList
     public function setCreationDate(\DateTimeInterface $creationDate): self
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getAccept(): ?bool
+    {
+        return $this->accept;
+    }
+
+    public function setAccept(bool $accept): self
+    {
+        $this->accept = $accept;
 
         return $this;
     }

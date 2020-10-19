@@ -221,6 +221,8 @@ img.profile-photo-xs{
 
 .img-wrapper{
   position: relative;
+    width: 320px;
+    height: 200px;
 }
 
 .img-wrapper::after{
@@ -264,8 +266,36 @@ img.profile-photo-xs{
     background-color: rgba(0,0,0, 0.4);
 }
 
+.img-wrapper-cover{
+    position: relative;
+    background-color: white;
+    border: 1px solid;
+}
+
+.img-wrapper-cover::after{
+    content: "";
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: all 1s ease 0s;
+}
+.img-wrapper-cover:hover:after{
+    background-color: rgba(0,0,0, 0.4);
+}
+
 input#profil_photo_footballer_profilPhoto {
     display: none;
+}
+
+input#cover_photo_footballer_coverPhoto {
+    display: none;
+}
+
+.profile-info form{
+    height: 0;
 }
 
 .video-wrapper {
@@ -2693,6 +2723,10 @@ ul.contact li i{
 
 .edit-career-container table tr td{
     padding: 10px;
+}
+
+#block-youtube{
+    display: none;
 }
 
 
