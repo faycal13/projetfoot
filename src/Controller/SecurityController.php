@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Account;
 use App\Form\ProfilPhotoFootballerType;
 use App\Form\SignupType;
+use App\Service\CookieGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,22 +82,31 @@ class SecurityController extends AbstractController
      */
     public function redirection(EntityManagerInterface $manager){
 
-        $role = $this->getUser()->getRoles()[0];
-        if($role == 'ROLE_ADMIN') return $this->redirectToRoute('admin_home');
-        if($role == 'ROLE_USER') {
-            //Enregistrement de variable en session
-            $session = $this->get('session');
-            $footballer_repo = $manager->getRepository('App:Footballer');
-            $friends_list_repo = $manager->getRepository('App:Friendslist');
-            $user = $this->getUser()->getUser();
-            $footballer = $footballer_repo->findOneByUser($user);
-            $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
-            $session->set('footballer_cover_photo',$footballer->getCoverPhoto());
-            $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer)));
-            $session->set('footballer_id',$footballer->getId());
-            return $this->redirectToRoute('footballer_editProfil');
+        if(!is_null($this->getUser())){
+            $role = $this->getUser()->getRoles()[0];
+            if($role == 'ROLE_ADMIN') return $this->redirectToRoute('admin_home');
+            if($role == 'ROLE_USER') {
+                //Enregistrement de variable en session
+                $session = $this->get('session');
+                $footballer_repo = $manager->getRepository('App:Footballer');
+                $friends_list_repo = $manager->getRepository('App:Friendslist');
+                $user = $this->getUser()->getUser();
+                $footballer = $footballer_repo->findOneByUser($user);
+                $response = $this->redirectToRoute('footballer_edit_profil');
+                if(!is_null($footballer)){
+                    $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
+                    $session->set('footballer_cover_photo',$footballer->getCoverPhoto());
+                    $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer)));
+                    $session->set('footballer_id',$footballer->getId());
+                }
+
+                return $response;
+            }
+            if($role == 'ROLE_AGENT') return $this->redirectToRoute('agent_home');
+        }else{
+            return $this->redirectToRoute('logout');
         }
-        if($role == 'ROLE_AGENT') return $this->redirectToRoute('agent_home');
+
 
     }
 

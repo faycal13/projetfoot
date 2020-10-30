@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset("socialNetwork/css/style.css") }}" />
     <link rel="stylesheet" href="{{ asset("socialNetwork/css/ionicons.min.css") }}" />
     <link rel="stylesheet" href= "{{ asset("socialNetwork/css/font-awesome.min.css") }}"/>
+    {% block css %}{% endblock %}
 
     <!--Google Font-->
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
@@ -22,13 +23,24 @@
     <link rel="shortcut icon" type="image/png" href="images/fav.png"/>
 </head>
 <body>
+{{ render(controller(
+    'App\\Controller\\FootballerController::formUser'
+)) }}
 
 <!--preloader-->
 {#<div id="spinner-wrapper">#}
 {#    <div class="spinner"></div>#}
 {#</div>#}
-{% include ('socialNetwork/inc/header.html.twig') %}
+{% block header %}
+    {% include ('socialNetwork/inc/header.html.twig') %}
+{% endblock %}
 {% block body %}
+{% endblock %}
+
+{% block popupfriendsonline %}
+    <div id="popupfriendsonline">
+
+    </div>
 {% endblock %}
 
 {% block footer %}
@@ -63,6 +75,18 @@
             $('form[name=cover_photo_footballer]').submit();
         })
 
+        //REQUETE AJAX POUR RECUPERER LES AMIS CONNECTE
+        $.ajax({
+            url : "{{ path('footballer_friends_online') }}",
+            type : 'POST',
+            success : function (serverResponse) {
+                var results = Object.values(serverResponse)[0];
+                $('#popupfriendsonline').append("<div id='call-us-cta' class='animated fadeInUp'><div class='title'>Amis</div><div id='block-online-footballer'></div></div>");
+                for (var i = 0; i < results.length; i++) {
+                    $('#block-online-footballer').append("<div><span>"+results[i]['nom-prenom']+"</span><img src='"+results[i]['photo']+"' alt=''> </div>");
+                }
+            }
+        })
     })
 </script>
 {% block javascripts %}{% endblock %}

@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Account;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -34,9 +37,10 @@ class UserType extends AbstractType
                 'expanded' => true,
                 'required' => true,
             ))
-            ->add('language', TextType::class, [
-                'required' => true,
-            ])
+            ->add('account',AccountType::class, array(
+                'label' => ' ',
+                'required' => false,
+            ));
         ;
     }
 

@@ -43,11 +43,11 @@
                   <label>Date de naissance</label>
                   {{ form_row(form.dateOfBirth, {'label': false,'attr': {'placeholder': 'Date de naissance', 'class': ''}}) }}
 
+                  <label>Téléphone</label>
+                  {{ form_row(form.account.phone, {'label': false,'attr': {'placeholder': 'Téléphone', 'class': ''}}) }}
+
                   <label>Sexe</label>
                   {{ form_row(form.sexe, {'label': false,'attr': {'placeholder': 'Sexe', 'class': ''}}) }}
-
-                  <label>Langage</label>
-                  {{ form_row(form.language, {'label': false,'attr': {'placeholder': 'Français, Anglais', 'class': ''}}) }}
 
                 <button class="btn btn-primary">Enregistrer</button>
                 {{ form_end(form) }}

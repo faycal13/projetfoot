@@ -1,0 +1,39 @@
+{% if app.user.user is null %}
+<div class="edit-profile-container-modal">
+    <div class="block-title">
+        <h4 class="grey"><i class="icon ion-android-checkmark-circle"></i>Informations personnelles</h4>
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+    <div class="edit-block">
+        {{ form_start(form, {'attr': {'action': path('footballer_form_user_submission' )} }) }}
+        <div class="row">
+            <label>Nom</label>
+            {{ form_row(form.name, {'label': false,'attr': {'placeholder': 'Nom', 'class': ''}}) }}
+
+            <label>Prénom</label>
+            {{ form_row(form.firstName, {'label': false,'attr': {'placeholder': 'Prénom', 'class': ''}}) }}
+
+            <label>Date de naissance</label>
+            {{ form_row(form.dateOfBirth, {'label': false,'attr': {'placeholder': 'Date de naissance', 'class': ''}}) }}
+
+            <label>Téléphone</label>
+            {{ form_row(form.account.phone, {'label': false,'attr': {'placeholder': 'Téléphone', 'class': ''}}) }}
+
+            <label>Sexe</label>
+            {{ form_row(form.sexe, {'label': false,'attr': {'placeholder': 'Sexe', 'class': ''}}) }}
+
+            <button class="btn btn-primary">Enregistrer</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -6,4 +6,6 @@ twig:
         footballer_photo_compressed_directory: 'img/footballer/photo-compressed/'
         footballer_photo_profil_directory: 'img/footballer/photo-profil/'
         footballer_photo_cover_directory: 'img/footballer/photo-cover/'
+        footballer_chatroom_directory: 'img/footballer/chatroom/'
         footballer_video_directory: 'video/footballer/'
+        mercure_publish_url: '%env(MERCURE_PUBLISH_URL)%'

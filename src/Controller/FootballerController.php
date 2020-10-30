@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\ChatroomList;
+use App\Entity\ChatroomMessage;
 use App\Entity\Footballer;
 use App\Entity\FootballerCarrer;
 use App\Entity\FootballerPhoto;
@@ -15,11 +17,16 @@ use App\Form\FootballerType;
 use App\Form\FootballerVideoType;
 use App\Form\ProfilPhotoFootballerType;
 use App\Form\UserType;
+use App\Service\CookieGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mercure\Debug\TraceablePublisher;
+use Symfony\Component\Mercure\Publisher;
+use Symfony\Component\Mercure\PublisherInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -36,6 +43,39 @@ class FootballerController extends AbstractController
         return $this->render('footballer/index.html.twig', [
             'controller_name' => 'FootballerController',
         ]);
+    }
+
+    /**
+     * @Route("/form-user", name="form_user")
+     */
+    public function formUser(Request $request, EntityManagerInterface $manager)
+    {
+        $user_repo = $manager->getRepository('App:User');
+        $user = new User();
+        $form = $this->createForm(UserType::Class, $user);
+        return $this->render('socialNetwork/profil/form-user.html.twig',[
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/form-user-submission", name="form_user_submission")
+     */
+    public function formUserSubmission(Request $request, EntityManagerInterface $manager)
+    {
+        $user_repo = $manager->getRepository('App:User');
+        $user = new User();
+        $form = $this->createForm(UserType::Class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $today = new \DateTime();
+            $user->setAccount($this->getUser());
+            $user->setLastModify($today);
+            $manager->persist($user);
+            $manager->flush();
+            $this->addFlash('success', 'Modification effectuée !');
+        }
+        return $this->redirectToRoute('footballer_edit_profil');
     }
 
     /**
@@ -63,6 +103,10 @@ class FootballerController extends AbstractController
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
+        if(is_null($footballer)){
+            $footballer = new Footballer();
+            $footballer->setUser($user);
+        }
         $form = $this->createForm(ProfilPhotoFootballerType::Class, $footballer);
         $form->handleRequest($request);
         $session = $this->get('session');
@@ -71,9 +115,8 @@ class FootballerController extends AbstractController
             $photo = $form->get('profilPhoto')->getData();
             if ($photo) {
                 $filesystem = new Filesystem();
-                $filesystem->remove($this->getParameter('footballer_photo_profil_directory'). '/' .$footballer->getId());
-                $newFilename = $this->uploadFile(
-                    $footballer, $photo, 'footballer_photo_profil_directory', 200
+                $filesystem->remove($this->getParameter('footballer_photo_profil_directory'). '/' .$this->getUser()->getId());
+                $newFilename = $this->uploadFile($photo, 'footballer_photo_profil_directory', 200
                 );
 
                 $footballer->setProfilPhoto($newFilename);
@@ -81,7 +124,7 @@ class FootballerController extends AbstractController
                 $manager->flush();
                 $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
                 $this->addFlash('success', 'La photo de profil a été mise à jour');
-                return $this->redirectToRoute('footballer_editProfil');
+                return $this->redirectToRoute('footballer_edit_profil');
             }
         }
 
@@ -107,9 +150,8 @@ class FootballerController extends AbstractController
             $photo = $form->get('coverPhoto')->getData();
             if ($photo) {
                 $filesystem = new Filesystem();
-                $filesystem->remove($this->getParameter('footballer_photo_cover_directory'). '/' .$footballer->getId());
-                $newFilename = $this->uploadFile(
-                    $footballer, $photo, 'footballer_photo_cover_directory', 1030
+                $filesystem->remove($this->getParameter('footballer_photo_cover_directory'). '/' .$this->getUser()->getId());
+                $newFilename = $this->uploadFile($photo, 'footballer_photo_cover_directory', 1030
                 );
 
                 $footballer->setCoverPhoto($newFilename);
@@ -117,7 +159,7 @@ class FootballerController extends AbstractController
                 $manager->flush();
                 $session->set('footballer_cover_photo',$footballer->getCoverPhoto());
                 $this->addFlash('success', 'La photo de couverture a été mise à jour');
-                return $this->redirectToRoute('footballer_editProfil');
+                return $this->redirectToRoute('footballer_edit_profil');
             }
         }
 
@@ -136,9 +178,9 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/edit-profil", name="editProfil")
+     * @Route("/edit-profil", name="edit_profil")
      */
-    public function editProfil(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
+    public function editProfil(Request $request, EntityManagerInterface $manager, CookieGenerator $cookie)
     {
         $user_repo = $manager->getRepository('App:User');
         $user = $user_repo->findOneByAccount($this->getUser());
@@ -156,9 +198,13 @@ class FootballerController extends AbstractController
             $this->addFlash('success', 'Modification effectuée !');
 
         }
-        return $this->render('socialNetwork/profil/edit-profile-basic.html.twig',[
+        $response = $this->render('socialNetwork/profil/edit-profile-basic.html.twig',[
             'form' => $form->createView()
         ]);
+
+        $response->headers->set('set-cookie',$cookie->generate($this->getUser()));
+
+        return $response;
     }
 
     /**
@@ -170,7 +216,7 @@ class FootballerController extends AbstractController
         $user = $this->getUser()->getUser();
         if(is_null($user)){
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
-            return $this->redirectToRoute('footballer_editProfil');
+            return $this->redirectToRoute('footballer_edit_profil');
         }
         $footballer = $footballer_repo->findOneByUser($this->getUser()->getUser());
         if(is_null($footballer)){
@@ -200,7 +246,7 @@ class FootballerController extends AbstractController
         $user = $this->getUser()->getUser();
         if(is_null($user)){
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
-            return $this->redirectToRoute('footballer_editProfil');
+            return $this->redirectToRoute('footballer_edit_profil');
         }
         $footballer = $footballer_repo->findOneByUser($user);
         if(is_null($footballer)){
@@ -349,19 +395,216 @@ class FootballerController extends AbstractController
     /**
      * @Route("/chatroom", name="chatroom")
      */
-    public function mychatroom()
+    public function chatroom(Request $request, EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager)
     {
-        return $this->render('socialNetwork/newsfeed/chatroom.html.twig');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $chatroom_repo = $manager->getRepository('App:ChatroomList');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        $session = $this->get('session');
+        //Ajout de la personne dans la chatroom
+        if(is_null($chatroom_repo->findOneByFootballer($footballer))){
+            $chatroom_list = new ChatroomList();
+            $chatroom_list->setFootballer($footballer);
+            $chatroom_list->setCreationDate((new \DateTime()));
+            $chatroom_list->setStatut('Connecté');
+            $manager->persist($chatroom_list);
+            $manager->flush();
+
+            $path = '';
+            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+            $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$footballer->getUser()->getAccount()->getId(). '/'.$footballer->getProfilPhoto());
+            $message_final = '<li class="'.($footballer->getId() == $session->get('footballer_id') ? 'active' : '').'" data-id="'.$footballer->getId().'">
+                        <a href="" data-toggle="tab">
+                            <div class="contact" style="display: flex">
+                                <img src="'.$path.'" alt="" class="profile-photo-sm pull-left"/>
+                                <div class="msg-preview">
+                                    <h6>'.$footballer->getUser()->getFirstName().'</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </li>';
+
+            //Un troisième paramètre permettra de choisir la cible
+            $update = new Update('http://skillfoot.fr/users', json_encode([
+                'user' => $message_final
+            ]));
+            $publisher($update);
+
+        }
+
+        return $this->render('socialNetwork/newsfeed/chatroom.html.twig',[
+            'chatroom_list' => $chatroom_repo->findAll()
+        ]);
     }
 
     /**
-     * @Route("/chatroom-message", name="chatroom-message")
+     * @Route("/chatroom-all", name="chatroom_all")
      */
-    public function mymessagechatroom()
+    public function mymessagechatroom(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager)
     {
-        return $this->render('socialNetwork/newsfeed/chatroom-messages.html.twig');
+        $chatroom_repo = $manager->getRepository('App:ChatroomMessage');
+        $chatroom_list_repo = $manager->getRepository('App:ChatroomList');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        $chatroom_list = $chatroom_list_repo->findOneByFootballer($footballer);
+        $chatroom_list_all = $chatroom_list_repo->findAll();
+        $messages = $chatroom_repo->getAllMessages($chatroom_list->getCreationDate());
+        $message_final = '';
+        $users = '';
+        $session = $this->get('session');
+
+        //Récupération des messages
+        foreach ($messages as $message) {
+            $date = $message->getCreationDate();
+            $path = '';
+            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+            $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$message->getSender()->getUser()->getAccount()->getId(). '/'.$message->getSender()->getProfilPhoto());
+//            $path = $assetsManager->getUrl();
+            if(!is_null($message->getMessage())){
+                $message_final .= '<li class="left">
+                                <img src="'.$path.'" alt="" class="profile-photo-sm pull-left" />
+                                <div class="chat-item">
+                                    <div class="chat-item-header">
+                                        <h5>'.$message->getSender()->getUser()->getName().' '.$message->getSender()->getUser()->getFirstName().'</h5>
+                                        <small class="text-muted">'.$date->format('d/m/Y H:i:s').'</small>
+                                    </div>
+                                    <p>'.$message->getMessage().'</p>
+                                </div>
+                            </li>';
+            }else{
+                $path_chatroom = '';
+                if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path_chatroom = $this->getParameter('url_dev');
+                $path_chatroom .= $assetsManager->getUrl('/img/footballer/chatroom/' .$this->getUser()->getId(). '/'.$message->getInternalLink());
+                $message_final .= '<li class="left">
+                                <img src="'.$path.'" alt="" class="profile-photo-sm pull-left" />
+                                <div class="chat-item">
+                                    <div class="chat-item-header">
+                                        <h5>'.$user->getName().' '.$user->getFirstName().'</h5>
+                                        <small class="text-muted">'.$date->format('d/m/Y H:i:s').'</small>
+                                    </div>
+                                    <img src="'.$path_chatroom.'" width="300px" alt="" class="" />
+                                </div>
+                            </li>';
+            }
+
+        }
+
+        //Récupération des users
+        foreach ($chatroom_list_all as $people) {
+            $path = '';
+            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+            $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$people->getFootballer()->getUser()->getAccount()->getId(). '/'.$people->getFootballer()->getProfilPhoto());
+            $users .= '<li class="'.($people->getFootballer()->getId() == $session->get('footballer_id') ? 'active' : '').'" data-id="'.$people->getFootballer()->getId().'">
+                        <a href="" data-toggle="tab">
+                            <div class="contact" style="display: flex">
+                                <img src="'.$path.'" alt="" class="profile-photo-sm pull-left"/>
+                                <div class="msg-preview">
+                                    <h6>'.$people->getFootballer()->getUser()->getFirstName().'</h6>
+                                </div>
+                            </div>
+                        </a>
+                    </li>';
+        }
+
+        return new JsonResponse(['result' => true, 'messages' => $message_final,'users' => $users, 'count' => count($messages)]);
+
     }
 
+    /**
+     * @Route("/chatroom-message-add", name="chatroom_message_add", methods={"POST"})
+     */
+    public function chatroomMessageAdd(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager, PublisherInterface $publisher){
+        $user = $this->getUser()->getUser();
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $chatroom_repo = $manager->getRepository('App:ChatroomList');
+        $footballer = $footballer_repo->findOneByUser($user);
+        $message = strip_tags($request->request->get('message'));
+        $file = $request->files->get('image-chatroom');
+        $date = new \DateTime('now');
+        $path = '';
+        if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+        $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$this->getUser()->getId(). '/'.$footballer->getProfilPhoto());
+        if(!is_null($message) && $message != ''){
+
+            $chatroom_message = new ChatroomMessage();
+            $chatroom_message->setMessage($message);
+            $chatroom_message->setCreationDate($date);
+            $chatroom_message->setSender($footballer);
+            $chatroom_message->setChatroomPeople($chatroom_repo->findOneByFootballer($footballer));
+            $manager->persist($chatroom_message);
+            $manager->flush();
+            $string = '<li class="left">
+                                <img src="'.$path.'" alt="" class="profile-photo-sm pull-left" />
+                                <div class="chat-item">
+                                    <div class="chat-item-header">
+                                        <h5>'.$user->getName().' '.$user->getFirstName().'</h5>
+                                        <small class="text-muted">'.$date->format('d/m/Y H:i:s').'</small>
+                                    </div>
+                                    <p>'.$message.'</p>
+                                </div>
+                            </li>';
+
+            //Un troisième paramètre permettra de choisir la cible
+            $update = new Update('http://skillfoot.fr/users/chat',
+                json_encode(['message' => $string])
+            );
+            $publisher($update);
+
+            return new JsonResponse(['result' => true]);
+
+        }
+        else if(!is_null($file)){
+            $newFilename = $this->uploadFile($file, 'footballer_chatroom_directory', 300);
+            $chatroom_message = new ChatroomMessage();
+            $chatroom_message->setInternalLink($newFilename);
+            $chatroom_message->setCreationDate($date);
+            $chatroom_message->setSender($footballer);
+            $chatroom_message->setChatroomPeople($chatroom_repo->findOneByFootballer($footballer));
+            $manager->persist($chatroom_message);
+            $manager->flush();
+            $path_chatroom = '';
+            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path_chatroom = $this->getParameter('url_dev');
+            $path_chatroom .= $assetsManager->getUrl('/img/footballer/chatroom/' .$this->getUser()->getId(). '/'.$newFilename);
+            $string = '<li class="left">
+                                <img src="'.$path.'" alt="" class="profile-photo-sm pull-left" />
+                                <div class="chat-item">
+                                    <div class="chat-item-header">
+                                        <h5>'.$user->getName().' '.$user->getFirstName().'</h5>
+                                        <small class="text-muted">'.$date->format('d/m/Y H:i:s').'</small>
+                                    </div>
+                                    <img src="'.$path_chatroom.'" width="300px" alt="" class="" />
+                                </div>
+                            </li>';
+            $update = new Update('http://skillfoot.fr/users/chat',
+                json_encode(['message' => $string])
+            );
+            $publisher($update);
+            return new JsonResponse(['result' => true]);
+        }else{
+            return new JsonResponse(['result' => false]);
+        }
+    }
+
+    /**
+     * @Route("/quit-chatroom", name="quit_chatroom")
+     */
+    public function quitChatroom(Request $request, EntityManagerInterface $manager, PublisherInterface $publisher)
+    {
+        $user = $this->getUser()->getUser();
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $chatroom_repo = $manager->getRepository('App:ChatroomList');
+        $footballer = $footballer_repo->findOneByUser($user);
+        $chatroom_list = $chatroom_repo->findOneByFootballer($footballer);
+        $manager->remove($chatroom_list);
+        $manager->flush();
+        $update = new Update('http://skillfoot.fr/users/quit', json_encode([
+            'user_quit' => $footballer->getId()
+        ]));
+        $publisher($update);
+        return $this->redirectToRoute('footballer_edit_profil');
+    }
 
     /**
      * @Route("/add-friend", name="addfriend")
@@ -457,9 +700,33 @@ class FootballerController extends AbstractController
     }
 
     /**
+     * @Route("/friends-online", name="friends_online")
+     */
+    public function friendsOnline(Request $request, EntityManagerInterface $manager,\Symfony\Component\Asset\Packages $assetsManager)
+    {
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        $friends = $friends_list_repo->getFriendsOnline($footballer);
+
+        $friends_tab = [];
+
+        foreach ($friends as $key => $friend) {
+            $path = '';
+            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+            $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFriend()->getUser()->getAccount()->getId(). '/'.$friend->getFriend()->getProfilPhoto());
+            $friends_tab[$key]['nom-prenom'] = $friend->getFriend()->getUser()->getName().' '.$friend->getFriend()->getUser()->getFirstName();
+            $friends_tab[$key]['photo'] = $path;
+        }
+
+        return new JsonResponse(['friends' => $friends_tab]);
+    }
+
+    /**
      * @Route("/picture", name="picture")
      */
-    public function myPhotos (Request $request, EntityManagerInterface $manager)
+    public function myPhotos(Request $request, EntityManagerInterface $manager)
     {
         $photos_repo = $manager->getRepository('App:FootballerPhoto');
         $footballer_repo = $manager->getRepository('App:Footballer');
@@ -475,8 +742,7 @@ class FootballerController extends AbstractController
 
             $photo = $form->get('internalLink')->getData();
             if ($photo) {
-                $newFilename = $this->uploadFile(
-                    $footballer, $photo, 'footballer_photo_directory', 1500, 'footballer_photo_compressed_directory', 800
+                $newFilename = $this->uploadFile($photo, 'footballer_photo_directory', 1500, 'footballer_photo_compressed_directory', 800
                 );
                 $footballer_photo->setFootballer($footballer);
                 $footballer_photo->setInternalLink($newFilename);
@@ -545,7 +811,7 @@ class FootballerController extends AbstractController
     /**
      * @Route("/video", name="video")
      */
-    public function myVideos (Request $request, EntityManagerInterface $manager)
+    public function myVideos(Request $request, EntityManagerInterface $manager)
     {
         $videos_repo = $manager->getRepository('App:FootballerVideo');
         $footballer_repo = $manager->getRepository('App:Footballer');
@@ -567,8 +833,7 @@ class FootballerController extends AbstractController
             $video = $form->get('internalLink')->getData();
             if ($video || $form->get('externalLink')) {
                 if(!is_null($video)){
-                    $newFilename = $this->uploadFile(
-                        $footballer, $video, 'footballer_video_directory', 0
+                    $newFilename = $this->uploadFile($video, 'footballer_video_directory', 0
                     );
                 }else{
                     $newFilename = null;
@@ -593,7 +858,7 @@ class FootballerController extends AbstractController
         ]);
     }
 
-    private function uploadFile($footballer, $photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){
+    private function uploadFile($photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){
         $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
         // this is needed to safely include the file name as part of the URL
         $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
@@ -602,31 +867,31 @@ class FootballerController extends AbstractController
         try {
             $filesystem = new Filesystem();
             $photo->move(
-                $this->getParameter($photo_directory). '/' .$footballer->getId(),
+                $this->getParameter($photo_directory). '/' .$this->getUser()->getId(),
                 $newFilename
             );
 
             if($width > 0){
-                $manager_picture = Image::make($this->getParameter($photo_directory) . '/' .$footballer->getId(). '/' .$newFilename);
+                $manager_picture = Image::make($this->getParameter($photo_directory) . '/' .$this->getUser()->getId(). '/' .$newFilename);
                 // to finally create image instances
                 $manager_picture->resize($width, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
 
-                $manager_picture->save($this->getParameter($photo_directory) . '/' .$footballer->getId(). '/' . $newFilename);
+                $manager_picture->save($this->getParameter($photo_directory) . '/' .$this->getUser()->getId(). '/' . $newFilename);
 
                 if(!is_null($photo_compress_directory)){
                     $filesystem->copy(
-                        $this->getParameter($photo_directory).'/' .$footballer->getId(). '/'.$newFilename,
-                        $this->getParameter($photo_compress_directory).'/' .$footballer->getId(). '/'.$newFilename
+                        $this->getParameter($photo_directory).'/' .$this->getUser()->getId(). '/'.$newFilename,
+                        $this->getParameter($photo_compress_directory).'/' .$this->getUser()->getId(). '/'.$newFilename
                     );
                     //http://image.intervention.io/api/resize
-                    $manager_picture2 = Image::make($this->getParameter($photo_compress_directory) . '/' .$footballer->getId(). '/' . $newFilename);
+                    $manager_picture2 = Image::make($this->getParameter($photo_compress_directory) . '/' .$this->getUser()->getId(). '/' . $newFilename);
                     $manager_picture2->resize($width_compressed, null, function ($constraint) {
                         $constraint->aspectRatio();
                     });
 
-                    $manager_picture2->save($this->getParameter($photo_compress_directory) . '/' .$footballer->getId(). '/' . $newFilename);
+                    $manager_picture2->save($this->getParameter($photo_compress_directory) . '/' .$this->getUser()->getId(). '/' . $newFilename);
                 }
             }
 

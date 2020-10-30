@@ -8,7 +8,11 @@ parameters:
     footballer_photo_compressed_directory: '%kernel.project_dir%/public/img/footballer/photo-compressed'
     footballer_photo_profil_directory: '%kernel.project_dir%/public/img/footballer/photo-profil'
     footballer_photo_cover_directory: '%kernel.project_dir%/public/img/footballer/photo-cover'
+    footballer_chatroom_directory: '%kernel.project_dir%/public/img/footballer/chatroom'
     footballer_video_directory: '%kernel.project_dir%/public/video/footballer'
+
+    url_prod: 'http://skillfoot.fr/'
+    url_dev: '/projetfootdev/public/'
 
 services:
     # default configuration for services in *this* file
@@ -31,6 +35,14 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+    App\Service\JwtProvider:
+        arguments:
+            $secret: '%env(MERCURE_JWT_KEY)%'
+
+    App\Service\CookieGenerator:
+        arguments:
+            $secret: '%env(MERCURE_JWT_KEY)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -28,8 +28,13 @@ security:
         ROLE_ADMIN: [ROLE_USER, ROLE_AGENT]
 
     access_control:
-        - { path: ^/connexion, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
-        - { path: ^/agent, role: ROLE_AGENT, requires_channel: https }
-        - { path: ^/footballer, role: ROLE_USER, requires_channel: https }
-        - { path: ^/admin, role: ROLE_ADMIN, requires_channel: https }
-        - { path: '^/', roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+#        - { path: ^/connexion, role: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+#        - { path: ^/agent, role: ROLE_AGENT, requires_channel: https }
+#        - { path: ^/footballer, role: ROLE_USER, requires_channel: https }
+#        - { path: ^/admin, role: ROLE_ADMIN, requires_channel: https }
+#        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
+        - { path: ^/connexion, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/agent, role: ROLE_AGENT }
+        - { path: ^/footballer, role: ROLE_USER }
+        - { path: ^/admin, role: ROLE_ADMIN }
+        - { path: ^/, roles: IS_AUTHENTICATED_ANONYMOUSLY }

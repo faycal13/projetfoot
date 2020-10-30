@@ -19,22 +19,22 @@ class FriendsListRepository extends ServiceEntityRepository
         parent::__construct($registry, FriendsList::class);
     }
 
-    // /**
-    //  * @return FriendsList[] Returns an array of FriendsList objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return FriendsList[] Returns an array of FriendsList objects
+      */
+
+    public function getFriendsOnline($footballer)
     {
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
+            ->join('f.footballer', 'u')
+            ->andWhere('f.footballer = :footballer')
+            ->setParameter('footballer', $footballer->getId())
+            ->andWhere('f.accept = 1')
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?FriendsList

@@ -99,6 +99,11 @@ class Footballer
      */
     private $privateMessages;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $Language;
+
     public function __construct()
     {
         $this->footballerVideos = new ArrayCollection();
@@ -436,6 +441,18 @@ class Footballer
                 $privateMessage->setSender(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLanguage(): ?string
+    {
+        return $this->Language;
+    }
+
+    public function setLanguage(?string $Language): self
+    {
+        $this->Language = $Language;
 
         return $this;
     }

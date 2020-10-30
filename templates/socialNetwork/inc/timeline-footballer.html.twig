@@ -1,4 +1,4 @@
-<div class="timeline-cover" style="background: url('{{ asset(footballer_photo_cover_directory~'/'~app.session.get('footballer_id')~'/'~app.session.get('footballer_cover_photo')) }}') no-repeat;background-position: center;background-size: cover;">
+<div class="timeline-cover" style="background: url('{{ asset(footballer_photo_cover_directory~'/'~app.user.id~'/'~app.session.get('footballer_cover_photo')) }}') no-repeat;background-position: center;background-size: cover;">
     <button class="btn cover-photo-button" style="position: absolute;right: 20px;top: 20px;">Modifier ma photo de couverture</button>
 
     <!--Timeline Menu for Large Screens-->
@@ -7,7 +7,7 @@
             <div class="col-md-3">
                 <div class="profile-info">
                     <div class="img-wrapper-profil">
-                        <img src="{{ asset(footballer_photo_profil_directory~'/'~app.session.get('footballer_id')~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
                     </div>
                     {{ render(controller(
                         'App\\Controller\\FootballerController::footballerProfilPhoto'
@@ -25,7 +25,7 @@
                     <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
                     <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
                     <li style="color: white; font-weight: bold;">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</li>
-                    <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom-message')}}" target="_blank" class="btn-primary">Chatroom</a></li>
+                    <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom')}}" target="_blank" class="btn-primary">Chatroom</a></li>
                 </ul>
             </div>
         </div>
@@ -34,7 +34,7 @@
     <!--Timeline Menu for Small Screens-->
     <div class="navbar-mobile hidden-lg hidden-md">
         <div class="profile-info">
-            <img src="{{ asset(footballer_photo_profil_directory~'/'~app.session.get('footballer_id')~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+            <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
             <h4>Sarah Cruiz</h4>
             <p class="text-muted">Footballeur</p>
         </div>

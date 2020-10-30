@@ -19,22 +19,22 @@ class ChatroomMessageRepository extends ServiceEntityRepository
         parent::__construct($registry, ChatroomMessage::class);
     }
 
-    // /**
-    //  * @return ChatroomMessage[] Returns an array of ChatroomMessage objects
-    //  */
-    /*
-    public function findByExampleField($value)
+     /**
+      * @return ChatroomMessage[] Returns an array of ChatroomMessage objects
+      */
+
+    public function getAllMessages($date)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('c.creationDate > :val')
+            ->setParameter('val', $date)
+            ->orderBy('c.creationDate', 'ASC')
+            ->setMaxResults(500)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?ChatroomMessage

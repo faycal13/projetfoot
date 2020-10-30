@@ -18,7 +18,7 @@ class ChatroomMessage
     private $id;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $message;
 
@@ -32,6 +32,17 @@ class ChatroomMessage
      * @ORM\JoinColumn(nullable=false)
      */
     private $sender;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ChatroomList::class)
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    private $ChatroomPeople;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $internalLink;
 
     public function getId(): ?int
     {
@@ -70,6 +81,30 @@ class ChatroomMessage
     public function setSender(?footballer $sender): self
     {
         $this->sender = $sender;
+
+        return $this;
+    }
+
+    public function getChatroomPeople(): ?ChatroomList
+    {
+        return $this->ChatroomPeople;
+    }
+
+    public function setChatroomPeople(?ChatroomList $ChatroomPeople): self
+    {
+        $this->ChatroomPeople = $ChatroomPeople;
+
+        return $this;
+    }
+
+    public function getInternalLink(): ?string
+    {
+        return $this->internalLink;
+    }
+
+    public function setInternalLink(?string $internalLink): self
+    {
+        $this->internalLink = $internalLink;
 
         return $this;
     }

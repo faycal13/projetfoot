@@ -18,7 +18,7 @@ class ChatroomList
     private $id;
 
     /**
-     * @ORM\OneToOne(targetEntity=footballer::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=footballer::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $footballer;
