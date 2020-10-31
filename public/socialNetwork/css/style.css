@@ -2806,5 +2806,11 @@ ul.contact li i{
     margin: 0 0 0 10px;
 }
 
+#block-online-footballer > div .online-button{
+    position: absolute;
+    width: 8px !important;
+    right: -10px;
+}
+
 
 

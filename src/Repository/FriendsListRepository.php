@@ -35,6 +35,22 @@ class FriendsListRepository extends ServiceEntityRepository
         ;
     }
 
+    /**
+     * @return FriendsList[] Returns an array of FriendsList objects
+     */
+
+    public function getFriendsOnline2($footballer)
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.footballer', 'u')
+            ->andWhere('f.friend = :footballer')
+            ->setParameter('footballer', $footballer->getId())
+            ->andWhere('f.accept = 1')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?FriendsList

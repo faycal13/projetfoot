@@ -80,13 +80,81 @@
             url : "{{ path('footballer_friends_online') }}",
             type : 'POST',
             success : function (serverResponse) {
-                var results = Object.values(serverResponse)[0];
-                $('#popupfriendsonline').append("<div id='call-us-cta' class='animated fadeInUp'><div class='title'>Amis</div><div id='block-online-footballer'></div></div>");
-                for (var i = 0; i < results.length; i++) {
-                    $('#block-online-footballer').append("<div><span>"+results[i]['nom-prenom']+"</span><img src='"+results[i]['photo']+"' alt=''> </div>");
+                var results = Object.values(serverResponse);
+                var online_button = '{{ asset('socialNetwork/images/online-button.png') }}';
+                var link_add_friend = '{{ path('footballer_add_friend') }}';
+                $('#popupfriendsonline').append("<div id='call-us-cta' class='animated fadeInUp'><div class='title'>Amis</div><div id='block-online-footballer'><div class='nobody-online'></div></div></div>");
+                if(results.length == 0){
+                    $('#block-online-footballer .nobody-online').html("<span>Aucun ami n'est connecté</span></div><div><span><a href='"+link_add_friend+"'>Ajouter des amis</a></span>");
+                }else{
+                    $('.nobody-online').html("");
+                    for (var i = 0; i < results.length; i++) {
+                        $('#block-online-footballer').append("<div style='position: relative' class='friend-online' data-id='"+results[i]['id']+"'><span>"+results[i]['nom-prenom']+"</span><img src='"+results[i]['photo']+"' alt=''><img style='position: absolute' src='"+online_button+"' class='online-button' alt=''> </div>");
+                    }
                 }
+
             }
         })
+
+        //ON INITIALISE L'URL DE MERCURE
+        const url = new URL('{{ mercure_publish_url }}');
+        //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
+        url.searchParams.append('topic', 'http://skillfoot.fr/users/online/{{ app.user.user.footballer.id }}')
+        //ECOUTEUR DE LURL DE MERCURE
+        const eventSource = new EventSource(url, { withCredentials: true });
+
+        eventSource.onmessage = e => {
+            var result = JSON.parse(e.data);
+            console.log(result);
+            var online_button = '{{ asset('socialNetwork/images/online-button.png') }}';
+
+            var flag = 0;
+            $('.friend-online').each(function (e){
+                if($(this).attr('data-id') == result['id']){
+                    flag = 1;
+                }
+            })
+
+            if(flag == 0){
+                $('.nobody-online').html("");
+                $('#block-online-footballer').append("<div class='friend-online' data-id='"+result['id']+"' style='position: relative'><span>"+result['nom-prenom']+"</span><img src='"+result['photo']+"' alt=''><img style='position: absolute' src='"+online_button+"' class='online-button' alt=''> </div>");
+            }
+        }
+
+        //Fermer l'event source avant de quitter la page
+        window.addEventListener('beforeunload', function (){
+            if(eventSource != null){
+                eventSource.close()
+            }
+        })
+
+        url.searchParams.append('topic', 'http://skillfoot.fr/users/logout/{{ app.user.user.footballer.id }}')
+        //ECOUTEUR DE LURL DE MERCURE
+        const eventSource2 = new EventSource(url, { withCredentials: true });
+
+        eventSource2.onmessage = e => {
+            var result = JSON.parse(e.data);
+            var link_add_friend = '{{ path('footballer_add_friend') }}';
+
+
+            $('.friend-online').each(function (e){
+                console.log($(this).attr('data-id'));
+                if($(this).attr('data-id') == result['id']){
+                    $(this).remove()
+                }
+            })
+            if($('.friend-online').length == 0){
+                $('#block-online-footballer .nobody-online').html("<span>Aucun ami n'est connecté</span></div><div><span><a href='"+link_add_friend+"'>Ajouter des amis</a></span>");
+            }
+        }
+
+        //Fermer l'event source avant de quitter la page
+        window.addEventListener('beforeunload', function (){
+            if(eventSource2 != null){
+                eventSource2.close()
+            }
+        })
+
     })
 </script>
 {% block javascripts %}{% endblock %}

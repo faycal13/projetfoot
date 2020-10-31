@@ -34,15 +34,10 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mon profil <span><img src="images/down-arrow.png" alt="" /></span></a>
                         <ul class="dropdown-menu login">
-{#                            <li><a href="{{ path('footballer_profil') }}">Mon profil</a></li>#}
                             <li><a href="{{ path('footballer_aboutProfil') }}">Mon profil </a></li>
-{#                            <li><a href="timeline-album.html">Timeline Album</a></li>#}
-{#                            <li><a href="timeline-friends.html">Timeline Friends</a></li>#}
                             <li><a href="{{ path('footballer_edit_profil') }}">Modifier mon profil</a></li>
-{#                            <li><a href="edit-profile-work-edu.html">Edit: Work</a></li>#}
-{#                            <li><a href="{{ path('footballer_editCareer')}}">Modifier mes compétences</a></li>#}
-{#                            <li><a href="edit-profile-settings.html">Account Settings</a></li>#}
                             <li><a href="{{ path('footballer_editPassword') }}">Modifier votre mot de passe</a></li>
+                            <li><a href="{{ path('before_logout') }}">Déconnexion</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -74,6 +74,11 @@ class Account implements UserInterface
      */
     private $aroles;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $online;
+
 
     public function getId(): ?int
     {
@@ -201,6 +206,18 @@ class Account implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    public function getOnline(): ?bool
+    {
+        return $this->online;
+    }
+
+    public function setOnline(bool $online): self
+    {
+        $this->online = $online;
+
+        return $this;
     }
 
 

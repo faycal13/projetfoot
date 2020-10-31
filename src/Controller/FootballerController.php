@@ -607,7 +607,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/add-friend", name="addfriend")
+     * @Route("/add-friend", name="add_friend")
      */
     public function peopleNearby(Request $request, EntityManagerInterface $manager)
     {
@@ -709,18 +709,35 @@ class FootballerController extends AbstractController
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
         $friends = $friends_list_repo->getFriendsOnline($footballer);
+        $friends2 = $friends_list_repo->getFriendsOnline2($footballer);
 
         $friends_tab = [];
-
+        $counter = 0;
         foreach ($friends as $key => $friend) {
-            $path = '';
-            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
-            $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFriend()->getUser()->getAccount()->getId(). '/'.$friend->getFriend()->getProfilPhoto());
-            $friends_tab[$key]['nom-prenom'] = $friend->getFriend()->getUser()->getName().' '.$friend->getFriend()->getUser()->getFirstName();
-            $friends_tab[$key]['photo'] = $path;
+            if($friend->getFriend()->getUser()->getAccount()->getOnline() == 1){
+                $path = '';
+                if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+                $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFriend()->getUser()->getAccount()->getId(). '/'.$friend->getFriend()->getProfilPhoto());
+                $friends_tab[$counter]['nom-prenom'] = $friend->getFriend()->getUser()->getName().' '.$friend->getFriend()->getUser()->getFirstName();
+                $friends_tab[$counter]['photo'] = $path;
+                $friends_tab[$counter]['id'] = $friend->getFriend()->getUser()->getAccount()->getId();
+                $counter++;
+            }
         }
 
-        return new JsonResponse(['friends' => $friends_tab]);
+        foreach ($friends2 as $key => $friend2) {
+            if($friend2->getFootballer()->getUser()->getAccount()->getOnline() == 1){
+                $path = '';
+                if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+                $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend2->getFootballer()->getUser()->getAccount()->getId(). '/'.$friend2->getFootballer()->getProfilPhoto());
+                $friends_tab[$counter]['nom-prenom'] = $friend2->getFootballer()->getUser()->getName().' '.$friend2->getFootballer()->getUser()->getFirstName();
+                $friends_tab[$counter]['photo'] = $path;
+                $friends_tab[$counter]['id'] = $friend2->getFootballer()->getUser()->getAccount()->getId();
+                $counter++;
+            }
+        }
+
+        return new JsonResponse($friends_tab);
     }
 
     /**

@@ -22,7 +22,7 @@
               <div class="block-title">
 
                 <h4 class="grey">Mes amis</h4>
-                <a class="btn btn-danger" href="{{ path('footballer_addfriend') }}" style="margin-bottom: 10px">Ajouter des amis</a>
+                <a class="btn btn-danger" href="{{ path('footballer_add_friend') }}" style="margin-bottom: 10px">Ajouter des amis</a>
                 <a class="btn btn-danger" href="{{ path('footballer_waitingFriend') }}" style="margin-bottom: 10px">Mes demandes d'amis</a>
 
                 {% for message in app.flashes('success') %}

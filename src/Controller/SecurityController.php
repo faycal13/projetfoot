@@ -9,6 +9,8 @@ use App\Service\CookieGenerator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mercure\PublisherInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
@@ -80,7 +82,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/redirection", name="redirection")
      */
-    public function redirection(EntityManagerInterface $manager){
+    public function redirection(EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager){
 
         if(!is_null($this->getUser())){
             $role = $this->getUser()->getRoles()[0];
@@ -89,32 +91,98 @@ class SecurityController extends AbstractController
                 //Enregistrement de variable en session
                 $session = $this->get('session');
                 $footballer_repo = $manager->getRepository('App:Footballer');
+                $account_repo = $manager->getRepository('App:Account');
                 $friends_list_repo = $manager->getRepository('App:Friendslist');
                 $user = $this->getUser()->getUser();
+                $account = $account_repo->findOneById($this->getUser()->getId());
+                $account->setOnline(1);
+                $manager->persist($account);
+                $manager->flush();
                 $footballer = $footballer_repo->findOneByUser($user);
                 $response = $this->redirectToRoute('footballer_edit_profil');
                 if(!is_null($footballer)){
+                    $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
+                    $friends_2 = $friends_list_repo->findBy(array('friend' => $footballer, 'accept' => 1));
                     $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
                     $session->set('footballer_cover_photo',$footballer->getCoverPhoto());
                     $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer)));
                     $session->set('footballer_id',$footballer->getId());
+
+                    $friend_tab = [];
+                    //Mise en ligne du compte et affichage pour les ami qui possède
+                    foreach ($friends as $friend) {
+                        $path = '';
+                        if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+                        $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFootballer()->getUser()->getAccount()->getId(). '/'.$friend->getFootballer()->getProfilPhoto());
+                        $friend_tab['nom-prenom'] = $friend->getFootballer()->getUser()->getName().' '.$friend->getFootballer()->getUser()->getFirstName();
+                        $friend_tab['photo'] = $path;
+                        $friend_tab['id'] = $friend->getFootballer()->getUser()->getAccount()->getId();
+
+                        $update = new Update('http://skillfoot.fr/users/online/'.$friend->getFriend()->getId(), json_encode($friend_tab));
+                        $publisher($update);
+                    }
+
+                    //Mise en ligne du compte et affichage pour ceux qui l'ont comme ami
+                    foreach ($friends_2 as $friend_2) {
+                        $path = '';
+                        if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+                        $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend_2->getFriend()->getUser()->getAccount()->getId(). '/'.$friend_2->getFriend()->getProfilPhoto());
+                        $friend_tab['nom-prenom'] = $friend_2->getFriend()->getUser()->getName().' '.$friend_2->getFriend()->getUser()->getFirstName();
+                        $friend_tab['photo'] = $path;
+                        $friend_tab['id'] = $friend_2->getFriend()->getUser()->getAccount()->getId();
+                        $update = new Update('http://skillfoot.fr/users/online/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
+                        $publisher($update);
+                    }
                 }
 
                 return $response;
             }
             if($role == 'ROLE_AGENT') return $this->redirectToRoute('agent_home');
-        }else{
+        }
+        else{
             return $this->redirectToRoute('logout');
         }
+    }
 
+    /**
+     * @Route("/before-logout", name="before_logout")
+     */
+    public function beforeLogout(EntityManagerInterface $manager, PublisherInterface $publisher){
+        $friends_list_repo = $manager->getRepository('App:Friendslist');
+        $account_repo = $manager->getRepository('App:Account');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        $account = $account_repo->findOneById($this->getUser()->getId());
+        $account->setOnline(0);
+        $manager->persist($account);
+        $manager->flush();
 
+        $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
+        $friends_2 = $friends_list_repo->findBy(array('friend' => $footballer, 'accept' => 1));
+
+        $friend_tab = [];
+        //Mise en ligne du compte et affichage pour les ami qui possède
+        foreach ($friends as $friend) {
+            $friend_tab['id'] = $friend->getFootballer()->getUser()->getAccount()->getId();
+            $update = new Update('http://skillfoot.fr/users/logout/'.$friend->getFriend()->getId(), json_encode($friend_tab));
+            $publisher($update);
+        }
+
+        //Mise en ligne du compte et affichage pour ceux qui l'ont comme ami
+        foreach ($friends_2 as $friend_2) {
+            $friend_tab['id'] = $friend_2->getFriend()->getUser()->getAccount()->getId();
+            $update = new Update('http://skillfoot.fr/users/logout/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
+            $publisher($update);
+        }
+
+        return $this->redirectToRoute('logout');
     }
 
     /**
      * @Route("/logout", name="logout")
      */
     public function logout(){
-
     }
 
     public function t($test){
