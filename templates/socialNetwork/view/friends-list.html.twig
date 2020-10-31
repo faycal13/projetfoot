@@ -1,0 +1,50 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+  <div class="container">
+
+    <!-- Timeline
+    ================================================= -->
+    <div class="timeline">
+      {% include('socialNetwork/inc/view/timeline-footballer.html.twig') %}
+      <div id="page-contents">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!--Edit Profile Menu-->
+            {% include('socialNetwork/inc/view/menu-profil.html.twig') %}
+          </div>
+          <div class="col-md-7">
+
+            <!-- Edit Interests
+            ================================================= -->
+            <div class="edit-career-container">
+              <div class="block-title">
+
+                <h4 class="grey">Amis</h4>
+              </div>
+              <div class="edit-block">
+                {% for friend in friends %}
+                <div class="col-md-6 col-sm-6">
+                  <div class="friend-card">
+                    <div class="card-info">
+                      <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.user.account.id~'/'~friend.profilPhoto )}}" alt="user" class="profile-photo-lg" />
+                      <div class="friend-info">
+                        <h5><a href="" class="profile-link">{{ friend.user.name }} {{ friend.user.firstName }}</a></h5>
+                        <p>{{ friend.position }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 static">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

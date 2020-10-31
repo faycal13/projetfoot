@@ -1,0 +1,57 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+  <div class="container">
+
+    <!-- Timeline
+    ================================================= -->
+    <div class="timeline">
+      {% include('socialNetwork/inc/view/timeline-footballer.html.twig') %}
+      <div id="page-contents">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!--Edit Profile Menu-->
+            {% include('socialNetwork/inc/view/menu-profil.html.twig') %}
+          </div>
+          <div class="col-md-7">
+
+            <!-- Edit Interests
+            ================================================= -->
+            <div class="edit-career-container">
+              <div class="block-title">
+                <h4 class="grey">Ma carrière</h4>
+              </div>
+              <div class="edit-block">
+                <table style="width: 100%;">
+                  <tr>
+                    <th>Années</th>
+                    <th>Club</th>
+                    <th>Catégorie</th>
+                    <th>Poste</th>
+                    <th>Ville</th>
+                  </tr>
+                  <tbody>
+                  {% for career in careers %}
+                    <tr>
+                      <td>{{ career.startDate }}-{{ career.endDate }}</td>
+                      <td>{{ career.club }}</td>
+                      <td>{{ career.categorie }}</td>
+                      <td>{{ career.position }}</td>
+                      <td>{% if career.city is not null %}{{ career.city.name }}{% endif %}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 static">
+
+          </div>
+          <!-- Modal -->
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

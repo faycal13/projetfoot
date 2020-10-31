@@ -1,0 +1,44 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+  <div class="container">
+
+    <!-- Timeline
+    ================================================= -->
+    <div class="timeline">
+      {% include('socialNetwork/inc/view/timeline-footballer.html.twig') %}
+      <div id="page-contents">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!--Edit Profile Menu-->
+            {% include('socialNetwork/inc/view/menu-profil.html.twig') %}
+          </div>
+          <div class="col-md-7">
+
+            <!-- Edit Interests
+            ================================================= -->
+            <div class="edit-profile-container">
+              <div class="block-title">
+                <h4 class="grey">Mes informations personnelles</h4>
+              </div>
+              <div class="show-block">
+                <h3>Nom</h3>
+                <p>{{ footballer.user.name }}</p>
+                <h3>Prénom</h3>
+                <p>{{ footballer.user.firstName }}</p>
+                <h3>Date de naissance</h3>
+                <p>{{ footballer.user.dateOfBirth | date('d/m/Y') }}</p>
+                <h3>Sexe</h3>
+                <p>{% if footballer.user.sexe == 'H' %}Homme{% else %}Femme{% endif %}</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 static">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

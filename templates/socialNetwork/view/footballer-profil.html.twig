@@ -1,0 +1,82 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+  <div class="container">
+
+    <!-- Timeline
+    ================================================= -->
+    <div class="timeline">
+      {% include('socialNetwork/inc/view/timeline-footballer.html.twig') %}
+      <div id="page-contents">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!--Edit Profile Menu-->
+            {% include('socialNetwork/inc/view/menu-profil.html.twig') %}
+          </div>
+          <div class="col-md-7">
+
+            <!-- Edit Interests
+            ================================================= -->
+            <div class="edit-profile-container">
+              <div class="block-title">
+                <h4 class="grey">Mon profil de footballeur</h4>
+                {% for message in app.flashes('success') %}
+                  <div class="alert alert-success">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                  <div class="alert alert-danger">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="show-block">
+                <h3>Présentez-vous !</h3>
+                <p>{{ footballer.description }}</p>
+                <h3>Quel est votre objectif ?</h3>
+                <p>{{ footballer.goal }}</p>
+                <h3>Quel est votre poids ?</h3>
+                <p>{{ footballer.weight }}kg</p>
+                <h3>Quelle est votre taille ?</h3>
+                <p>{{ footballer.height }}cm</p>
+                <h3>Quel est votre poste ?</h3>
+                <p>{{ footballer.position }}</p>
+                <h3>Quel est votre meilleur pied ?</h3>
+                <p>{{ footballer.betterFoot }}</p>
+                {#                  {{ form_start(form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}#}
+                {#                  <div class="row">#}
+                {#                    <h2>Présentez vous !</h2>#}
+                {#                    <p>{{ footballer.description }}</p>#}
+                {#                    {{ form_row(form.description, {'label': false,'attr': {'placeholder': 'Présentez vous en quelques lignes', 'class': ''}}) }}#}
+
+                {#                    <label>Votre objectif</label>#}
+                {#                    {{ form_row(form.goal, {'label': false,'attr': {'placeholder': 'Quel est votre objectif ?', 'class': ''}}) }}#}
+
+                {#                    <label>Votre poids (en kg)</label>#}
+                {#                    {{ form_row(form.weight, { 'type':'number' },{'label': false,'attr': {'placeholder': 'Ex : 75', 'class': ''}}) }}#}
+
+                {#                    <label>Votre taille (en cm)</label>#}
+                {#                    {{ form_row(form.height, { 'type':'number' }, {'label': false,'attr': {'placeholder': 'Ex : 180', 'class': ''}}) }}#}
+
+                {#                    <label>Votre poste</label>#}
+                {#                    {{ form_row(form.position, {'label': false,'attr': {'placeholder': '', 'class': ''}}) }}#}
+
+                {#                    <label>Votre meilleur pied</label>#}
+                {#                    {{ form_row(form.betterFoot, {'label': false,'attr': {'placeholder': '', 'class': ''}}) }}#}
+
+                {#                    <button class="btn btn-primary">Enregistrer</button>#}
+                {#                  </div>#}
+                {#                  {{ form_end(form) }}#}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 static">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

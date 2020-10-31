@@ -1,0 +1,47 @@
+<div class="timeline-cover" style="background: url('{{ asset(footballer_photo_cover_directory~'/'~footballer.user.account.id~'/'~footballer.coverPhoto) }}') no-repeat;background-position: center;background-size: cover;">
+
+    <!--Timeline Menu for Large Screens-->
+    <div class="timeline-nav-bar hidden-sm hidden-xs">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="profile-info">
+                    <div class="img-wrapper-profil-view">
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.profilPhoto )}}" alt="" class="img-responsive profile-photo" />
+                    </div>
+                    {% if footballer.user is not null %}
+                        <h3>{{ footballer.user.name }} {{ footballer.user.firstName }}</h3>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <ul class="list-inline profile-menu">
+                    <li><a href="{{ path('footballer_view_picture',{id:footballer.id}) }}">Photos</a></li>
+                    <li><a href="{{ path('footballer_view_video',{id:footballer.id}) }}">Vidéos</a></li>
+                    <li><a href="{{ path('footballer_view_friends',{id:footballer.id}) }}">Amis</a></li>
+                    <li style="color: white; font-weight: bold;">{{ footballer.numberFriends }} ami{% if footballer.numberFriends > 1 %}s{% endif %}</li>
+                </ul>
+            </div>
+        </div>
+    </div><!--Timeline Menu for Large Screens End-->
+
+    <!--Timeline Menu for Small Screens-->
+    <div class="navbar-mobile hidden-lg hidden-md">
+        <div class="profile-info">
+            <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+            <h4>Sarah Cruiz</h4>
+            <p class="text-muted">Footballeur</p>
+        </div>
+        <div class="mobile-menu">
+            <ul class="list-inline">
+                <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>
+                <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
+                <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
+                <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
+                <li style="color: white; font-weight: bold;">{{ app.session.get('number_friend') }} ami{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</li>
+                <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom') }}" class="btn-primary">Chatroom</a></li>
+            </ul>
+        </div>
+    </div><!--Timeline Menu for Small Screens End-->
+
+</div>

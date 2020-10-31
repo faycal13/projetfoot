@@ -80,6 +80,11 @@ class Footballer
     private $friendsLists;
 
     /**
+     * @ORM\OneToMany(targetEntity=FriendsList::class, mappedBy="friend", orphanRemoval=true)
+     */
+    private $friendsLists2;
+
+    /**
      * @ORM\OneToMany(targetEntity=BlockFriendsList::class, mappedBy="footballer", orphanRemoval=true)
      */
     private $blockFriendsLists;
@@ -104,11 +109,14 @@ class Footballer
      */
     private $Language;
 
+    private $numberFriends;
+
     public function __construct()
     {
         $this->footballerVideos = new ArrayCollection();
         $this->footballerPhotos = new ArrayCollection();
         $this->friendsLists = new ArrayCollection();
+        $this->friendsLists2 = new ArrayCollection();
         $this->blockFriendsLists = new ArrayCollection();
         $this->footballerSkills = new ArrayCollection();
         $this->footballerCarrers = new ArrayCollection();
@@ -298,29 +306,13 @@ class Footballer
         return $this->friendsLists;
     }
 
-    public function addFriendsList(FriendsList $friendsList): self
+    /**
+     * @return Collection|FriendsList[]
+     */
+    public function getFriendsLists2(): Collection
     {
-        if (!$this->friendsLists->contains($friendsList)) {
-            $this->friendsLists[] = $friendsList;
-            $friendsList->setFootballer($this);
-        }
-
-        return $this;
+        return $this->friendsLists2;
     }
-
-    public function removeFriendsList(FriendsList $friendsList): self
-    {
-        if ($this->friendsLists->contains($friendsList)) {
-            $this->friendsLists->removeElement($friendsList);
-            // set the owning side to null (unless already changed)
-            if ($friendsList->getFootballer() === $this) {
-                $friendsList->setFootballer(null);
-            }
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|BlockFriendsList[]
      */
@@ -456,4 +448,16 @@ class Footballer
 
         return $this;
     }
+
+    public function getNumberFriends()
+    {
+        return $this->numberFriends;
+    }
+
+    public function setNumberFriends($numberFriends): void
+    {
+        $this->numberFriends = $numberFriends;
+    }
+
+
 }

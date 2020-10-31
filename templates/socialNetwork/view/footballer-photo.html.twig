@@ -1,0 +1,60 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+  <div class="container">
+    <div class="timeline">
+      {% include('socialNetwork/inc/view/timeline-footballer.html.twig') %}
+      <div id="page-contents">
+        <div class="row">
+          <div class="col-md-3">
+            {% include('socialNetwork/inc/view/menu-profil.html.twig') %}
+          </div>
+          <div class="col-md-7">
+            <div class="edit-career-container">
+              <div class="block-title">
+                <h4 class="grey">Photos</h4>
+              </div>
+              <div class="edit-block">
+                {% for photo in photos %}
+                  <div class="grid-item col-md-5 col-sm-5" style="margin: 10px">
+                    <div class="media-grid">
+                      <p><strong>{{ photo.title }}</strong></p>
+                      <p>{{ photo.description }}</p>
+                      <div class="img-wrapper" data-toggle="modal" data-target="#modal-{{ photo.id }}">
+                        <img src="{{ asset(footballer_photo_compressed_directory~'/'~footballer.user.account.id~'/'~photo.internalLink) }}" alt="" class="img-responsive post-image" />
+                      </div>
+                      <!--Popup-->
+                      <div class="modal fade" id="modal-{{ photo.id }}" tabindex="-{{ photo.id }}" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                          <div class="modal-content">
+                            <div class="post-content">
+                              <div class="post-container">
+                                <div class="post-detail">
+                                  <div class="user-info">
+                                    <h5>{{ photo.title }}</h5>
+                                    <p class="text-muted">{{ photo.description }}</p>
+                                  </div>
+                                </div>
+                                <img src="{{ asset(footballer_photo_directory~'/'~footballer.user.account.id~'/'~photo.internalLink) }}" alt="post-image" class="img-responsive post-image" />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div><!--Popup End-->
+
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 static">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block javascripts %}
+{% endblock %}

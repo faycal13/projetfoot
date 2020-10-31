@@ -266,6 +266,29 @@ img.profile-photo-xs{
     background-color: rgba(0,0,0, 0.4);
 }
 
+
+.img-wrapper-profil-view{
+    position: relative;
+    background-color: white;
+    border-radius: 50%;
+    width: 200px;
+    border: 1px solid;
+    box-shadow: 2px 0px 5px black;
+}
+
+.img-wrapper-profil-view::after{
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: all 1s ease 0s;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
 .img-wrapper-cover{
     position: relative;
     background-color: white;
@@ -2810,6 +2833,10 @@ ul.contact li i{
     position: absolute;
     width: 8px !important;
     right: -10px;
+}
+
+.show-block h3{
+    font-size: 15px;
 }
 
 
