@@ -12,7 +12,7 @@
           <div class="col-md-7">
             <div class="edit-career-container">
               <div class="block-title">
-                <h4 class="grey">Mes amis</h4>
+                <h4 class="grey">Ajouter des amis</h4>
                 {% for message in app.flashes('success') %}
                   <div class="alert alert-success">
                     {{ message }}
@@ -26,13 +26,14 @@
               </div>
               <div class="edit-block">
                 {% for friend in friends %}
+                  {% if friend.user.account.id != app.user.id %}
                   <div class="nearby-user">
                     <div class="row">
                       <div class="col-md-2 col-sm-2">
-                        <img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.user.account.id~'/'~friend.profilPhoto) }}" alt="user" class="profile-photo-lg" />
                       </div>
                       <div class="col-md-7 col-sm-7">
-                        <h5><a href="#" class="profile-link">{{ friend.user.name }} {{ friend.user.firstName }}</a></h5>
+                        <h5><a href="{{ path('footballer_view_footballer_profil',{'id':friend.id}) }}" class="profile-link">{{ friend.user.name }} {{ friend.user.firstName }}</a></h5>
                         <p>{{ friend.position }}</p>
                         <p class="text-muted">Marseille</p>
                       </div>
@@ -41,6 +42,7 @@
                       </div>
                     </div>
                   </div>
+                  {% endif %}
                 {% endfor %}
               </div>
             </div>

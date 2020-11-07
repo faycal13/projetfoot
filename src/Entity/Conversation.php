@@ -20,11 +20,6 @@ class Conversation
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $footballerList;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $datetime;
@@ -42,18 +37,6 @@ class Conversation
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFootballerList(): ?string
-    {
-        return $this->footballerList;
-    }
-
-    public function setFootballerList(string $footballerList): self
-    {
-        $this->footballerList = $footballerList;
-
-        return $this;
     }
 
     public function getDatetime(): ?\DateTimeInterface

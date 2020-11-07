@@ -51,6 +51,34 @@ class FriendsListRepository extends ServiceEntityRepository
             ;
     }
 
+    public function checkFriend($footballer_current, $footballer)
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.footballer', 'u')
+            ->andWhere('f.footballer = :footballer')
+            ->setParameter('footballer', $footballer_current->getId())
+            ->andWhere('f.friend = :friend')
+            ->setParameter('friend', $footballer->getId())
+            ->andWhere('f.accept = 1')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function checkFriend2($footballer_current, $footballer)
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.footballer', 'u')
+            ->andWhere('f.friend = :friend')
+            ->setParameter('friend', $footballer_current->getId())
+            ->andWhere('f.footballer = :footballer')
+            ->setParameter('footballer', $footballer->getId())
+            ->andWhere('f.accept = 1')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?FriendsList

@@ -29,11 +29,11 @@
                   <div class="nearby-user">
                     <div class="row">
                       <div class="col-md-2 col-sm-2">
-                        <img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.footballer.user.account.id~'/'~friend.footballer.profilPhoto) }}" alt="user" class="profile-photo-lg" />
                       </div>
                       <div class="col-md-7 col-sm-7">
-                        <h5><a href="#" class="profile-link">{{ friend.friend.user.name }} {{ friend.friend.user.firstName }}</a></h5>
-                        <p>{{ friend.friend.position }}</p>
+                        <h5><a href="#" class="profile-link">{{ friend.footballer.user.name }} {{ friend.footballer.user.firstName }}</a></h5>
+                        <p>{{ friend.footballer.position }}</p>
                         <p class="text-muted">Marseille</p>
                       </div>
                       <div class="col-md-3 col-sm-3">

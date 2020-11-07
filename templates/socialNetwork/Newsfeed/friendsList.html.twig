@@ -38,18 +38,56 @@
               </div>
               <div class="edit-block">
                 {% for friend in friends %}
-                <div class="col-md-6 col-sm-6">
-                  <div class="friend-card">
-                    <i class="fa fa-close" data-toggle="modal" style="cursor: pointer; color: red" data-target="#remove-{{ friend.id }}"></i>
-                    <div class="card-info">
-                      <img src="http://placehold.it/300x300" alt="user" class="profile-photo-lg" />
-                      <div class="friend-info">
-                        <h5><a href="timeline.html" class="profile-link">{{ friend.friend.user.name }} {{ friend.friend.user.firstName }}</a></h5>
-                        <p>{{ friend.friend.position }}</p>
+{#                  {% if friend.friend.user.account.id != app.user.id %}#}
+                    <div class="col-md-6 col-sm-6">
+                      <div class="friend-card">
+                        <i class="fa fa-close" data-toggle="modal" style="cursor: pointer; color: red" data-target="#remove-{{ friend.id }}"></i>
+                        <div class="card-info">
+                          <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.friend.user.account.id~'/'~friend.friend.profilPhoto) }}" alt="user" class="profile-photo-lg" />
+                          <div class="friend-info">
+                            <h5><a href="{{ path('footballer_view_footballer_profil',{'id':friend.friend.id}) }}" class="profile-link">{{ friend.friend.user.name }} {{ friend.friend.user.firstName }}</a></h5>
+                            <p>{{ friend.friend.position }}</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+{#                  {% endif %}#}
+                  <!-- Modal -->
+                  <div class="modal fade" id="remove-{{ friend.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Supprimer un ami</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Attention, la suppression est irréversible !
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                          <a type="button" href="{{ path('footballer_removefriend',{'id':friend.id}) }}" class="btn btn-primary">Supprimer</a>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                {% endfor %}
+                {% for friend in friends2 %}
+                  {#                  {% if friend.friend.user.account.id != app.user.id %}#}
+                  <div class="col-md-6 col-sm-6">
+                    <div class="friend-card">
+                      <i class="fa fa-close" data-toggle="modal" style="cursor: pointer; color: red" data-target="#remove-{{ friend.id }}"></i>
+                      <div class="card-info">
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.footballer.user.account.id~'/'~friend.footballer.profilPhoto) }}" alt="user" class="profile-photo-lg" />
+                        <div class="friend-info">
+                          <h5><a href="{{ path('footballer_view_footballer_profil',{'id':friend.footballer.id}) }}" class="profile-link">{{ friend.footballer.user.name }} {{ friend.footballer.user.firstName }}</a></h5>
+                          <p>{{ friend.footballer.position }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {#                  {% endif %}#}
                   <!-- Modal -->
                   <div class="modal fade" id="remove-{{ friend.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">

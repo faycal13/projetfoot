@@ -20,7 +20,7 @@
 
             <div class="col-md-9">
                 <ul class="list-inline profile-menu">
-                    <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>
+                    <li><a href="{{ path('footballer_social_network_show_conversations') }}">Mes messages</a></li>
                     <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
                     <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
                     <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
@@ -35,12 +35,12 @@
     <div class="navbar-mobile hidden-lg hidden-md">
         <div class="profile-info">
             <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
-            <h4>Sarah Cruiz</h4>
+            <h4>{{ app.user.user.name }} {{ app.user.user.firstName }}</h4>
             <p class="text-muted">Footballeur</p>
         </div>
         <div class="mobile-menu">
             <ul class="list-inline">
-                <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>
+                <li><a href="{{ path('footballer_social_network_show_conversations') }}">Mes messages</a></li>
                 <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
                 <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
                 <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>

@@ -369,22 +369,6 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/friend-list", name="myfriends")
-     */
-    public function myFriends(Request $request, EntityManagerInterface $manager)
-    {
-        $friends_list_repo = $manager->getRepository('App:FriendsList');
-        $footballer_repo = $manager->getRepository('App:Footballer');
-        $user = $this->getUser()->getUser();
-        $footballer = $footballer_repo->findOneByUser($user);
-        $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
-
-        return $this->render('socialNetwork/newsfeed/friendsList.html.twig',[
-            'friends' => $friends
-        ]);
-    }
-
-    /**
      * @Route("/message", name="message")
      */
     public function mymessage()
@@ -607,15 +591,54 @@ class FootballerController extends AbstractController
     }
 
     /**
+     * @Route("/friend-list", name="myfriends")
+     */
+    public function myFriends(Request $request, EntityManagerInterface $manager)
+    {
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballer_repo->findOneByUser($user);
+        //$friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
+        $friends = $friends_list_repo->getFriendsOnline($footballer);
+        $friends2 = $friends_list_repo->getFriendsOnline2($footballer);
+
+        $session = $this->get('session');
+        $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer)));
+
+        return $this->render('socialNetwork/newsfeed/friendsList.html.twig',[
+            'friends' => $friends,
+            'friends2' => $friends2
+        ]);
+    }
+
+    /**
      * @Route("/add-friend", name="add_friend")
      */
-    public function peopleNearby(Request $request, EntityManagerInterface $manager)
+    public function addFriend(Request $request, EntityManagerInterface $manager)
     {
-        $footballeur_list_repo = $manager->getRepository('App:Footballer');
-        $footballeur = $footballeur_list_repo->findAll();
+        $footballeur_repo = $manager->getRepository('App:Footballer');
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
+        //Mettre en place une pagination
+        $user = $this->getUser()->getUser();
+        $footballer_current = $footballeur_repo->findOneByUser($user);
+        $footballers = $footballeur_repo->findAll();
+        foreach ($footballers as $key => &$footballer) {
+            $friends = $friends_list_repo->checkFriend($footballer_current, $footballer);
+            if(!empty($friends)){
+                unset($footballers[$key]);
+            }
+            $friends = $friends_list_repo->checkFriend2($footballer_current, $footballer);
+            if(!empty($friends)){
+                unset($footballers[$key]);
+            }
+            //$friends2 = $friends_list_repo->getFriendsOnline2($footballer);
+        }
+        $session = $this->get('session');
+        $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer_current)));
 
         return $this->render('socialNetwork/newsfeed/friendsNearbyList.html.twig',[
-            'friends' => $footballeur
+            'friends' => $footballers
         ]);
     }
 
@@ -624,8 +647,15 @@ class FootballerController extends AbstractController
      */
     public function removeFriend(FriendsList $friend, Request $request, EntityManagerInterface $manager)
     {
+        $session = $this->get('session');
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $footballeur_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer_current = $footballeur_repo->findOneByUser($user);
         $manager->remove($friend);
         $manager->flush();
+
+        $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer_current)));
 
         return $this->redirectToRoute('footballer_myfriends');
     }
