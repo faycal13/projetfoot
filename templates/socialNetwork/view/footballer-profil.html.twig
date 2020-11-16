@@ -45,30 +45,6 @@
                 <p>{{ footballer.position }}</p>
                 <h3>Quel est votre meilleur pied ?</h3>
                 <p>{{ footballer.betterFoot }}</p>
-                {#                  {{ form_start(form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}#}
-                {#                  <div class="row">#}
-                {#                    <h2>Présentez vous !</h2>#}
-                {#                    <p>{{ footballer.description }}</p>#}
-                {#                    {{ form_row(form.description, {'label': false,'attr': {'placeholder': 'Présentez vous en quelques lignes', 'class': ''}}) }}#}
-
-                {#                    <label>Votre objectif</label>#}
-                {#                    {{ form_row(form.goal, {'label': false,'attr': {'placeholder': 'Quel est votre objectif ?', 'class': ''}}) }}#}
-
-                {#                    <label>Votre poids (en kg)</label>#}
-                {#                    {{ form_row(form.weight, { 'type':'number' },{'label': false,'attr': {'placeholder': 'Ex : 75', 'class': ''}}) }}#}
-
-                {#                    <label>Votre taille (en cm)</label>#}
-                {#                    {{ form_row(form.height, { 'type':'number' }, {'label': false,'attr': {'placeholder': 'Ex : 180', 'class': ''}}) }}#}
-
-                {#                    <label>Votre poste</label>#}
-                {#                    {{ form_row(form.position, {'label': false,'attr': {'placeholder': '', 'class': ''}}) }}#}
-
-                {#                    <label>Votre meilleur pied</label>#}
-                {#                    {{ form_row(form.betterFoot, {'label': false,'attr': {'placeholder': '', 'class': ''}}) }}#}
-
-                {#                    <button class="btn btn-primary">Enregistrer</button>#}
-                {#                  </div>#}
-                {#                  {{ form_end(form) }}#}
               </div>
             </div>
           </div>
@@ -79,4 +55,17 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block javascripts %}
+  <script>
+    $.ajax({
+      url : "{{ path('footballer_check_friend',{id:footballer.id}) }}",
+      type : 'POST',
+      success : function (serverResponse) {
+        if(serverResponse.result){
+          $('#add-footballer').show();
+        }
+      }
+    })
+  </script>
 {% endblock %}

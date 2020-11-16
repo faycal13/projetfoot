@@ -59,6 +59,20 @@ class ParticipantConversationRepository extends ServiceEntityRepository
             ;
     }
 
+    public function searchParticipation($footballer, $footballer_target)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.footballer = :val')
+            ->setParameter('val', $footballer->getId())
+            ->andWhere('p.participants LIKE :participant1')
+            ->setParameter('participant1', '%'.'['.$footballer->getId().']'.'%')
+            ->andWhere('p.participants LIKE :participant2')
+            ->setParameter('participant2', '%'.'['.$footballer_target->getId().']'.'%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findOneBySomeField($value): ?ParticipantConversation
     {

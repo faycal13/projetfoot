@@ -55,3 +55,17 @@
     </div>
   </div>
 {% endblock %}
+{% block javascripts %}
+  <script>
+
+    $.ajax({
+      url : "{{ path('footballer_check_friend',{id:footballer.id}) }}",
+      type : 'POST',
+      success : function (serverResponse) {
+        if(serverResponse.result){
+          $('#add-footballer').show();
+        }
+      }
+    })
+  </script>
+{% endblock %}

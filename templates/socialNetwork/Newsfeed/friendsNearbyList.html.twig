@@ -12,7 +12,7 @@
           <div class="col-md-7">
             <div class="edit-career-container">
               <div class="block-title">
-                <h4 class="grey">Ajouter des amis</h4>
+                <h4 class="grey">Recherche de footballeur</h4>
                 {% for message in app.flashes('success') %}
                   <div class="alert alert-success">
                     {{ message }}
@@ -25,20 +25,20 @@
                 {% endfor %}
               </div>
               <div class="edit-block">
-                {% for friend in friends %}
-                  {% if friend.user.account.id != app.user.id %}
+                {% for footballer in footballers %}
+                  {% if footballer.user.account.id != app.user.id %}
                   <div class="nearby-user">
                     <div class="row">
                       <div class="col-md-2 col-sm-2">
-                        <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.user.account.id~'/'~friend.profilPhoto) }}" alt="user" class="profile-photo-lg" />
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.profilPhoto) }}" alt="user" class="profile-photo-lg" />
                       </div>
                       <div class="col-md-7 col-sm-7">
-                        <h5><a href="{{ path('footballer_view_footballer_profil',{'id':friend.id}) }}" class="profile-link">{{ friend.user.name }} {{ friend.user.firstName }}</a></h5>
-                        <p>{{ friend.position }}</p>
+                        <h5><a href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}" class="profile-link">{{ footballer.user.name }} {{ footballer.user.firstName }}</a></h5>
+                        <p>{{ footballer.position }}</p>
                         <p class="text-muted">Marseille</p>
                       </div>
                       <div class="col-md-3 col-sm-3">
-                        <button class="btn btn-primary pull-right add-friend inactive" data-id="{{ friend.id }}">Ajouter</button>
+                        <button class="btn btn-primary pull-right add-friend inactive" data-id="{{ footballer.id }}">Ajouter</button>
                       </div>
                     </div>
                   </div>

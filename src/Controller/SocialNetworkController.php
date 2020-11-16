@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Conversation;
+use App\Entity\Footballer;
+use App\Entity\ParticipantConversation;
 use App\Entity\PrivateMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,12 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class SocialNetworkController extends AbstractController
 {
     /**
-     * @Route("/show-conversations", name="show_conversations")
+     * @Route("/show-conversations/{id}", name="show_conversations", defaults={"id"=0})
      */
-    public function showConversation(Request $request, EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager)
+    public function showConversation($id, Request $request, EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager)
     {
         $footballer_repo = $manager->getRepository('App:Footballer');
         $participant_conversations_repo = $manager->getRepository('App:ParticipantConversation');
+        $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
         //Récupérer de mes participations
@@ -35,14 +39,19 @@ class SocialNetworkController extends AbstractController
         }
         $participants = array_merge($participants, $other_participants);
         $conversations = [];
+
         foreach ($participants as $participant) {
             if($participant->getFootballer()->getId() != $footballer->getId()){
-                $conversations[$participant->getConversation()->getId()]['participant'] = $participant->getFootballer();
-                $conversations[$participant->getConversation()->getId()]['conversation'] = $participant->getConversation();
+                $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer, $participant->getFootballer());
+                if(is_null($blocked_list_of_footballer)){
+                    $conversations[$participant->getConversation()->getId()]['participant'] = $participant->getFootballer();
+                    $conversations[$participant->getConversation()->getId()]['conversation'] = $participant->getConversation();
+                }
             }
         }
         return $this->render('socialNetwork/newsfeed/show-conversation.html.twig',[
-            'conversations' => $conversations
+            'conversations' => $conversations,
+            'id' => $id
         ]);
     }
 
@@ -70,7 +79,8 @@ class SocialNetworkController extends AbstractController
                 $final_message[$key]['message'] = $message->getMessage();
                 $final_message[$key]['nom'] = $message->getSender()->getUser()->getName().' '.$message->getSender()->getUser()->getFirstName();
                 $final_message[$key]['position'] = ($message->getSender()->getId() == $footballer->getId() ? 'right' : 'left');
-                if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+                if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                    isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev'); $path = $this->getParameter('url_dev');
                 $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$message->getSender()->getUser()->getAccount()->getId(). '/'.$message->getSender()->getProfilPhoto());
                 $final_message[$key]['photo'] = '<img src="'.$path.'" alt="" class="profile-photo-sm pull-'.$final_message[$key]['position'].'"/>';
             }
@@ -83,19 +93,19 @@ class SocialNetworkController extends AbstractController
     /**
      * @Route("/add-message", name="add_message", methods={"POST"})
      */
-    public function chatroomMessageAdd(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager, PublisherInterface $publisher){
+    public function addMessage(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager, PublisherInterface $publisher){
         $user = $this->getUser()->getUser();
         $footballer_repo = $manager->getRepository('App:Footballer');
         $conversation_repo = $manager->getRepository('App:Conversation');
         $participant_conversations_repo = $manager->getRepository('App:ParticipantConversation');
-        $private_message_repo = $manager->getRepository('App:PrivateMessage');
         $footballer = $footballer_repo->findOneByUser($user);
         $message = strip_tags($request->request->get('message'));
         $conversation_id = strip_tags($request->request->get('conversation'));
         $file = $request->files->get('image-chatroom');
         $date = new \DateTime('now');
         $path = '';
-        if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+        if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+            isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev'); $path = $this->getParameter('url_dev');
         $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$this->getUser()->getId(). '/'.$footballer->getProfilPhoto());
         if(!is_null($message) && $message != '' && !is_null($conversation_id) && $conversation_id != ''){
             //Vérification si la conversation est bien associé au user
@@ -116,7 +126,8 @@ class SocialNetworkController extends AbstractController
                 $final_message['nom'] = $footballer->getUser()->getName().' '.$footballer->getUser()->getFirstName();
                 $final_message['position'] = 'right';
                 $final_message['conversation'] = $conversation_id;
-                if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+                if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                    isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev'); $path = $this->getParameter('url_dev');
                 $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$footballer->getUser()->getAccount()->getId(). '/'.$footballer->getProfilPhoto());
                 $final_message['photo'] = '<img src="'.$path.'" alt="" class="profile-photo-sm pull-'.$final_message['position'].'"/>';
                 $update = new Update('http://skillfoot.fr/users/private-message',
@@ -125,40 +136,87 @@ class SocialNetworkController extends AbstractController
                 $publisher($update);
                 return new JsonResponse($final_message);
             }
-
         }
-//        else if(!is_null($file)){
-//            $newFilename = $this->uploadFile($file, 'footballer_chatroom_directory', 300);
-//            $chatroom_message = new ChatroomMessage();
-//            $chatroom_message->setInternalLink($newFilename);
-//            $chatroom_message->setCreationDate($date);
-//            $chatroom_message->setSender($footballer);
-//            $chatroom_message->setChatroomPeople($chatroom_repo->findOneByFootballer($footballer));
-//            $manager->persist($chatroom_message);
-//            $manager->flush();
-//            $path_chatroom = '';
-//            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path_chatroom = $this->getParameter('url_dev');
-//            $path_chatroom .= $assetsManager->getUrl('/img/footballer/chatroom/' .$this->getUser()->getId(). '/'.$newFilename);
-//            $string = '<li class="left">
-//                                <img src="'.$path.'" alt="" class="profile-photo-sm pull-left" />
-//                                <div class="chat-item">
-//                                    <div class="chat-item-header">
-//                                        <h5>'.$user->getName().' '.$user->getFirstName().'</h5>
-//                                        <small class="text-muted">'.$date->format('d/m/Y H:i:s').'</small>
-//                                    </div>
-//                                    <img src="'.$path_chatroom.'" width="300px" alt="" class="" />
-//                                </div>
-//                            </li>';
-//            $update = new Update('http://skillfoot.fr/users/chat',
-//                json_encode(['message' => $string])
-//            );
-//            $publisher($update);
-//            return new JsonResponse(['result' => true]);
-//        }
-//        else{
-//            return new JsonResponse(['result' => false]);
-//        }
     }
+
+    /**
+     * @Route("/send-message/{id}", name="send_message", methods={"POST"})
+     */
+    public function sendMessage(Footballer $footballer_target, Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager, PublisherInterface $publisher){
+        $user = $this->getUser()->getUser();
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $conversation_repo = $manager->getRepository('App:Conversation');
+        $participant_conversations_repo = $manager->getRepository('App:ParticipantConversation');
+        $footballer = $footballer_repo->findOneByUser($user);
+        $message = strip_tags($request->request->get('message'));
+        $date = new \DateTime('now');
+        $path = '';
+        if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+            isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev'); $path = $this->getParameter('url_dev');
+        $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$this->getUser()->getId(). '/'.$footballer->getProfilPhoto());
+
+        if(!is_null($message) && $message){
+            //Vérification si la footballeur est déjà en contact le footballeur concerné
+            $participations = $participant_conversations_repo->searchParticipation($footballer, $footballer_target);
+            if(empty($participations)){
+                //CREATION D'UNE CONVERSATION
+                $conversation = new Conversation();
+                $conversation->setDatetime($date);
+                $manager->persist($conversation);
+                $manager->flush();
+                //CREATION DES PARTICIPANTS DE LA CONVERSATION
+                $participation = new ParticipantConversation();
+                $participation->setConversation($conversation);
+                $participation->setFootballer($footballer);
+                $participation->setParticipants(['['.$footballer->getId().']','['.$footballer_target->getId().']']);
+                $manager->persist($participation);
+                $manager->flush();
+
+                $participation = new ParticipantConversation();
+                $participation->setConversation($conversation);
+                $participation->setFootballer($footballer_target);
+                $participation->setParticipants(['['.$footballer->getId().']','['.$footballer_target->getId().']']);
+                $manager->persist($participation);
+                $manager->flush();
+                //AJOUT D'UN MESSAGE + REDIRECTION VERS UNE CONVERSATION EXISTANTE
+                //Ajouter un message
+                $private_message = new PrivateMessage();
+                $private_message->setMessage($message);
+                $private_message->setCreationDate($date);
+                $private_message->setConversation($conversation);
+                $private_message->setSender($footballer);
+                $manager->persist($private_message);
+                $manager->flush();
+
+            }else{
+                $final_participation = null;
+                foreach ($participations as $participation) {
+                    if(count($participation->getParticipants()) == 2){
+                        $final_participation = $participation;
+                    }
+                }
+
+                $conversation = $final_participation->getConversation();
+
+                //Ajout du message
+                $private_message = new PrivateMessage();
+                $private_message->setMessage($message);
+                $private_message->setCreationDate($date);
+                $private_message->setConversation($conversation);
+                $private_message->setSender($footballer);
+                $manager->persist($private_message);
+                $manager->flush();
+            }
+            $update = new Update('http://skillfoot.fr/users/private-message',
+                json_encode($message)
+            );
+            $publisher($update);
+
+            //redirection vers la conversation
+            return $this->redirectToRoute('footballer_social_network_show_conversations',['id' => $conversation->getId()]);
+        }
+    }
+
     public function t($test){
         dump($test);
         die();

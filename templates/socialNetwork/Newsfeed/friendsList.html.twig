@@ -22,8 +22,9 @@
               <div class="block-title">
 
                 <h4 class="grey">Mes amis</h4>
-                <a class="btn btn-danger" href="{{ path('footballer_add_friend') }}" style="margin-bottom: 10px">Ajouter des amis</a>
-                <a class="btn btn-danger" href="{{ path('footballer_waitingFriend') }}" style="margin-bottom: 10px">Mes demandes d'amis</a>
+                <a class="btn btn-danger" href="{{ path('footballer_waiting_friend') }}" style="margin-bottom: 10px">Mes demandes d'amis</a>
+                <a class="btn btn-danger" href="{{ path('footballer_blocked_friend_list') }}" style="margin-bottom: 10px">Footballeurs bloqués</a>
+
 
                 {% for message in app.flashes('success') %}
                   <div class="alert alert-success">
@@ -41,7 +42,7 @@
 {#                  {% if friend.friend.user.account.id != app.user.id %}#}
                     <div class="col-md-6 col-sm-6">
                       <div class="friend-card">
-                        <i class="fa fa-close" data-toggle="modal" style="cursor: pointer; color: red" data-target="#remove-{{ friend.id }}"></i>
+                        <i class="fa fa-close" title="Supprimer un ami" data-toggle="modal" style="cursor: pointer; color: red" data-target="#remove-{{ friend.id }}"></i>
                         <div class="card-info">
                           <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.friend.user.account.id~'/'~friend.friend.profilPhoto) }}" alt="user" class="profile-photo-lg" />
                           <div class="friend-info">

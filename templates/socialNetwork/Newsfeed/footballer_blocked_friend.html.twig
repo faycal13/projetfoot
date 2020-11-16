@@ -1,0 +1,71 @@
+{% extends 'socialNetwork/base.html.twig' %}
+{% block body %}
+
+  <div class="container">
+
+    <!-- Timeline
+    ================================================= -->
+    <div class="timeline">
+      {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
+      <div id="page-contents">
+        <div class="row">
+          <div class="col-md-3">
+
+            <!--Edit Profile Menu-->
+            {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
+          </div>
+          <div class="col-md-7">
+
+            <!-- Edit Interests
+            ================================================= -->
+            <div class="edit-career-container">
+              <div class="block-title">
+
+                <h4 class="grey">Footballeurs bloqués</h4>
+
+                {% for message in app.flashes('success') %}
+                  <div class="alert alert-success">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+                {% for message in app.flashes('error') %}
+                  <div class="alert alert-danger">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              </div>
+              <div class="edit-block">
+                {% for footballer in blocked_list %}
+                  <h5>{{ footballer.target.user.name }} {{ footballer.target.user.firstName }} <i class="fa fa-close" data-toggle="modal" style="cursor: pointer; color: red" data-target="#unblocked-{{ footballer.target.id }}"></i>
+                  </h5>
+                  <div class="modal fade" id="unblocked-{{ footballer.target.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Débloquer {{ footballer.target.user.name }} {{ footballer.target.user.firstName }}</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          Êtes-vous sur de vouloir débloquer {{ footballer.target.user.name }} {{ footballer.target.user.firstName }} ?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                          <a type="button" href="{{ path('footballer_unblocked_friend',{'id':footballer.target.id}) }}" class="btn btn-primary">Débloquer</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="col-md-2 static">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

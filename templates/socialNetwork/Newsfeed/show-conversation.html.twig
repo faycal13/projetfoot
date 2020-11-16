@@ -4,12 +4,12 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div class="chat-room">
+                    <div class="chat-room" style="display:none;">
                         <div  class="row">
                             <div class="col-md-4">
                                 <ul class="nav nav-tabs contact-list scrollbar-wrapper scrollbar-outer">
                                     {% for conversation in conversations %}
-                                        <li>
+                                        <li {% if id > 0 and conversation['conversation'].id == id %}class="active"{% endif %}>
                                             <a href="#contact-{{ conversation['conversation'].id }}" data-toggle="tab" data-conf="{{ conversation['conversation'].id }}">
                                                 <div class="contact">
                                                     <div class="msg-preview">
@@ -28,8 +28,9 @@
                                 {% if conversations is not empty %}
                                     <!--Chat Messages in Right-->
                                     <div class="tab-content chat-message scrollbar-wrapper wrapper scrollbar-outer">
-                                        <div class="tab-pane active" id="contact-1"></div>
-                                        <div class="tab-pane" id="contact-2"></div>
+                                        {% for conversation in conversations %}
+                                            <div class="tab-pane" id="contact-{{ conversation['conversation'].id }}"></div>
+                                        {% endfor %}
                                     </div><!--Chat Messages in Right End-->
 
                                     <div class="send-message">
@@ -54,8 +55,14 @@
 {% block javascripts %}
     <script>
         $(function (){
+            {% if id == 0 %}
             $('.contact-list li').removeClass('active');
             $('.contact-list li:first').addClass('active');
+            $('div[id^=contact-]').removeClass('active');
+            $('div[id^=contact-]:first').addClass('active');
+            {% else %}
+            $($('.contact-list li.active a').attr('href')).addClass('active');
+            {% endif %}
             $('input[name=conversation]').val($('.contact-list li.active a').attr('data-conf'))
             $('.contact-list li a').each(function (){
                 var id_conf = $(this).attr('data-conf');
@@ -72,9 +79,9 @@
                             result.forEach(element =>
                                 $('#contact-'+id_conf+' .chat-body .chat-message').append('<li class="'+element.position+'">'+element.photo+'<div class="chat-item"> <div class="chat-item-header"> <h5>'+element.nom+'</h5> <small class="text-muted message-date">'+element.date+'</small> </div> <p class="private-message">'+element.message+'</p> </div></li>')
                             );
-
                             a_this.find('.msg-preview').find('p.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .private-message').last().text());
                             a_this.find('.msg-preview').find('small.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .message-date').last().text());
+                            $('.chat-room').show();
                         }
                     },
                     error : function (error){
@@ -120,17 +127,18 @@
                 console.log(serverResponse);
                 if(serverResponse != false){
                     $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').append('<li class="'+serverResponse.position+'">'+serverResponse.photo+'<div class="chat-item"> <div class="chat-item-header"> <h5>'+serverResponse.nom+'</h5> <small class="text-muted message-date">'+serverResponse.date+'</small> </div> <p class="private-message">'+serverResponse.message+'</p> </div></li>')
-                    // $('.contact-list li.active a').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
-                    // $('.contact-list li.active a').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
+                    $('.contact-list li.active a').attr('data-conf')
+                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
+                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
                 }
             }
 
             //Fermer l'event source avant de quitter la page
-            window.addEventListener('beforeunload', function (){
+            window.onbeforeunload = function(){
                 if(eventSource != null){
                     eventSource.close()
                 }
-            })
+            }
 
         })
     </script>

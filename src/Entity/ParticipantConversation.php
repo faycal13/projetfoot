@@ -25,9 +25,14 @@ class ParticipantConversation
 
     /**
      * @ORM\ManyToOne(targetEntity=Conversation::class)
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $conversation;
+
+    /**
+     * @ORM\Column(type="array", length=255)
+     */
+    private $participants;
 
     public function getId(): ?int
     {
@@ -54,6 +59,18 @@ class ParticipantConversation
     public function setConversation(?Conversation $conversation): self
     {
         $this->conversation = $conversation;
+
+        return $this;
+    }
+
+    public function getParticipants(): ?array
+    {
+        return $this->participants;
+    }
+
+    public function setParticipants(array $participants): self
+    {
+        $this->participants = $participants;
 
         return $this;
     }

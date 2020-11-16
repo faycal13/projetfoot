@@ -120,7 +120,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="hellomycake" />
-    <orderEntry type="module" module-name="hellomycake" />
   </component>
 </module>

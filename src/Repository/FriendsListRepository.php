@@ -61,7 +61,7 @@ class FriendsListRepository extends ServiceEntityRepository
             ->setParameter('friend', $footballer->getId())
             ->andWhere('f.accept = 1')
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
             ;
     }
 
@@ -74,6 +74,46 @@ class FriendsListRepository extends ServiceEntityRepository
             ->andWhere('f.footballer = :footballer')
             ->setParameter('footballer', $footballer->getId())
             ->andWhere('f.accept = 1')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function checkFriendAjax($footballer_current, $footballer)
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.footballer', 'u')
+            ->andWhere('f.footballer = :footballer')
+            ->setParameter('footballer', $footballer_current->getId())
+            ->andWhere('f.friend = :friend')
+            ->setParameter('friend', $footballer->getId())
+            ->andWhere('f.accept = 1')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function checkFriendAjax2($footballer_current, $footballer)
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.footballer', 'u')
+            ->andWhere('f.friend = :friend')
+            ->setParameter('friend', $footballer_current->getId())
+            ->andWhere('f.footballer = :footballer')
+            ->setParameter('footballer', $footballer->getId())
+            ->andWhere('f.accept = 1')
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function getFriends($footballer)
+    {
+        return $this->createQueryBuilder('f')
+            ->andWhere('f.friend = :friend')
+            ->setParameter('friend', $footballer->getId())
+            ->orWhere('f.footballer = :footballer')
+            ->setParameter('footballer', $footballer->getId())
             ->getQuery()
             ->getResult()
             ;

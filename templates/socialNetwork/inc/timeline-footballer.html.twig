@@ -23,8 +23,7 @@
                     <li><a href="{{ path('footballer_social_network_show_conversations') }}">Mes messages</a></li>
                     <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
                     <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
-                    <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
-                    <li style="color: white; font-weight: bold;">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</li>
+                    <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>
                     <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom')}}" target="_blank" class="btn-primary">Chatroom</a></li>
                 </ul>
             </div>
@@ -35,7 +34,9 @@
     <div class="navbar-mobile hidden-lg hidden-md">
         <div class="profile-info">
             <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+            {% if app.user.user is not null %}
             <h4>{{ app.user.user.name }} {{ app.user.user.firstName }}</h4>
+            {% endif %}
             <p class="text-muted">Footballeur</p>
         </div>
         <div class="mobile-menu">
@@ -43,8 +44,7 @@
                 <li><a href="{{ path('footballer_social_network_show_conversations') }}">Mes messages</a></li>
                 <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
                 <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
-                <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
-                <li style="color: white; font-weight: bold;">{{ app.session.get('number_friend') }} ami{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</li>
+                <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>
                 <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom') }}" class="btn-primary">Chatroom</a></li>
             </ul>
         </div>

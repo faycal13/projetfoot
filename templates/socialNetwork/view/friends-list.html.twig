@@ -30,7 +30,7 @@
                     <div class="card-info">
                       <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.user.account.id~'/'~friend.profilPhoto )}}" alt="user" class="profile-photo-lg" />
                       <div class="friend-info">
-                        <h5><a href="" class="profile-link">{{ friend.user.name }} {{ friend.user.firstName }}</a></h5>
+                        <h5><a href="{{ path('footballer_view_footballer_profil',{'id':friend.id}) }}" class="profile-link">{{ friend.user.name }} {{ friend.user.firstName }}</a></h5>
                         <p>{{ friend.position }}</p>
                       </div>
                     </div>
@@ -47,4 +47,18 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block javascripts %}
+  <script>
+
+    $.ajax({
+      url : "{{ path('footballer_check_friend',{id:footballer.id}) }}",
+      type : 'POST',
+      success : function (serverResponse) {
+        if(serverResponse.result){
+          $('#add-footballer').show();
+        }
+      }
+    })
+  </script>
 {% endblock %}

@@ -20,9 +20,11 @@ class SecurityController extends AbstractController
     /**
      * @Route("/login", name="login")
      */
-    public function index(Request $request, AuthenticationUtils $authenticationUtils)
+    public function login(Request $request, AuthenticationUtils $authenticationUtils)
     {
-        // get the login error if there is one
+        if(!is_null($this->getUser())) {
+            return $this->redirectToRoute('redirection');
+        }
 
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -84,6 +86,9 @@ class SecurityController extends AbstractController
      */
     public function redirection(EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager){
 
+        if($this->getUser()->getIsDelete() == 1){
+            return $this->redirectToRoute('logout');
+        }
         if(!is_null($this->getUser())){
             $role = $this->getUser()->getRoles()[0];
             if($role == 'ROLE_ADMIN') return $this->redirectToRoute('admin_home');
@@ -101,6 +106,7 @@ class SecurityController extends AbstractController
                 $footballer = $footballer_repo->findOneByUser($user);
                 $response = $this->redirectToRoute('footballer_edit_profil');
                 if(!is_null($footballer)){
+
                     $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
                     $friends_2 = $friends_list_repo->findBy(array('friend' => $footballer, 'accept' => 1));
                     $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
@@ -112,7 +118,8 @@ class SecurityController extends AbstractController
                     //Mise en ligne du compte et affichage pour les ami qui possède
                     foreach ($friends as $friend) {
                         $path = '';
-                        if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+                        if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                            isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
                         $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFootballer()->getUser()->getAccount()->getId(). '/'.$friend->getFootballer()->getProfilPhoto());
                         $friend_tab['nom-prenom'] = $friend->getFootballer()->getUser()->getName().' '.$friend->getFootballer()->getUser()->getFirstName();
                         $friend_tab['photo'] = $path;
@@ -125,7 +132,8 @@ class SecurityController extends AbstractController
                     //Mise en ligne du compte et affichage pour ceux qui l'ont comme ami
                     foreach ($friends_2 as $friend_2) {
                         $path = '';
-                        if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+                        if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                            isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
                         $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend_2->getFriend()->getUser()->getAccount()->getId(). '/'.$friend_2->getFriend()->getProfilPhoto());
                         $friend_tab['nom-prenom'] = $friend_2->getFriend()->getUser()->getName().' '.$friend_2->getFriend()->getUser()->getFirstName();
                         $friend_tab['photo'] = $path;

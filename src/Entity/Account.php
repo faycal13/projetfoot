@@ -79,6 +79,11 @@ class Account implements UserInterface
      */
     private $online;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isDelete;
+
 
     public function getId(): ?int
     {
@@ -216,9 +221,17 @@ class Account implements UserInterface
     public function setOnline(bool $online): self
     {
         $this->online = $online;
-
         return $this;
     }
 
+    public function getIsDelete()
+    {
+        return $this->isDelete;
+    }
+
+    public function setIsDelete($isDelete): void
+    {
+        $this->isDelete = $isDelete;
+    }
 
 }

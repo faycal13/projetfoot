@@ -111,6 +111,8 @@ class Footballer
 
     private $numberFriends;
 
+    private $friend = false;
+
     public function __construct()
     {
         $this->footballerVideos = new ArrayCollection();
@@ -457,6 +459,22 @@ class Footballer
     public function setNumberFriends($numberFriends): void
     {
         $this->numberFriends = $numberFriends;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFriend()
+    {
+        return $this->friend;
+    }
+
+    /**
+     * @param mixed $friend
+     */
+    public function setFriend($friend): void
+    {
+        $this->friend = $friend;
     }
 
 

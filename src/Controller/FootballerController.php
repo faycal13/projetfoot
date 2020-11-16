@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\BlockFriendsList;
 use App\Entity\ChatroomList;
 use App\Entity\ChatroomMessage;
 use App\Entity\Footballer;
@@ -23,6 +24,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Mercure\Debug\TraceablePublisher;
 use Symfony\Component\Mercure\Publisher;
 use Symfony\Component\Mercure\PublisherInterface;
@@ -254,13 +256,6 @@ class FootballerController extends AbstractController
             return $this->redirectToRoute('footballer_editFootballerProfil');
         }
 
-        $footballer_careers = $footballer_career_repo->findByFootballer($footballer, ['startDate' => 'ASC']);
-        $forms = [];
-        foreach ($footballer_careers as $footballer_career) {
-            $form = $this->createForm(FootballerCareerType::Class, $footballer_career);
-            $forms[$footballer_career->getId()] = $form->createView();
-        }
-
         $new_footballer_career = new FootballerCarrer();
         $new_form = $this->createForm(FootballerCareerType::Class, $new_footballer_career);
         $new_form->handleRequest($request);
@@ -272,6 +267,12 @@ class FootballerController extends AbstractController
 
         }
 
+        $footballer_careers = $footballer_career_repo->findByFootballer($footballer, ['startDate' => 'DESC']);
+        $forms = [];
+        foreach ($footballer_careers as $footballer_career) {
+            $form = $this->createForm(FootballerCareerType::Class, $footballer_career);
+            $forms[$footballer_career->getId()] = $form->createView();
+        }
         return $this->render('socialNetwork/profil/edit-career-footballer.html.twig',[
             'forms' => $forms,
             'new_form' => $new_form->createView(),
@@ -396,7 +397,8 @@ class FootballerController extends AbstractController
             $manager->flush();
 
             $path = '';
-            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+            if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
             $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$footballer->getUser()->getAccount()->getId(). '/'.$footballer->getProfilPhoto());
             $message_final = '<li class="'.($footballer->getId() == $session->get('footballer_id') ? 'active' : '').'" data-id="'.$footballer->getId().'">
                         <a href="" data-toggle="tab">
@@ -443,7 +445,8 @@ class FootballerController extends AbstractController
         foreach ($messages as $message) {
             $date = $message->getCreationDate();
             $path = '';
-            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+            if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
             $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$message->getSender()->getUser()->getAccount()->getId(). '/'.$message->getSender()->getProfilPhoto());
 //            $path = $assetsManager->getUrl();
             if(!is_null($message->getMessage())){
@@ -459,7 +462,8 @@ class FootballerController extends AbstractController
                             </li>';
             }else{
                 $path_chatroom = '';
-                if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path_chatroom = $this->getParameter('url_dev');
+                if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                    isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
                 $path_chatroom .= $assetsManager->getUrl('/img/footballer/chatroom/' .$this->getUser()->getId(). '/'.$message->getInternalLink());
                 $message_final .= '<li class="left">
                                 <img src="'.$path.'" alt="" class="profile-photo-sm pull-left" />
@@ -478,10 +482,11 @@ class FootballerController extends AbstractController
         //Récupération des users
         foreach ($chatroom_list_all as $people) {
             $path = '';
-            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+            if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev'); $path = $this->getParameter('url_dev');
             $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$people->getFootballer()->getUser()->getAccount()->getId(). '/'.$people->getFootballer()->getProfilPhoto());
             $users .= '<li class="'.($people->getFootballer()->getId() == $session->get('footballer_id') ? 'active' : '').'" data-id="'.$people->getFootballer()->getId().'">
-                        <a href="" data-toggle="tab">
+                        <a href="'.$this->generateUrl('footballer_view_profil',['id' => $people->getFootballer()->getId()]).'" target="_blank">
                             <div class="contact" style="display: flex">
                                 <img src="'.$path.'" alt="" class="profile-photo-sm pull-left"/>
                                 <div class="msg-preview">
@@ -508,7 +513,8 @@ class FootballerController extends AbstractController
         $file = $request->files->get('image-chatroom');
         $date = new \DateTime('now');
         $path = '';
-        if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+        if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+            isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev'); $path = $this->getParameter('url_dev');
         $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$this->getUser()->getId(). '/'.$footballer->getProfilPhoto());
         if(!is_null($message) && $message != ''){
 
@@ -549,7 +555,8 @@ class FootballerController extends AbstractController
             $manager->persist($chatroom_message);
             $manager->flush();
             $path_chatroom = '';
-            if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path_chatroom = $this->getParameter('url_dev');
+            if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev'); $path_chatroom = $this->getParameter('url_dev');
             $path_chatroom .= $assetsManager->getUrl('/img/footballer/chatroom/' .$this->getUser()->getId(). '/'.$newFilename);
             $string = '<li class="left">
                                 <img src="'.$path.'" alt="" class="profile-photo-sm pull-left" />
@@ -596,6 +603,7 @@ class FootballerController extends AbstractController
     public function myFriends(Request $request, EntityManagerInterface $manager)
     {
         $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
@@ -603,8 +611,21 @@ class FootballerController extends AbstractController
         $friends = $friends_list_repo->getFriendsOnline($footballer);
         $friends2 = $friends_list_repo->getFriendsOnline2($footballer);
 
+        foreach ($friends as $key => $friend) {
+            $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer, $friend->getFriend());
+            if(!is_null($blocked_list_of_footballer)){
+                unset($friends[$key]);
+            }
+        }
+        foreach ($friends2 as $key2 => $friend2) {
+            $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer, $friend2->getFootballer());
+            if(!is_null($blocked_list_of_footballer)){
+                unset($friends2[$key2]);
+            }
+        }
+
         $session = $this->get('session');
-        $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer)));
+        $session->set('number_friend',count($friends) + count($friends2));
 
         return $this->render('socialNetwork/newsfeed/friendsList.html.twig',[
             'friends' => $friends,
@@ -613,32 +634,30 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/add-friend", name="add_friend")
+     * @Route("/search-global-footballer", name="search_global_footballer")
      */
-    public function addFriend(Request $request, EntityManagerInterface $manager)
+    public function searchGlobalFootballer(Request $request, EntityManagerInterface $manager)
     {
         $footballeur_repo = $manager->getRepository('App:Footballer');
         $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $search = $request->request->get('search');
         //Mettre en place une pagination
         $user = $this->getUser()->getUser();
         $footballer_current = $footballeur_repo->findOneByUser($user);
-        $footballers = $footballeur_repo->findAll();
+        $footballers = $footballeur_repo->searchFootballers($search, $footballer_current);
         foreach ($footballers as $key => &$footballer) {
-            $friends = $friends_list_repo->checkFriend($footballer_current, $footballer);
-            if(!empty($friends)){
+            $friend = $friends_list_repo->checkFriend($footballer_current, $footballer);
+            if(!is_null($friend)){
+                $footballer->setFriend(true);
+            }
+            $friend2 = $friends_list_repo->checkFriend2($footballer_current, $footballer);
+            if(!is_null($friend2)){
                 unset($footballers[$key]);
             }
-            $friends = $friends_list_repo->checkFriend2($footballer_current, $footballer);
-            if(!empty($friends)){
-                unset($footballers[$key]);
-            }
-            //$friends2 = $friends_list_repo->getFriendsOnline2($footballer);
         }
-        $session = $this->get('session');
-        $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer_current)));
 
         return $this->render('socialNetwork/newsfeed/friendsNearbyList.html.twig',[
-            'friends' => $footballers
+            'footballers' => $footballers
         ]);
     }
 
@@ -655,9 +674,88 @@ class FootballerController extends AbstractController
         $manager->remove($friend);
         $manager->flush();
 
-        $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer_current)));
-
         return $this->redirectToRoute('footballer_myfriends');
+    }
+
+    /**
+     * @Route("/blocked-friend/{id}", name="blocked_friend")
+     */
+    public function blockedFriend(Footballer $footballer_target, Request $request, EntityManagerInterface $manager)
+    {
+
+        $footballeur_repo = $manager->getRepository('App:Footballer');
+        $blocked_friend_repo = $manager->getRepository('App:BlockFriendsList');
+        $user = $this->getUser()->getUser();
+        $date = new \DateTime('now');
+        $footballer_current = $footballeur_repo->findOneByUser($user);
+        $blocked_friend = new BlockFriendsList();
+        $blocked_friend->setFootballer($footballer_current);
+        $blocked_friend->setTarget($footballer_target);
+        $blocked_friend->setCreationDate($date);
+        $manager->persist($blocked_friend);
+        $manager->flush();
+        $this->addFlash('success', 'Bloquage effectué !');
+        return $this->redirectToRoute('footballer_blocked_friend_list');
+    }
+
+    /**
+     * @Route("/unblocked-friend/{id}", name="unblocked_friend")
+     */
+    public function unblockedFriend(Footballer $footballer_target, Request $request, EntityManagerInterface $manager)
+    {
+        $footballeur_repo = $manager->getRepository('App:Footballer');
+        $blocked_friend_repo = $manager->getRepository('App:BlockFriendsList');
+        $user = $this->getUser()->getUser();
+        $footballer_current = $footballeur_repo->findOneByUser($user);
+        $blocked_list_of_footballer = $blocked_friend_repo->findOneBy(['footballer' => $footballer_current, 'target' => $footballer_target]);
+        $manager->remove($blocked_list_of_footballer);
+        $manager->flush();
+        $this->addFlash('success', 'Débloquage effectué !');
+        return $this->redirectToRoute('footballer_blocked_friend_list');
+    }
+
+    /**
+     * @Route("/blocked-friend-list", name="blocked_friend_list")
+     */
+    public function blockedFriendList(EntityManagerInterface $manager)
+    {
+
+        $footballeur_repo = $manager->getRepository('App:Footballer');
+        $blocked_friend_repo = $manager->getRepository('App:BlockFriendsList');
+        $user = $this->getUser()->getUser();
+        $footballer_current = $footballeur_repo->findOneByUser($user);
+
+        $blocked_list_of_footballer = $blocked_friend_repo->findByFootballer($footballer_current);
+
+        return $this->render('socialNetwork/newsfeed/footballer_blocked_friend.html.twig',[
+            'blocked_list' => $blocked_list_of_footballer
+        ]);
+    }
+
+    /**
+     * @Route("/check-friend/{id}", name="check_friend")
+     */
+    public function checkFriend(Footballer $footballer_friend, Request $request, EntityManagerInterface $manager)
+    {
+        $user = $this->getUser()->getUser();
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $footballer_current = $footballer_repo->findOneByUser($user);
+
+        $friend = $friends_list_repo->checkFriendAjax($footballer_current, $footballer_friend);
+        if(!is_null($friend)){
+            if($friend->getAccept() == 0) return new JsonResponse(['result' => 1]);
+            else return new JsonResponse(['result' => 2]);
+
+        }
+        $friend2 = $friends_list_repo->checkFriendAjax2($footballer_current, $footballer_friend);
+        if(!is_null($friend2)){
+            if($friend->getAccept() == 0) return new JsonResponse(['result' => 1]);
+            else return new JsonResponse(['result' => 2]);
+        }
+
+        return new JsonResponse(['result' => 0]);
+
     }
 
     /**
@@ -689,12 +787,35 @@ class FootballerController extends AbstractController
     {
         $id = $request->request->get('id');
         $friends_list_repo = $manager->getRepository('App:FriendsList');
-        $friend = $friends_list_repo->findOneById($id);
+        $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
+        $new_friend = $friends_list_repo->findOneById($id);
+        $footballeur_repo = $manager->getRepository('App:Footballer');
+        $user = $this->getUser()->getUser();
+        $footballer = $footballeur_repo->findOneByUser($user);
 
-        $friend->setAccept(1);
-        $manager->persist($friend);
+        $new_friend->setAccept(1);
+        $manager->persist($new_friend);
         $manager->flush();
 
+        //$friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
+        $friends = $friends_list_repo->getFriendsOnline($footballer);
+        $friends2 = $friends_list_repo->getFriendsOnline2($footballer);
+
+        foreach ($friends as $key => $friend) {
+            $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer, $friend->getFriend());
+            if(!is_null($blocked_list_of_footballer)){
+                unset($friends[$key]);
+            }
+        }
+        foreach ($friends2 as $key2 => $friend2) {
+            $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer, $friend2->getFootballer());
+            if(!is_null($blocked_list_of_footballer)){
+                unset($friends2[$key2]);
+            }
+        }
+
+        $session = $this->get('session');
+        $session->set('number_friend',count($friends) + count($friends2));
         return new JsonResponse(['result' => true]);
     }
 
@@ -714,7 +835,7 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/waiting-friend", name="waitingFriend")
+     * @Route("/waiting-friend", name="waiting_friend")
      */
     public function peopleNearbyWaiting(Request $request, EntityManagerInterface $manager)
     {
@@ -735,6 +856,7 @@ class FootballerController extends AbstractController
     public function friendsOnline(Request $request, EntityManagerInterface $manager,\Symfony\Component\Asset\Packages $assetsManager)
     {
         $friends_list_repo = $manager->getRepository('App:FriendsList');
+        $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
@@ -744,26 +866,38 @@ class FootballerController extends AbstractController
         $friends_tab = [];
         $counter = 0;
         foreach ($friends as $key => $friend) {
-            if($friend->getFriend()->getUser()->getAccount()->getOnline() == 1){
-                $path = '';
-                if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
-                $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFriend()->getUser()->getAccount()->getId(). '/'.$friend->getFriend()->getProfilPhoto());
-                $friends_tab[$counter]['nom-prenom'] = $friend->getFriend()->getUser()->getName().' '.$friend->getFriend()->getUser()->getFirstName();
-                $friends_tab[$counter]['photo'] = $path;
-                $friends_tab[$counter]['id'] = $friend->getFriend()->getUser()->getAccount()->getId();
-                $counter++;
+            $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer, $friend->getFriend());
+            if(is_null($blocked_list_of_footballer)){
+                if($friend->getFriend()->getUser()->getAccount()->getOnline() == 1){
+                    $path = '';
+                    if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                        isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev'); $path = $this->getParameter('url_dev');
+                    $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFriend()->getUser()->getAccount()->getId(). '/'.$friend->getFriend()->getProfilPhoto());
+                    $friends_tab[$counter]['nom-prenom'] = $friend->getFriend()->getUser()->getName().' '.$friend->getFriend()->getUser()->getFirstName();
+                    $friends_tab[$counter]['photo'] = $path;
+                    $friends_tab[$counter]['id'] = $friend->getFriend()->getUser()->getAccount()->getId();
+                    $friends_tab[$counter]['footballer'] = $friend->getFriend()->getId();
+                    $counter++;
+                }
             }
+
         }
 
         foreach ($friends2 as $key => $friend2) {
-            if($friend2->getFootballer()->getUser()->getAccount()->getOnline() == 1){
-                $path = '';
-                if(strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
-                $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend2->getFootballer()->getUser()->getAccount()->getId(). '/'.$friend2->getFootballer()->getProfilPhoto());
-                $friends_tab[$counter]['nom-prenom'] = $friend2->getFootballer()->getUser()->getName().' '.$friend2->getFootballer()->getUser()->getFirstName();
-                $friends_tab[$counter]['photo'] = $path;
-                $friends_tab[$counter]['id'] = $friend2->getFootballer()->getUser()->getAccount()->getId();
-                $counter++;
+            $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer, $friend2->getFootballer());
+            if(is_null($blocked_list_of_footballer)) {
+                if ($friend2->getFootballer()->getUser()->getAccount()->getOnline() == 1) {
+                    $path = '';
+                    if (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
+                        isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
+                    $path = $this->getParameter('url_dev');
+                    $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' . $friend2->getFootballer()->getUser()->getAccount()->getId() . '/' . $friend2->getFootballer()->getProfilPhoto());
+                    $friends_tab[$counter]['nom-prenom'] = $friend2->getFootballer()->getUser()->getName() . ' ' . $friend2->getFootballer()->getUser()->getFirstName();
+                    $friends_tab[$counter]['photo'] = $path;
+                    $friends_tab[$counter]['id'] = $friend2->getFootballer()->getUser()->getAccount()->getId();
+                    $friends_tab[$counter]['footballer'] = $friend2->getFootballer()->getId();
+                    $counter++;
+                }
             }
         }
 
@@ -905,6 +1039,111 @@ class FootballerController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/abonnements", name="abonnements")
+     */
+    public function abonnement()
+    {
+        return $this->render('socialNetwork/newsfeed/pricing.html.twig');
+    }
+
+    /**
+     * @Route("/search-footballer", name="search_footballer")
+     */
+    public function searchFootballer(Request $request, EntityManagerInterface $manager)
+    {
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
+        $search = $request->request->get('term');
+        $user = $this->getUser()->getUser();
+        $footballer_current = $footballer_repo->findOneByUser($user);
+        $footballers = $footballer_repo->searchFootballers($search, $footballer_current);
+
+        $blocked_list_of_footballer = $blocked_list_repo->findByFootballer($footballer_current);
+        $id_footballer_blocked = [];
+        foreach ($blocked_list_of_footballer as $item) {
+            $id_footballer_blocked[] = $item->getTarget()->getId();
+        }
+        foreach ($footballers as $key => $footballer) {
+            if(in_array($footballer->getId(), $id_footballer_blocked)) unset($footballers[$key]);
+        }
+
+        $results = [];
+        foreach ($footballers as $key => $footballer) {
+            $results[$key]['value'] = $footballer->getUser()->getName().' '.$footballer->getUser()->getFirstName();
+            $results[$key]['id'] = $footballer->getId();
+            $results[$key]['label'] = $footballer->getUser()->getName().' '.$footballer->getUser()->getFirstName();
+        }
+
+        return new JsonResponse($results);
+    }
+
+    /**
+     * @Route("/delete-account", name="delete_account")
+     */
+    public function deleteAccount(Request $request, EntityManagerInterface $manager)
+    {
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $user_repo = $manager->getRepository('App:User');
+
+        $user = $user_repo->findOneById($this->getUser()->getUser()->getId());
+        $footballer = $footballer_repo->findOneByUser($user);
+
+        $career_repo = $manager->getRepository('App:FootballerCarrer');
+        foreach ($career_repo->findByFootballer($footballer) as $career) {
+            $manager->remove($career);
+        }
+        $photos_repo = $manager->getRepository('App:FootballerPhoto');
+        foreach ($photos_repo->findByFootballer($footballer) as $photo) {
+            $manager->remove($photo);
+        }
+        $videos_repo = $manager->getRepository('App:FootballerVideo');
+        foreach ($videos_repo->findByFootballer($footballer) as $video) {
+            $manager->remove($video);
+        }
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
+        foreach ($friends_list_repo->findByFootballer($footballer) as $friend) {
+            $manager->remove($friend);
+        }
+        $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
+        if(!is_null($footballer)){
+            foreach ($blocked_list_repo->getAllBlockedFootballer($footballer) as $blocked) {
+                $manager->remove($blocked);
+            }
+        }
+        $chatroom_message_repo = $manager->getRepository('App:ChatroomMessage');
+        foreach ($chatroom_message_repo->findBySender($footballer) as $chatroom_message) {
+            $manager->remove($chatroom_message);
+        }
+        $private_message_repo = $manager->getRepository('App:PrivateMessage');
+        foreach ($private_message_repo->findBySender($footballer) as $private_message) {
+            $manager->remove($private_message);
+        }
+
+        $participant_conversation_repo = $manager->getRepository('App:ParticipantConversation');
+        foreach ($participant_conversation_repo->findByFootballer($footballer) as $participation) {
+            $manager->remove($participation);
+        }
+
+        if(!is_null($footballer)){
+            $manager->remove($footballer);
+        }
+        $session = new Session();
+        $session->invalidate();
+        $manager->remove($user);
+        $manager->flush();
+
+        return $this->redirectToRoute('logout');
+    }
+
+    function convertYoutube($string) {
+        return preg_replace(
+            "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
+            "www.youtube.com/embed/$2",
+            $string
+        );
+    }
+
     private function uploadFile($photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){
         $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
         // this is needed to safely include the file name as part of the URL
@@ -951,21 +1190,6 @@ class FootballerController extends AbstractController
         }
     }
 
-    /**
-     * @Route("/abonnements", name="abonnements")
-     */
-    public function abonnement()
-    {
-        return $this->render('socialNetwork/newsfeed/pricing.html.twig');
-    }
-
-    function convertYoutube($string) {
-        return preg_replace(
-            "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
-            "www.youtube.com/embed/$2",
-            $string
-        );
-    }
 
     public function t($test){
         dump($test);

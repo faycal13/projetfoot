@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset("socialNetwork/css/style.css") }}" />
     <link rel="stylesheet" href="{{ asset("socialNetwork/css/ionicons.min.css") }}" />
     <link rel="stylesheet" href= "{{ asset("socialNetwork/css/font-awesome.min.css") }}"/>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     {% block css %}{% endblock %}
 
     <!--Google Font-->
@@ -52,9 +53,9 @@
 <script src="{{ asset("socialNetwork/js/jquery.appear.min.js") }}"></script>
 <script src="{{ asset("socialNetwork/js/jquery.incremental-counter.js") }}"></script>
 <script src="{{ asset("socialNetwork/js/script.js") }}"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
     $(function (){
-
         //PHOTO DE PROFIL
         $('.img-wrapper-profil').click(function (){
             $('#profil_photo_footballer_profilPhoto').trigger('click');
@@ -80,20 +81,22 @@
             success : function (serverResponse) {
                 var results = Object.values(serverResponse);
                 var online_button = '{{ asset('socialNetwork/images/online-button.png') }}';
-                var link_add_friend = '{{ path('footballer_add_friend') }}';
-                $('#popupfriendsonline').append("<div id='call-us-cta' class='animated fadeInUp'><div class='title'>Amis</div><div id='block-online-footballer'><div class='nobody-online'></div></div></div>");
+                $('#popupfriendsonline').append("<div id='call-us-cta' class='animated fadeInUp'><div class='title'>Amis en ligne ("+results.length+")</div><div id='block-online-footballer'><div class='nobody-online'></div></div></div>");
                 if(results.length == 0){
-                    $('#block-online-footballer .nobody-online').html("<span>Aucun ami n'est connecté</span></div><div><span><a href='"+link_add_friend+"'>Ajouter des amis</a></span>");
+                    $('#block-online-footballer .nobody-online').html("<span>Aucun ami n'est connecté</span></div>");
                 }else{
                     $('.nobody-online').html("");
                     for (var i = 0; i < results.length; i++) {
-                        $('#block-online-footballer').append("<div style='position: relative' class='friend-online' data-id='"+results[i]['id']+"'><span>"+results[i]['nom-prenom']+"</span><img src='"+results[i]['photo']+"' alt=''><img style='position: absolute' src='"+online_button+"' class='online-button' alt=''> </div>");
+                        var link = '{{ path('footballer_view_profil', {'id':123456789}) }}';
+                        link = link.replace("123456789", results[i]['footballer']);
+                        $('#block-online-footballer').append("<div style='position: relative' class='friend-online' data-id='"+results[i]['id']+"'><a href='"+link+"'><span>"+results[i]['nom-prenom']+"</span><img src='"+results[i]['photo']+"' alt=''><img style='position: absolute' src='"+online_button+"' class='online-button' alt=''></a></div>");
                     }
                 }
-
             }
         })
 
+        {% if app.user.user is not null %}
+        {% if app.user.user.footballer is not null %}
         //ON INITIALISE L'URL DE MERCURE
         const url = new URL('{{ mercure_publish_url }}');
         //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
@@ -132,17 +135,14 @@
 
         eventSource2.onmessage = e => {
             var result = JSON.parse(e.data);
-            var link_add_friend = '{{ path('footballer_add_friend') }}';
-
 
             $('.friend-online').each(function (e){
-                console.log($(this).attr('data-id'));
                 if($(this).attr('data-id') == result['id']){
                     $(this).remove()
                 }
             })
             if($('.friend-online').length == 0){
-                $('#block-online-footballer .nobody-online').html("<span>Aucun ami n'est connecté</span></div><div><span><a href='"+link_add_friend+"'>Ajouter des amis</a></span>");
+                $('#block-online-footballer .nobody-online').html("<span>Aucun ami n'est connecté</span>");
             }
         }
 
@@ -152,6 +152,88 @@
                 eventSource2.close()
             }
         })
+
+        {% endif %}
+        {% endif %}
+        $("#search-footballer").autocomplete({
+            source: function( request, response ) {
+                $.ajax( {
+                    url: "{{ path('footballer_search_footballer') }}",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function( data ) {
+                        var results = $.ui.autocomplete.filter(data, request.term);
+                        response(results.slice(0, 10));
+                        // response( data );
+                    }
+                } );
+            },
+            minLength: 2,
+            select: function( event, ui ) {
+                // alert( "Selected: " + ui.item.value + " aka " + ui.item.id );
+                var href = $('#link-search-footballer').attr('href');
+                $('#link-search-footballer').attr('href', href.replace("9999999999", ui.item.id));
+                window.location.href = $('#link-search-footballer').attr('href');
+            }
+        });
+
+        $("#search-footballer").autocomplete({
+            source: function( request, response ) {
+                $.ajax({
+                    url: "{{ path('footballer_search_footballer') }}",
+                    type: "POST",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function( data ) {
+                        var results = $.ui.autocomplete.filter(data, request.term);
+                        response(results.slice(0, 10));
+                        // response( data );
+                    }
+                });
+            },
+            minLength: 2,
+            select: function( event, ui ) {
+                // alert( "Selected: " + ui.item.value + " aka " + ui.item.id );
+                var href = $('#link-search-footballer').attr('href');
+                $('#link-search-footballer').attr('href', href.replace("9999999999", ui.item.id));
+                window.location.href = $('#link-search-footballer').attr('href');
+            }
+        });
+
+        $(".block-search .ion-android-search").click(function (){
+            var search = $("#search-footballer").val();
+            if(search.trim().length > 1){
+                $('#form-search-footballer').submit();
+            }
+        });
+
+        $('#add-footballer').click(function (){
+            var ifootballer = $(this).find('i');
+            if(!$(this).hasClass('active')){
+                $(this).addClass('active');
+                $.ajax({
+                    url : "{{ path('footballer_add_friend_submission') }}",
+                    type : "POST",
+                    data: {
+                        "id":$(this).attr('data-id')
+                    },
+                    success : function (serverResponse){
+                        if(serverResponse){
+                            ifootballer.css('color','#ff1313');
+                        }
+                    },
+                    error : function (){
+                        alert('Une erreur est survenue')
+                    }
+                })
+            }
+
+        });
 
     })
 </script>

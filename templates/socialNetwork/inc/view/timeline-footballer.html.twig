@@ -11,6 +11,7 @@
                     {% if footballer.user is not null %}
                         <h3>{{ footballer.user.name }} {{ footballer.user.firstName }}</h3>
                     {% endif %}
+                    <p class="text-muted">Footballeur</p>
                 </div>
             </div>
 
@@ -18,8 +19,51 @@
                 <ul class="list-inline profile-menu">
                     <li><a href="{{ path('footballer_view_picture',{id:footballer.id}) }}">Photos</a></li>
                     <li><a href="{{ path('footballer_view_video',{id:footballer.id}) }}">Vidéos</a></li>
-                    <li><a href="{{ path('footballer_view_friends',{id:footballer.id}) }}">Amis</a></li>
-                    <li style="color: white; font-weight: bold;">{{ footballer.numberFriends }} ami{% if footballer.numberFriends > 1 %}s{% endif %}</li>
+                    {% if footballer.user.account.id != app.user.id %}
+                        <li><a data-toggle="modal" data-target="#send-message">Envoyer un message</a></li>
+                        <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
+                        <li id="add-footballer" style="display: none"><a style="cursor: pointer"  data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
+                    {% endif %}
+                    <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_view_friends',{id:footballer.id}) }}">{{ footballer.numberFriends }} ami{% if footballer.numberFriends > 1 %}s{% endif %}</a></li>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="send-message" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Ajouter une photo</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{{ path('footballer_social_network_send_message',{id:footballer.id}) }}" method="post">
+                                        <input type="text" name="message" required>
+                                        <button class="btn btn-primary">Envoyer le message</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="blocked" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Bloquer {{ footballer.user.name }} {{ footballer.user.firstName }}</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Êtes-vous sur de vouloir bloquer {{ footballer.user.name }} {{ footballer.user.firstName }} ?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                                    <a type="button" href="{{ path('footballer_blocked_friend',{'id':footballer.id}) }}" class="btn btn-primary">Bloquer</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </ul>
             </div>
         </div>
@@ -29,17 +73,20 @@
     <div class="navbar-mobile hidden-lg hidden-md">
         <div class="profile-info">
             <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
-            <h4>Sarah Cruiz</h4>
+            {% if footballer.user is not null %}
+                <h4>{{ footballer.user.name }} {{ footballer.user.firstName }}</h4>
+            {% endif %}
             <p class="text-muted">Footballeur</p>
         </div>
         <div class="mobile-menu">
             <ul class="list-inline">
-                <li><a href="{{ path('footballer_social_network_show_conversations') }}">Mes messages</a></li>
-                <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
-                <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
-                <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>
-                <li style="color: white; font-weight: bold;">{{ app.session.get('number_friend') }} ami{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</li>
-                <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom') }}" class="btn-primary">Chatroom</a></li>
+                <li><a href="{{ path('footballer_view_picture',{id:footballer.id}) }}">Photos</a></li>
+                <li><a href="{{ path('footballer_view_video',{id:footballer.id}) }}">Vidéos</a></li>
+                {% if footballer.user.account.id != app.user.id %}
+                    <li><a data-toggle="modal" data-target="#send-message">Envoyer un message</a></li>
+                    <li class="li-blocked"><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
+                {% endif %}
+                <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_view_friends',{id:footballer.id}) }}">{{ footballer.numberFriends }} ami{% if footballer.numberFriends > 1 %}s{% endif %}</a></li>
             </ul>
         </div>
     </div><!--Timeline Menu for Small Screens End-->

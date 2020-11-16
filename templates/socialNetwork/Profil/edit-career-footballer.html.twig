@@ -81,7 +81,7 @@
                     {{ form_start(form, {'attr': {'action': path('footballer_editCareerSubmission',{'id':key})} }) }}
                     <div class="row" style="padding: 30px">
                       {{ form_row(form.club, {'label': 'Club','attr': {'placeholder': 'Le nom du club'}}) }}
-                      {{ form_row(form.categorie, {'label': 'Club','attr': {'placeholder': 'Ex : U21'}}) }}
+                      {{ form_row(form.categorie, {'label': 'Niveau','attr': {'placeholder': 'Ex : U21'}}) }}
                       {{ form_row(form.startDate, {'label': 'Année de début','attr': {'placeholder': '2017'}}) }}
                       {{ form_row(form.endDate, {'label': 'Année de fin','attr': {'placeholder': '2019'}}) }}
                       {{ form_row(form.position, {'label': 'Poste','attr': {'placeholder': 'Milieu'}}) }}
@@ -129,7 +129,7 @@
                   {{ form_start(new_form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}
                   <div class="row" style="padding: 30px">
                     {{ form_row(new_form.club, {'label': 'Club','attr': {'placeholder': 'Le nom du club'}}) }}
-                    {{ form_row(new_form.categorie, {'label': 'Club','attr': {'placeholder': 'Ex : U21'}}) }}
+                    {{ form_row(new_form.categorie, {'label': 'Niveau','attr': {'placeholder': 'Ex : U21'}}) }}
                     {{ form_row(new_form.startDate, {'label': 'Année de début','attr': {'placeholder': '2017'}}) }}
                     {{ form_row(new_form.endDate, {'label': 'Année de fin','attr': {'placeholder': '2019'}}) }}
                     {{ form_row(new_form.position, {'label': 'Poste','attr': {'placeholder': 'Milieu'}}) }}

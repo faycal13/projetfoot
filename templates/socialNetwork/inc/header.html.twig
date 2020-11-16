@@ -18,19 +18,19 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right main-menu">
-{#                    <li class="dropdown">#}
-{#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Newsfeed <span><img src="images/down-arrow.png" alt="" /></span></a>#}
-{#                        <ul class="dropdown-menu newsfeed-home">#}
-{#                            <li><a href="{{ path('footballer_newsfeed') }}">Fil d'actualité</a></li>#}
-{#                            <li><a href="{{ path('footballer_addfriend') }}">Ajout amis</a></li>#}
-{#                            <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>#}
-{#                            <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>#}
-{#                            <li><a href="{{ path('footballer_chatroom') }}">Chatroom</a></li>#}
-{#                            <li><a href="{{ path('footballer_picture') }}">Images</a></li>#}
-                            <li><a href="{{ path('footballer_abonnements') }}">Abonnements</a></li>
-{#                            <li><a href="{{ path('footballer_video') }}">Videos</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
+                    {#                    <li class="dropdown">#}
+                    {#                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Newsfeed <span><img src="images/down-arrow.png" alt="" /></span></a>#}
+                    {#                        <ul class="dropdown-menu newsfeed-home">#}
+                    {#                            <li><a href="{{ path('footballer_newsfeed') }}">Fil d'actualité</a></li>#}
+                    {#                            <li><a href="{{ path('footballer_addfriend') }}">Ajout amis</a></li>#}
+                    {#                            <li><a href="{{ path('footballer_myfriends') }}">Mes amis</a></li>#}
+                    {#                            <li><a href="{{ path('footballer_message') }}">Mes messages</a></li>#}
+                    {#                            <li><a href="{{ path('footballer_chatroom') }}">Chatroom</a></li>#}
+                    {#                            <li><a href="{{ path('footballer_picture') }}">Images</a></li>#}
+                    <li><a href="{{ path('footballer_abonnements') }}">Abonnements</a></li>
+                    {#                            <li><a href="{{ path('footballer_video') }}">Videos</a></li>#}
+                    {#                        </ul>#}
+                    {#                    </li>#}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mon profil <span><img src="images/down-arrow.png" alt="" /></span></a>
                         <ul class="dropdown-menu login">
@@ -41,10 +41,11 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-right hidden-sm">
-                    <div class="form-group">
+                <form action="{{ path('footballer_search_global_footballer') }}" method="POST" id="form-search-footballer" class="navbar-form navbar-right hidden-sm">
+                    <div class="form-group block-search">
                         <i class="icon ion-android-search"></i>
-                        <input type="text" class="form-control" placeholder="Chercher un footballeur">
+                        <input type="text" class="form-control" name="search" id="search-footballer" placeholder="Chercher un footballeur">
+                        <a href="{{ path("footballer_view_profil", {id: 9999999999}) }}" id="link-search-footballer"></a>
                     </div>
                 </form>
             </div><!-- /.navbar-collapse -->

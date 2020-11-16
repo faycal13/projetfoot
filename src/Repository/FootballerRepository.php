@@ -22,19 +22,18 @@ class FootballerRepository extends ServiceEntityRepository
     // /**
     //  * @return Footballer[] Returns an array of Footballer objects
     //  */
-    /*
-    public function findByExampleField($value)
+    public function searchFootballers($search, $footballer_current)
     {
         return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
+            ->join('f.user', 'u')
+            ->andWhere('f.id != :val')
+            ->setParameter('val', $footballer_current->getId())
+            ->andWhere('u.name LIKE :search OR u.firstName LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
             ->getQuery()
             ->getResult()
-        ;
+            ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Footballer

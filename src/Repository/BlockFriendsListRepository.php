@@ -22,19 +22,30 @@ class BlockFriendsListRepository extends ServiceEntityRepository
     // /**
     //  * @return BlockFriendsList[] Returns an array of BlockFriendsList objects
     //  */
-    /*
-    public function findByExampleField($value)
+
+    public function getBlockedFootballer($footballer_current, $footballer)
     {
         return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('b.footballer = :val and b.target = :val2')
+            ->orWhere('b.footballer = :val2 and b.target = :val')
+            ->setParameter('val', $footballer_current->getId())
+            ->setParameter('val2', $footballer->getId())
             ->getQuery()
-            ->getResult()
+            ->getOneOrNullResult()
         ;
     }
-    */
+
+    public function getAllBlockedFootballer($footballer)
+    {
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.footballer = :val')
+            ->orWhere('b.target = :val')
+            ->setParameter('val', $footballer->getId())
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?BlockFriendsList
