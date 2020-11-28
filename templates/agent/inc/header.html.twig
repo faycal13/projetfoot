@@ -2,18 +2,18 @@
 <header class="header-desktop3 d-none d-lg-block">
     <div class="section__content section__content--p35">
         <div class="header3-wrap">
-            <div class="header__logo">
-                <a href="#">
-                    <img src="images/icon/logo-white.png" alt="CoolAdmin" />
-                </a>
-            </div>
-            {% if not is_granted('ROLE_ADMIN') %}
+            {% if is_granted('ROLE_AGENT') %}
+                <div class="header__logo">
+                    <a href="{{ path('agent_home') }}">
+                        <img src="images/icon/logo-white.png" alt="CoolAdmin" />
+                    </a>
+                </div>
                 <div class="header__navbar">
                     <ul class="list-unstyled">
                         <li>
-                            <a href="{{ path('recherche_footballer') }}">
-                                <i class="fas fa-user"></i>
-                                <span class="bot-line"></span>Voir les joueurs</a>
+                            <a href="{{ path('agent_messages') }}">
+                                <i class="fas fa-envelope"></i>
+                                <span class="bot-line"></span>Mes messages</a>
                         </li>
                         <li>
                             <a href="{{ path('agent_abonnement') }}">
@@ -23,6 +23,12 @@
                     </ul>
                 </div>
             {% else %}
+
+                <div class="header__logo">
+                    <a href="#">
+                        <img src="images/icon/logo-white.png" alt="CoolAdmin" />
+                    </a>
+                </div>
                 <div class="header__navbar">
                     <ul class="list-unstyled">
                         <li>
@@ -43,90 +49,88 @@
                     </ul>
                 </div>
             {% endif %}
-            {% if not is_granted('ROLE_ADMIN') %}
-            <div class="header__tool">
-                <div class="account-wrap">
-                    <div class="account-item account-item--style2 clearfix js-item-menu">
-                        <div class="image">
-                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                        </div>
-                        <div class="content">
-                            <a class="js-acc-btn" href="#">john doe</a>
-                        </div>
-                        <div class="account-dropdown js-dropdown">
-                            <div class="info clearfix">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h5 class="name">
-                                        <a href="#">john doe</a>
-                                    </h5>
-                                    <span class="email">johndoe@example.com</span>
-                                </div>
+            {% if is_granted('ROLE_AGENT') %}
+                <div class="header__tool">
+                    <div class="account-wrap">
+                        <div class="account-item account-item--style2 clearfix js-item-menu">
+                            <div class="image">
+                                <img src="images/icon/avatar-01.jpg" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
                             </div>
-                            <div class="account-dropdown__body">
-                                <div class="account-dropdown__item">
-                                    <a href="{{ path ("agent_setting") }}">
-                                        <i class="zmdi zmdi-account"></i>Mes informations personelles</a>
-                                </div>
-                                <div class="account-dropdown__item">
-                                    <a href="{{ path ("agent_password") }}">
-                                        <i class="zmdi zmdi-settings"></i>Modifier mon mot de passe</a>
-                                </div>
+                            <div class="content">
+                                <a class="js-acc-btn">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>
                             </div>
-                            <div class="account-dropdown__footer">
-                                <a href="{{ path('logout')}}">
-                                    <i class="zmdi zmdi-power"></i>Déconnexion</a>
+                            <div class="account-dropdown js-dropdown">
+                                <div class="info clearfix">
+                                    <div class="image">
+                                        <img src="images/icon/avatar-01.jpg" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
+                                    </div>
+                                    <div class="content">
+                                        <h5 class="name">
+                                            <a href="#">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>
+                                        </h5>
+                                        <span class="email">{{ app.user.username }}</span>
+                                    </div>
+                                </div>
+                                <div class="account-dropdown__body">
+                                    <div class="account-dropdown__item">
+                                        <a href="{{ path ("agent_setting") }}">
+                                            <i class="zmdi zmdi-account"></i>Mes informations personelles</a>
+                                    </div>
+                                    <div class="account-dropdown__item">
+                                        <a href="{{ path ("agent_password") }}">
+                                            <i class="zmdi zmdi-settings"></i>Modifier mon mot de passe</a>
+                                    </div>
+                                </div>
+                                <div class="account-dropdown__footer">
+                                    <a href="{{ path('logout')}}">
+                                        <i class="zmdi zmdi-power"></i>Déconnexion</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% else %}
-            <div class="header__tool">
-                <div class="account-wrap">
-                    <div class="account-item account-item--style2 clearfix js-item-menu">
-                        <div class="image">
-                            <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                        </div>
-                        <div class="content">
-                            <a class="js-acc-btn" href="#">john doe</a>
-                        </div>
-                        <div class="account-dropdown js-dropdown">
-                            <div class="info clearfix">
-                                <div class="image">
-                                    <a href="#">
-                                        <img src="images/icon/avatar-01.jpg" alt="John Doe" />
-                                    </a>
-                                </div>
-                                <div class="content">
-                                    <h5 class="name">
-                                        <a href="#">john doe</a>
-                                    </h5>
-                                    <span class="email">johndoe@example.com</span>
-                                </div>
+                <div class="header__tool">
+                    <div class="account-wrap">
+                        <div class="account-item account-item--style2 clearfix js-item-menu">
+                            <div class="image">
+                                <img src="images/icon/avatar-01.jpg" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
                             </div>
-                            <div class="account-dropdown__body">
-                                <div class="account-dropdown__item">
-                                    <a href="{{ path ("admin_setting") }}">
-                                        <i class="zmdi zmdi-account"></i>Modifier mon compte</a>
-                                </div>
-                                <div class="account-dropdown__item">
-                                    <a href="{{ path ("admin_password") }}">
-                                        <i class="zmdi zmdi-settings"></i>Modifier mon mot de passe</a>
-                                </div>
+                            <div class="content">
+                                <a class="js-acc-btn" href="#">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>
                             </div>
-                            <div class="account-dropdown__footer">
-                                <a href="{{ path('logout')}}">
-                                    <i class="zmdi zmdi-power"></i>Déconnexion</a>
+                            <div class="account-dropdown js-dropdown">
+                                <div class="info clearfix">
+                                    <div class="image">
+                                        <a href="#">
+                                            <img src="images/icon/avatar-01.jpg" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
+                                        </a>
+                                    </div>
+                                    <div class="content">
+                                        <h5 class="name">
+                                            <a href="#">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>
+                                        </h5>
+                                        <span class="email">johndoe@example.com</span>
+                                    </div>
+                                </div>
+                                <div class="account-dropdown__body">
+                                    <div class="account-dropdown__item">
+                                        <a href="{{ path ("admin_setting") }}">
+                                            <i class="zmdi zmdi-account"></i>Modifier mon compte</a>
+                                    </div>
+                                    <div class="account-dropdown__item">
+                                        <a href="{{ path ("admin_password") }}">
+                                            <i class="zmdi zmdi-settings"></i>Modifier mon mot de passe</a>
+                                    </div>
+                                </div>
+                                <div class="account-dropdown__footer">
+                                    <a href="{{ path('logout')}}">
+                                        <i class="zmdi zmdi-power"></i>Déconnexion</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
             {% endif %}
         </div>
     </div>
@@ -330,21 +334,21 @@
         <div class="account-wrap">
             <div class="account-item account-item--style2 clearfix js-item-menu">
                 <div class="image">
-                    <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                    <img src="images/icon/avatar-01.jpg" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
                 </div>
                 <div class="content">
-                    <a class="js-acc-btn" href="#">john doe</a>
+                    <a class="js-acc-btn" href="#">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>
                 </div>
                 <div class="account-dropdown js-dropdown">
                     <div class="info clearfix">
                         <div class="image">
                             <a href="#">
-                                <img src="images/icon/avatar-01.jpg" alt="John Doe" />
+                                <img src="images/icon/avatar-01.jpg" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
                             </a>
                         </div>
                         <div class="content">
                             <h5 class="name">
-                                <a href="#">john doe</a>
+                                <a href="#">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>
                             </h5>
                             <span class="email">johndoe@example.com</span>
                         </div>

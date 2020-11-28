@@ -1,0 +1,174 @@
+{% extends 'agent/base.html.twig' %}
+    {% block stylesheets %}
+        <link href="{{ asset('agent/search/css/main.css') }}" rel="stylesheet" />
+        <link href="{{ asset('agent/css/messages.css') }}" rel="stylesheet" />
+    {% endblock %}
+{% block body %}
+    <div id="page-contents">
+
+        <div class="page-content--bgf7">
+
+            <!-- WELCOME-->
+            <section class="welcome p-t-10">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="title-4">
+                                Conversations avec les footballeurs
+                            </h1>
+                            <hr class="line-seprate">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END WELCOME-->
+            <!-- STATISTIC-->
+            <section>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="chat-room" style="display:none;">
+                                <div  class="row">
+                                    {% if conversations is empty %}
+                                        <h3>Vous n'avez aucune conversation</h3>
+                                    {% endif %}
+                                    <div class="col-md-4">
+                                        <ul class="nav nav-tabs contact-list scrollbar-wrapper scrollbar-outer">
+                                            {% for conversation in conversations %}
+                                                <li {% if id > 0 and conversation['conversation'].id == id %}class="active"{% endif %}>
+                                                    <a href="#contact-{{ conversation['conversation'].id }}" data-toggle="tab" data-conf="{{ conversation['conversation'].id }}">
+                                                        <div class="contact">
+                                                            <div class="msg-preview">
+                                                                <h6>{{ conversation['participant'].user.name }} {{ conversation['participant'].user.firstName }}</h6>
+                                                                <p class="text-muted"></p>
+                                                                <small class="text-muted"></small>
+                                                                {#                                                        <div class="chat-alert">1</div>#}
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-8">
+                                        {% if conversations is not empty %}
+                                            <!--Chat Messages in Right-->
+                                            <div class="tab-content chat-message scrollbar-wrapper wrapper scrollbar-outer">
+                                                {% for conversation in conversations %}
+                                                    <div class="tab-pane" id="contact-{{ conversation['conversation'].id }}"></div>
+                                                {% endfor %}
+                                                <div class="send-message">
+                                                    <div class="input-group">
+                                                        <form id="form-private-message">
+                                                            <input type="hidden" name="conversation">
+                                                            <input type="text" name="message" class="form-control" placeholder="Envoyer un message">
+                                                            <button>Envoyer</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div><!--Chat Messages in Right End-->
+                                        {% endif %}
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END COPYRIGHT-->
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(function (){
+            $('.contact-list li').removeClass('active');
+            $('.contact-list li:first').addClass('active');
+            $('div[id^=contact-]').removeClass('active');
+            $('div[id^=contact-]:first').addClass('active');
+            $('input[name=conversation]').val($('.contact-list li.active a').attr('data-conf'))
+            $('.contact-list li a').each(function (){
+                var id_conf = $(this).attr('data-conf');
+                var a_this = $(this);
+                //Recup des premiers messages de la premiere conversation
+                $.ajax({
+                    'url' : "{{ path('social_network_get_messages') }}",
+                    'type' : 'POST',
+                    'data' : {'conversation':id_conf},
+                    success : function (serverResponse){
+                        var result = Object.values(serverResponse.result);
+                        if(serverResponse.result != false){
+                            $('#contact-'+id_conf).html('<div class="chat-body"><ul class="chat-message"></ul></div>');
+                            result.forEach(element =>
+                                $('#contact-'+id_conf+' .chat-body .chat-message').append('<li class="'+element.position+'">'+element.photo+'<div class="chat-item"> <div class="chat-item-header"> <h5>'+element.nom+'</h5> <small class="text-muted message-date">'+element.date+'</small> </div> <p class="private-message">'+element.message+'</p> </div></li>')
+                            );
+                            a_this.find('.msg-preview').find('p.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .private-message').last().text());
+                            a_this.find('.msg-preview').find('small.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .message-date').last().text());
+                        }
+                    },
+                    error : function (error){
+                        console.log(error);
+                    },
+                })
+            });
+            $('.chat-room').show();
+            $('.contact-list li a').click(function () {
+                $('.contact-list li').removeClass('active');
+                $(this).addClass('active');
+                $('.chat-message > div').removeClass('active');
+                $($(this).attr('href')).addClass('active');
+                $('input[name=conversation]').val($(this).attr('data-conf'));
+            });
+            $('#form-private-message').submit(function (e) {
+                e.preventDefault();
+                var form = $(this)[0];
+                var formData = new FormData(form);
+                var conversation = $('.contact-list li.active a').attr('data-conf');
+
+                $.ajax({
+                    url : "{{ path('social_network_add_message') }}",
+                    type : 'POST',
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    success : function (serverResponse){
+                        $('#form-private-message input[type=text]').val(" ");
+                    }
+                })
+            })
+
+            //ON INITIALISE L'URL DE MERCURE
+            const url = new URL('{{ mercure_publish_url }}');
+            //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
+            url.searchParams.append('topic', 'http://skillfoot.fr/users/private-message')
+
+            //ECOUTEUR DE LURL DE MERCURE
+            const eventSource = new EventSource(url, { withCredentials: true });
+
+            eventSource.onmessage = e => {
+                var serverResponse = JSON.parse(e.data);
+                if(serverResponse != false){
+                    if(serverResponse.id == {{ app.user.user.id }}) var position = 'right';
+                    else var position = 'left';
+                    $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').append('<li class="'+position+'"><img src="'+serverResponse.photo+'" alt="" class="profile-photo-sm pull-'+position+'"/><div class="chat-item"> <div class="chat-item-header"> <h5>'+serverResponse.nom+'</h5> <small class="text-muted message-date">'+serverResponse.date+'</small> </div> <p class="private-message">'+serverResponse.message+'</p> </div></li>')
+                    $('.contact-list li.active a').attr('data-conf')
+                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
+                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
+                }
+            }
+
+            //Fermer l'event source avant de quitter la page
+            window.onbeforeunload = function(){
+                if(eventSource != null){
+                    eventSource.close()
+                }
+            }
+
+        })
+    </script>
+{% endblock %}
+
+
+

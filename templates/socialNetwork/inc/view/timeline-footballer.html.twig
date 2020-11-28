@@ -6,7 +6,7 @@
             <div class="col-md-3">
                 <div class="profile-info">
                     <div class="img-wrapper-profil-view">
-                        <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.profilPhoto )}}" alt="" class="img-responsive profile-photo" />
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto )}}" alt="" class="img-responsive profile-photo" />
                     </div>
                     {% if footballer.user is not null %}
                         <h3>{{ footballer.user.name }} {{ footballer.user.firstName }}</h3>
@@ -19,13 +19,20 @@
                 <ul class="list-inline profile-menu">
                     <li><a href="{{ path('footballer_view_picture',{id:footballer.id}) }}">Photos</a></li>
                     <li><a href="{{ path('footballer_view_video',{id:footballer.id}) }}">Vidéos</a></li>
-                    {% if footballer.user.account.id != app.user.id %}
-                        <li><a data-toggle="modal" data-target="#send-message">Envoyer un message</a></li>
-                        <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
-                        <li id="add-footballer" style="display: none"><a style="cursor: pointer"  data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
+                    {% if app.user is not null %}
+                        {% if footballer.user.account.id != app.user.id %}
+                            {% if is_granted('ROLE_USER') or is_granted('ROLE_AGENT') %}
+                                <li><a data-toggle="modal" data-target="#send-message">Envoyer un message</a></li>
+                            {% endif %}
+                            {% if is_granted('ROLE_USER') %}
+                                <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
+                                <li id="add-footballer" style="display: none"><a style="cursor: pointer"  data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
+                            {% endif %}
+                        {% endif %}
+                        {% if is_granted('ROLE_USER') %}
+                            <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_view_friends',{id:footballer.id}) }}">{{ footballer.numberFriends }} ami{% if footballer.numberFriends > 1 %}s{% endif %}</a></li>
+                        {% endif %}
                     {% endif %}
-                    <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_view_friends',{id:footballer.id}) }}">{{ footballer.numberFriends }} ami{% if footballer.numberFriends > 1 %}s{% endif %}</a></li>
-
                     <!-- Modal -->
                     <div class="modal fade" id="send-message" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
@@ -37,7 +44,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <form action="{{ path('footballer_social_network_send_message',{id:footballer.id}) }}" method="post">
+                                    <form action="{{ path('social_network_send_message',{id:footballer.id}) }}" method="post">
                                         <input type="text" name="message" required>
                                         <button class="btn btn-primary">Envoyer le message</button>
                                     </form>
@@ -72,7 +79,7 @@
     <!--Timeline Menu for Small Screens-->
     <div class="navbar-mobile hidden-lg hidden-md">
         <div class="profile-info">
-            <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+            <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto )}}" alt="" class="img-responsive profile-photo" />
             {% if footballer.user is not null %}
                 <h4>{{ footballer.user.name }} {{ footballer.user.firstName }}</h4>
             {% endif %}
@@ -82,11 +89,20 @@
             <ul class="list-inline">
                 <li><a href="{{ path('footballer_view_picture',{id:footballer.id}) }}">Photos</a></li>
                 <li><a href="{{ path('footballer_view_video',{id:footballer.id}) }}">Vidéos</a></li>
-                {% if footballer.user.account.id != app.user.id %}
-                    <li><a data-toggle="modal" data-target="#send-message">Envoyer un message</a></li>
-                    <li class="li-blocked"><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
+                {% if app.user is not null %}
+                    {% if footballer.user.account.id != app.user.id %}
+                        {% if is_granted('ROLE_USER') or is_granted('ROLE_AGENT') %}
+                            <li><a data-toggle="modal" data-target="#send-message">Envoyer un message</a></li>
+                        {% endif %}
+                        {% if is_granted('ROLE_USER') %}
+                            <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
+                            <li id="add-footballer" style="display: none"><a style="cursor: pointer"  data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
+                        {% endif %}
+                    {% endif %}
+                    {% if is_granted('ROLE_USER') %}
+                        <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_view_friends',{id:footballer.id}) }}">{{ footballer.numberFriends }} ami{% if footballer.numberFriends > 1 %}s{% endif %}</a></li>
+                    {% endif %}
                 {% endif %}
-                <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_view_friends',{id:footballer.id}) }}">{{ footballer.numberFriends }} ami{% if footballer.numberFriends > 1 %}s{% endif %}</a></li>
             </ul>
         </div>
     </div><!--Timeline Menu for Small Screens End-->

@@ -73,7 +73,9 @@
         $('#cover_photo_footballer_coverPhoto').change(function (){
             $('form[name=cover_photo_footballer]').submit();
         })
-
+        {% if app.user is not null %}
+        {% if app.user.user is not null %}
+        {% if app.user.user.footballer is not null %}
         //REQUETE AJAX POUR RECUPERER LES AMIS CONNECTE
         $.ajax({
             url : "{{ path('footballer_friends_online') }}",
@@ -95,8 +97,6 @@
             }
         })
 
-        {% if app.user.user is not null %}
-        {% if app.user.user.footballer is not null %}
         //ON INITIALISE L'URL DE MERCURE
         const url = new URL('{{ mercure_publish_url }}');
         //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
@@ -153,6 +153,7 @@
             }
         })
 
+        {% endif %}
         {% endif %}
         {% endif %}
         $("#search-footballer").autocomplete({

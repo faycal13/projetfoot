@@ -18,10 +18,10 @@ class ParticipantConversation
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Footballer::class)
+     * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $footballer;
+    private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Conversation::class)
@@ -39,14 +39,14 @@ class ParticipantConversation
         return $this->id;
     }
 
-    public function getFootballer(): ?Footballer
+    public function getUser(): ?User
     {
-        return $this->footballer;
+        return $this->user;
     }
 
-    public function setFootballer(?Footballer $footballer): self
+    public function setUser(?User $user): self
     {
-        $this->footballer = $footballer;
+        $this->user = $user;
 
         return $this;
     }

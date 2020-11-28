@@ -63,6 +63,11 @@ class User
      */
     private $language;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $profilPhoto;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -177,6 +182,18 @@ class User
         if ($footballer->getUser() !== $this) {
             $footballer->setUser($this);
         }
+
+        return $this;
+    }
+
+    public function getProfilPhoto(): ?string
+    {
+        return $this->profilPhoto;
+    }
+
+    public function setProfilPhoto(?string $profilPhoto): self
+    {
+        $this->profilPhoto = $profilPhoto;
 
         return $this;
     }

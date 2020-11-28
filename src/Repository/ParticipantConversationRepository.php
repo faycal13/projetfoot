@@ -23,22 +23,22 @@ class ParticipantConversationRepository extends ServiceEntityRepository
     //  * @return ParticipantConversation[] Returns an array of ParticipantConversation objects
     //  */
 
-    public function getParticipants($footballer)
+    public function getParticipants($user)
     {
         return $this->createQueryBuilder('p')
             ->join('p.conversation', 'c')
-            ->andWhere('p.footballer = :val')
-            ->setParameter('val', $footballer->getId())
+            ->andWhere('p.user = :val')
+            ->setParameter('val', $user->getId())
             ->getQuery()
             ->getResult()
         ;
     }
-    public function getOthersParticipants($footballer, $conversation)
+    public function getOthersParticipants($user, $conversation)
     {
         return $this->createQueryBuilder('p')
             ->join('p.conversation', 'c')
-            ->andWhere('p.footballer != :val')
-            ->setParameter('val', $footballer->getId())
+            ->andWhere('p.user != :val')
+            ->setParameter('val', $user->getId())
             ->andWhere('p.conversation = :conv')
             ->setParameter('conv', $conversation->getId())
             ->getQuery()
@@ -46,12 +46,12 @@ class ParticipantConversationRepository extends ServiceEntityRepository
             ;
     }
 
-    public function getMyParticipation($footballer, $conversation)
+    public function getMyParticipation($user, $conversation)
     {
         return $this->createQueryBuilder('p')
             ->join('p.conversation', 'c')
-            ->andWhere('p.footballer = :val')
-            ->setParameter('val', $footballer->getId())
+            ->andWhere('p.user = :val')
+            ->setParameter('val', $user->getId())
             ->andWhere('p.conversation = :conv')
             ->setParameter('conv', $conversation)
             ->getQuery()
@@ -59,29 +59,17 @@ class ParticipantConversationRepository extends ServiceEntityRepository
             ;
     }
 
-    public function searchParticipation($footballer, $footballer_target)
+    public function searchParticipation($user, $user_target)
     {
         return $this->createQueryBuilder('p')
-            ->andWhere('p.footballer = :val')
-            ->setParameter('val', $footballer->getId())
+            ->andWhere('p.user = :val')
+            ->setParameter('val', $user->getId())
             ->andWhere('p.participants LIKE :participant1')
-            ->setParameter('participant1', '%'.'['.$footballer->getId().']'.'%')
+            ->setParameter('participant1', '%'.'['.$user->getId().']'.'%')
             ->andWhere('p.participants LIKE :participant2')
-            ->setParameter('participant2', '%'.'['.$footballer_target->getId().']'.'%')
+            ->setParameter('participant2', '%'.'['.$user_target->getId().']'.'%')
             ->getQuery()
             ->getResult()
             ;
     }
-
-    /*
-    public function findOneBySomeField($value): ?ParticipantConversation
-    {
-        return $this->createQueryBuilder('p')
-            ->andWhere('p.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

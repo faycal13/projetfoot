@@ -25,11 +25,6 @@ class Footballer
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $profilPhoto;
-
-    /**
      * @ORM\Column(type="text", nullable=true)
      */
     private $goal;
@@ -138,18 +133,6 @@ class Footballer
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getProfilPhoto(): ?string
-    {
-        return $this->profilPhoto;
-    }
-
-    public function setProfilPhoto(?string $profilPhoto): self
-    {
-        $this->profilPhoto = $profilPhoto;
 
         return $this;
     }

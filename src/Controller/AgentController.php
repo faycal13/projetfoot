@@ -7,6 +7,7 @@ use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -23,9 +24,25 @@ class AgentController extends AbstractController
     /**
      * @Route("/agent/rechercheFootballer", name="recherche_footballer")
      */
-    public function recherche()
+    public function recherche(Request $request, EntityManagerInterface $manager)
     {
-        return $this->render('agent/rechercher-footballer.html.twig');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        //Récupération des infos du formulaire
+        $position = $request->request->get('position');
+        $age = $request->request->get('age');
+        $better_foot = $request->request->get('better-foot');
+        $today = new \DateTime();
+        $today_2 = new \DateTime();
+
+        $age_tab = explode('-',$age);
+        $date_min = $today->modify('-'.$age_tab[0].' years');
+        $date_max = $today_2->modify('-'.$age_tab[1].' years');
+
+        $footballers = $footballer_repo->searchFootballersForAgent($position, $date_min, $date_max, $better_foot);
+
+        return $this->render('agent/rechercher-footballer.html.twig',[
+            'footballers' => $footballers
+        ]);
     }
 
     /**
@@ -90,5 +107,41 @@ class AgentController extends AbstractController
     public function paiement()
     {
         return $this->render('agent/pricing.html.twig');
+    }
+
+    /**
+     * @Route("/agent/messages/{id}", name="agent_messages",defaults={"id"=0})
+     */
+    public function messages($id, Request $request, EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager)
+    {
+        $participant_conversations_repo = $manager->getRepository('App:ParticipantConversation');
+        $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
+        $user = $this->getUser()->getUser();
+        //Récupérer de mes participations
+        $participants = $participant_conversations_repo->getParticipants($user);
+        //Récupération des conversations dans lesquelles je participe
+        $other_participants = [];
+        foreach ($participants as $participant) {
+            $all_participant = $participant_conversations_repo->getOthersParticipants($user,$participant->getConversation());
+            foreach ($all_participant as $item) {
+                $other_participants[] = $item;
+            }
+        }
+        $participants = array_merge($participants, $other_participants);
+        $conversations = [];
+
+        foreach ($participants as $participant) {
+            if($participant->getUser()->getId() != $user->getId()){
+                $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($user, $participant);
+                if(is_null($blocked_list_of_footballer)){
+                    $conversations[$participant->getConversation()->getId()]['participant'] = $participant;
+                    $conversations[$participant->getConversation()->getId()]['conversation'] = $participant->getConversation();
+                }
+            }
+        }
+        return $this->render('agent/messages.html.twig',[
+            'conversations' => $conversations,
+            'id' => $id
+        ]);
     }
 }

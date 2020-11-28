@@ -52,8 +52,8 @@ class FootballerController extends AbstractController
      */
     public function formUser(Request $request, EntityManagerInterface $manager)
     {
-        $user_repo = $manager->getRepository('App:User');
         $user = new User();
+        $user->setAccount($this->getUser());
         $form = $this->createForm(UserType::Class, $user);
         return $this->render('socialNetwork/profil/form-user.html.twig',[
             'form' => $form->createView()
@@ -65,14 +65,18 @@ class FootballerController extends AbstractController
      */
     public function formUserSubmission(Request $request, EntityManagerInterface $manager)
     {
-        $user_repo = $manager->getRepository('App:User');
+        $account_repo = $manager->getRepository('App:Account');
         $user = new User();
         $form = $this->createForm(UserType::Class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $today = new \DateTime();
-            $user->setAccount($this->getUser());
+            $account = $account_repo->findOneById($this->getUser()->getId());
+            $phone = $form->getData()->getAccount()->getPhone();
+            $account->setPhone($phone);
             $user->setLastModify($today);
+            $user->setAccount($account);
+            $manager->persist($account);
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Modification effectuée !');
@@ -124,7 +128,7 @@ class FootballerController extends AbstractController
                 $footballer->setProfilPhoto($newFilename);
                 $manager->persist($footballer);
                 $manager->flush();
-                $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
+                $session->set('footballer_profil_photo',$footballer->getUser()->getProfilPhoto());
                 $this->addFlash('success', 'La photo de profil a été mise à jour');
                 return $this->redirectToRoute('footballer_edit_profil');
             }
@@ -188,6 +192,7 @@ class FootballerController extends AbstractController
         $user = $user_repo->findOneByAccount($this->getUser());
         if(is_null($user)){
             $user = new User();
+            $user->setAccount($this->getUser());
         }
         $form = $this->createForm(UserType::Class, $user);
         $form->handleRequest($request);
@@ -447,14 +452,14 @@ class FootballerController extends AbstractController
             $path = '';
             if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
                 isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
-            $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$message->getSender()->getUser()->getAccount()->getId(). '/'.$message->getSender()->getProfilPhoto());
+            $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$message->getSender()->getAccount()->getId(). '/'.$message->getSender()->getProfilPhoto());
 //            $path = $assetsManager->getUrl();
             if(!is_null($message->getMessage())){
                 $message_final .= '<li class="left">
                                 <img src="'.$path.'" alt="" class="profile-photo-sm pull-left" />
                                 <div class="chat-item">
                                     <div class="chat-item-header">
-                                        <h5>'.$message->getSender()->getUser()->getName().' '.$message->getSender()->getUser()->getFirstName().'</h5>
+                                        <h5>'.$message->getSender()->getName().' '.$message->getSender()->getFirstName().'</h5>
                                         <small class="text-muted">'.$date->format('d/m/Y H:i:s').'</small>
                                     </div>
                                     <p>'.$message->getMessage().'</p>
@@ -1116,7 +1121,7 @@ class FootballerController extends AbstractController
             $manager->remove($chatroom_message);
         }
         $private_message_repo = $manager->getRepository('App:PrivateMessage');
-        foreach ($private_message_repo->findBySender($footballer) as $private_message) {
+        foreach ($private_message_repo->findBySender($footballer->getUser()) as $private_message) {
             $manager->remove($private_message);
         }
 

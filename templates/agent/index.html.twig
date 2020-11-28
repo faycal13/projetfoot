@@ -67,36 +67,40 @@
 
             <section>
                 <div class="s012">
-                    <form>
+                    <form method="post" action="{{ path('recherche_footballer') }}">
                         <fieldset>
                             <legend>Trouver des joueurs</legend>
                         </fieldset>
                         <div class="inner-form">
                             <header>
                                 <div class="travel-type-wrap">
-                                    <div class="item active">
+                                    <div class="item">
                                         <div class="group-icon">
                                             <img width="30px" src="{{ asset('agent/search/images/goalkeeper.svg') }}" alt="">
                                         </div>
                                         <span>Gardien de but</span>
+                                        <input type="radio" name="position" required value="Gardien">
                                     </div>
                                     <div class="item">
                                         <div class="group-icon">
                                             <img width="30px" src="{{ asset('agent/search/images/defender.svg') }}" alt="">
                                         </div>
                                         <span>Défenseur</span>
+                                        <input type="radio" name="position" required value="Défenseur">
                                     </div>
                                     <div class="item">
                                         <div class="group-icon">
                                             <img width="30px" src="{{ asset('agent/search/images/midfielder.svg') }}" alt="">
                                         </div>
                                         <span>Milieu de terrain</span>
+                                        <input type="radio" name="position" required value="Milieu">
                                     </div>
                                     <div class="item">
                                         <div class="group-icon">
                                             <img width="30px" src="{{ asset('agent/search/images/forward.svg') }}" alt="">
                                         </div>
                                         <span>Attaquant</span>
+                                        <input type="radio" name="position" required value="Attaquant">
                                     </div>
                                 </div>
                             </header>
@@ -104,10 +108,10 @@
                                 <div class="row second">
                                     <div class="input-wrap">
                                         <div class="input-field">
-                                            <label>Ville</label>
+                                            <label>Localisation</label>
                                             <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="">Marseille</option>
+                                                <select data-trigger="" name="city" required>
+                                                    <option>Marseille</option>
                                                     <option>Paris</option>
                                                     <option>Bordeaux</option>
                                                     <option>Nice</option>
@@ -117,19 +121,17 @@
                                     </div>
                                     <div class="input-wrap">
                                         <div class="input-field">
-                                            <label>Age maximum</label>
+                                            <label>Tranche d'âge</label>
                                             <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="">Pas d'âge maximum</option>
-                                                    <option>10</option>
-                                                    <option>15</option>
-                                                    <option>20</option>
-                                                    <option>25</option>
-                                                    <option>30</option>
-                                                    <option>35</option>
-                                                    <option>40</option>
-                                                    <option>45</option>
-                                                    <option>50</option>
+                                                <select data-trigger="" name="age" required>
+                                                    <option value="15-18">15-18</option>
+                                                    <option value="18-21">18-21</option>
+                                                    <option value="22-25">22-25</option>
+                                                    <option value="25-28">25-28</option>
+                                                    <option value="29-32">29-32</option>
+                                                    <option value="33-36">33-36</option>
+                                                    <option value="37-40">37-40</option>
+                                                    <option value="40-43">40-43</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -138,28 +140,21 @@
                                         <div class="input-field">
                                             <label>Meilleur pied</label>
                                             <div class="input-select">
-                                                <select data-trigger="" name="choices-single-defaul">
-                                                    <option placeholder="">Peu importe</option>
-                                                    <option>Droit</option>
-                                                    <option>Gauche</option>
+                                                <select data-trigger="" name="better-foot">
+                                                    <option value="Droit">Droit</option>
+                                                    <option value="Gauche">Gauche</option>
+                                                    <option value="Les deux">Bon dans les deux</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row third">
-                                    <div class="input-checkbox-group">
-                                        <div class="input-checkbox">
-                                            <input id="yes" type="checkbox" name="customer" value="yes" checked="checked" />
-                                            <label for="yes">Professionnel</label>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="row last">
-                                    <button class="btn-search" type="button">Trouver des joueurs</button>
+                                    <input class="btn-search" type="submit" value="Trouver des joueurs">
                                 </div>
                             </div>
                         </div>
+
                     </form>
                 </div>
             </section>
@@ -195,18 +190,11 @@
         {
             dateFormat: "m/d/y"
         });
-    var btnTypes = document.querySelectorAll('.travel-type-wrap .item')
-    for (var i = 0; i < btnTypes.length; i++)
-    {
-        btnTypes[i].addEventListener('click', function()
-        {
-            for (var i = 0; i < btnTypes.length; i++)
-            {
-                btnTypes[i].classList.remove('active')
-            }
-            btnTypes[i].classList.add('active')
-        })
-    }
+    $('.travel-type-wrap .item').click(function (){
+        $('.travel-type-wrap .item').removeClass('active');
+        $(this).addClass('active');
+        $(this).find('input[type=radio]').prop('checked', true);
+    })
 
 </script>
 {% endblock %}

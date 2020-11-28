@@ -34,7 +34,7 @@ class PrivateMessage
     private $creationDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity=footballer::class, inversedBy="privateMessages")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="privateMessages")
      * @ORM\JoinColumn(nullable=false)
      */
     private $sender;
@@ -80,12 +80,12 @@ class PrivateMessage
         return $this;
     }
 
-    public function getSender(): ?footballer
+    public function getSender(): ?User
     {
         return $this->sender;
     }
 
-    public function setSender(?footballer $sender): self
+    public function setSender(?User $sender): self
     {
         $this->sender = $sender;
 

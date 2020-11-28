@@ -20,7 +20,7 @@
 
             <div class="col-md-9">
                 <ul class="list-inline profile-menu">
-                    <li><a href="{{ path('footballer_social_network_show_conversations') }}">Mes messages</a></li>
+                    <li><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></li>
                     <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
                     <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
                     <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>
@@ -41,7 +41,7 @@
         </div>
         <div class="mobile-menu">
             <ul class="list-inline">
-                <li><a href="{{ path('footballer_social_network_show_conversations') }}">Mes messages</a></li>
+                <li><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></li>
                 <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
                 <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
                 <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>

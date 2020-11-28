@@ -1,0 +1,294 @@
+/*Chat Contact List*/
+
+.chat-room ul.contact-list li{
+    width: 100%;
+    margin-bottom: 0;
+}
+
+.chat-room ul.contact-list li a{
+    border: none;
+    padding: 10px 0;
+}
+
+.chat-room ul.contact-list li a:hover, .chat-room ul.contact-list li a:active, .chat-room ul.contact-list li a:focus{
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+    background: none;
+}
+
+.chat-room ul.contact-list li a .contact{
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.chat-room ul.contact-list li a .contact .msg-preview{
+    margin-left: 50px;
+}
+
+.chat-room ul.contact-list li a .contact .msg-preview .chat-alert{
+    background: red;
+    text-align: center;
+    border-radius: 4px;
+    padding: 1px 6px;
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+    color: #fff;
+}
+
+.chat-room ul.contact-list li a .contact .msg-preview .seen, .replied{
+    color: #939598;
+    position: absolute;
+    right: 10px;
+    bottom: 20px;
+    font-size: 14px;
+}
+
+/*Chat Messages*/
+
+.chat-room .chat-body{
+    height: 700px;
+    overflow-y: auto;
+}
+
+.chat-room .chat-body ul.chat-message{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.chat-room .chat-body ul.chat-message li{
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.chat-room .chat-body ul.chat-message li.left .chat-item{
+    background: rgba(141,198,63, .1);
+    margin-left: 50px;
+    padding: 5px 10px;
+    position: relative;
+    border-radius: 10px;
+}
+
+.chat-room .chat-body ul.chat-message li.left .chat-item::before{
+    border-bottom: 10px solid transparent;
+    border-right: 8px solid rgba(141,198,63, .1);
+    border-top: 10px solid transparent;
+    content: "";
+    height: 0;
+    left: -8px;
+    position: absolute;
+    top: 10px;
+    width: 0;
+}
+
+.chat-room .chat-body ul.chat-message li.left .chat-item .chat-item-header{
+    border-bottom: 1px dotted #caef8e;
+    margin-bottom: 10px;
+}
+
+.chat-room .chat-body ul.chat-message li.right .chat-item{
+    background: rgba(39,170,225, .1);
+    margin-right: 50px;
+    padding: 5px 10px;
+    position: relative;
+    border-radius: 10px;
+}
+
+.chat-room .chat-body ul.chat-message li.right .chat-item::after{
+    border-bottom: 10px solid transparent;
+    border-left: 8px solid rgba(39,170,225, .1);
+    border-top: 10px solid transparent;
+    content: "";
+    height: 0;
+    right: -8px;
+    position: absolute;
+    top: 10px;
+    width: 0;
+}
+
+.chat-room .chat-body ul.chat-message li.right .chat-item .chat-item-header{
+    border-bottom: 1px dotted #bce8f7;
+    margin-bottom: 10px;
+}
+
+.chat-room .chat-body ul.chat-message li .chat-item .chat-item-header h5{
+    color: #4d4d4d;
+}
+
+.chat-room .chat-body ul.chat-message li .chat-item .chat-item-header small{
+    position: absolute;
+    top: 15px;
+    right: 20px;
+}
+
+.chat-room .send-message{
+    background: #f8f8f8;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.chat-room .send-message button{
+    background: #000;
+    color: #fff;
+}
+
+/*CSS for custom scrollbar*/
+
+.scrollbar-wrapper.scrollbar-dynamic {
+    max-height: none;
+}
+.scrollbar-wrapper.tab-content{
+    overflow-y: auto;
+    height: 100%;
+}
+
+.scrollbar-wrapper.contact-list{
+    overflow-y: auto;
+    height: auto;
+    border: none;
+    margin-bottom: 20px;
+}
+
+.scrollbar-wrapper {
+    height: 100%;
+    overflow: auto;
+    width: 100%;
+}
+img.profile-photo{
+    height: 58px;
+    width: 58px;
+    border-radius: 50%;
+}
+
+img.profile-photo-lg{
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+}
+
+img.profile-photo-md{
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+}
+
+img.profile-photo-sm{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+img.profile-photo-xs{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.img-wrapper{
+    position: relative;
+    width: 320px;
+    height: 200px;
+}
+
+.img-wrapper::after{
+    content: "";
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: all 1s ease 0s;
+}
+
+.img-wrapper:hover:after{
+    background-color: rgba(0,0,0, 0.4);
+}
+
+.img-wrapper-profil{
+    position: relative;
+    background-color: white;
+    border-radius: 50%;
+    width: 200px;
+    border: 1px solid;
+    box-shadow: 2px 0px 5px black;
+}
+
+.img-wrapper-profil::after{
+    content: "";
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: all 1s ease 0s;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+.img-wrapper-profil:hover:after{
+    background-color: rgba(0,0,0, 0.4);
+}
+
+
+.img-wrapper-profil-view{
+    position: relative;
+    background-color: white;
+    border-radius: 50%;
+    width: 200px;
+    border: 1px solid;
+    box-shadow: 2px 0px 5px black;
+}
+
+.img-wrapper-profil-view::after{
+    content: "";
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: all 1s ease 0s;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+}
+
+.img-wrapper-cover{
+    position: relative;
+    background-color: white;
+    border: 1px solid;
+}
+
+.img-wrapper-cover::after{
+    content: "";
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: all 1s ease 0s;
+}
+.img-wrapper-cover:hover:after{
+    background-color: rgba(0,0,0, 0.4);
+}
+
+input#profil_photo_footballer_profilPhoto {
+    display: none;
+}
+
+input#cover_photo_footballer_coverPhoto {
+    display: none;
+}
+
+.tab-content > .tab-pane {
+    display: none;
+}
+.tab-content > .active {
+    display: block;
+}

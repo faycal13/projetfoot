@@ -24,7 +24,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Intervention\Image\ImageManagerStatic as Image;
 
-/** @Route("/footballer/view", name="footballer_view_") */
+/** @Route("/footballer-profil", name="footballer_view_") */
 class FootballerViewController extends AbstractController
 {
     /**
@@ -160,29 +160,31 @@ class FootballerViewController extends AbstractController
         $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
         $friends2 = $friends_list_repo->findBy(array('friend' => $footballer, 'accept' => 1));
         $footballeur_repo = $manager->getRepository('App:Footballer');
-        $user = $this->getUser()->getUser();
-        $footballer_current = $footballeur_repo->findOneByUser($user);
         $friends_final = [];
+        if(!is_null($this->getUser())){
+            $user = $this->getUser()->getUser();
+            $footballer_current = $footballeur_repo->findOneByUser($user);
+            $blocked_list_of_footballer = $blocked_list_repo->findByFootballer($footballer_current);
+            $blocked_list_of_footballer2 = $blocked_list_repo->findByFootballer($footballer);
+            $blocked_list_final = array_merge($blocked_list_of_footballer,$blocked_list_of_footballer2);
+            $id_footballer_blocked = [];
+            foreach ($blocked_list_final as $item) {
+                $id_footballer_blocked[] = $item->getTarget()->getId();
+            }
 
-        $blocked_list_of_footballer = $blocked_list_repo->findByFootballer($footballer_current);
-        $blocked_list_of_footballer2 = $blocked_list_repo->findByFootballer($footballer);
-        $blocked_list_final = array_merge($blocked_list_of_footballer,$blocked_list_of_footballer2);
-        $id_footballer_blocked = [];
-        foreach ($blocked_list_final as $item) {
-            $id_footballer_blocked[] = $item->getTarget()->getId();
-        }
+            foreach ($friends as $key => $friend) {
+                if(!in_array($friend->getFriend()->getId(), $id_footballer_blocked)){
+                    $friends_final[] = $friend->getFriend();
+                }
+            }
 
-        foreach ($friends as $key => $friend) {
-            if(!in_array($friend->getFriend()->getId(), $id_footballer_blocked)){
-                $friends_final[] = $friend->getFriend();
+            foreach ($friends2 as $key => $friend2) {
+                if(!in_array($friend2->getFootballer()->getId(), $id_footballer_blocked)) {
+                    $friends_final[] = $friend2->getFootballer();
+                }
             }
         }
 
-        foreach ($friends2 as $key => $friend2) {
-            if(!in_array($friend2->getFootballer()->getId(), $id_footballer_blocked)) {
-                $friends_final[] = $friend2->getFootballer();
-            }
-        }
 
         return count($friends_final);
     }
@@ -198,14 +200,19 @@ class FootballerViewController extends AbstractController
     function checkBlocked($manager, $footballer){
         $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
         $footballeur_repo = $manager->getRepository('App:Footballer');
-        $user = $this->getUser()->getUser();
-        $footballer_current = $footballeur_repo->findOneByUser($user);
-        $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer_current, $footballer);
-        if(!is_null($blocked_list_of_footballer)){
-            return false;
+        if(!is_null($this->getUser()) && !in_array('ROLE_AGENT', $this->getUser()->getRoles())){
+            $user = $this->getUser()->getUser();
+            $footballer_current = $footballeur_repo->findOneByUser($user);
+            $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer_current, $footballer);
+            if(!is_null($blocked_list_of_footballer)){
+                return false;
+            }else{
+                return true;
+            }
         }else{
             return true;
         }
+
     }
 
     public function t($test){

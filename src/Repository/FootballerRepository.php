@@ -35,6 +35,23 @@ class FootballerRepository extends ServiceEntityRepository
             ;
     }
 
+    public function searchFootballersForAgent($position, $date_min, $date_max, $better_foot)
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.user', 'u')
+            ->andWhere('f.position = :position')
+            ->setParameter('position', $position)
+            ->andWhere('f.betterFoot = :betterFoot')
+            ->setParameter('betterFoot', $better_foot)
+            ->andWhere('u.dateOfBirth <= :date_min')
+            ->setParameter('date_min', $date_min->format('Y-m-d'))
+            ->andWhere('u.dateOfBirth >= :date_max')
+            ->setParameter('date_max', $date_max->format('Y-m-d'))
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
     /*
     public function findOneBySomeField($value): ?Footballer
     {

@@ -64,6 +64,8 @@ class SecurityController extends AbstractController
             $account->setPassword($hash);
             $account->setRoles($role);
             $account->setCreationDate($today);
+            $account->setOnline(0);
+            $account->setIsDelete(0);
             $manager->persist($account);
             $manager->flush();
             // ... perform some action, such as saving the task to the database
@@ -109,7 +111,7 @@ class SecurityController extends AbstractController
 
                     $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
                     $friends_2 = $friends_list_repo->findBy(array('friend' => $footballer, 'accept' => 1));
-                    $session->set('footballer_profil_photo',$footballer->getProfilPhoto());
+                    $session->set('footballer_profil_photo',$footballer->getUser()->getProfilPhoto());
                     $session->set('footballer_cover_photo',$footballer->getCoverPhoto());
                     $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer)));
                     $session->set('footballer_id',$footballer->getId());
