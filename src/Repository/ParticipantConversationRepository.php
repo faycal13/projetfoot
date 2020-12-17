@@ -29,6 +29,7 @@ class ParticipantConversationRepository extends ServiceEntityRepository
             ->join('p.conversation', 'c')
             ->andWhere('p.user = :val')
             ->setParameter('val', $user->getId())
+            ->orderBy('p.modifiedAt', 'DESC')
             ->getQuery()
             ->getResult()
         ;

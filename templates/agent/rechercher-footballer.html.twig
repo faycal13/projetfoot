@@ -39,7 +39,11 @@
                             <div class="single-portfolio col-sm-2 all corporate">
                                 <a href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}">
                                     <div class="item">
-                                        <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto) }}">
+                                        {% if app.session.get('footballer_profil_photo') is not null %}
+                                            <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto) }}">
+                                        {% else %}
+                                            <img src="{{ asset('img/default/profil-footballer.png') }}"/>
+                                        {% endif %}
                                         <div class="p-inner">
                                             <h4>{{ footballer.user.name }} {{ footballer.user.firstName }}</h4>
                                         </div>

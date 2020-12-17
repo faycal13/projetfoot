@@ -103,6 +103,10 @@ class SocialNetworkController extends AbstractController
             $participation = $participant_conversations_repo->getMyParticipation($user, $conversation_id);
             $conversation = $conversation_repo->findOneById($conversation_id);
             if(!is_null($participation)){
+                //MAJ de la date de participation
+                $participation->setModifiedAt((new \DateTime()));
+                $manager->persist($participation);
+
                 //Ajouter un message
                 $private_message = new PrivateMessage();
                 $private_message->setMessage($message);
@@ -151,6 +155,7 @@ class SocialNetworkController extends AbstractController
                 $participation = new ParticipantConversation();
                 $participation->setConversation($conversation);
                 $participation->setUser($user);
+                $participation->setModifiedAt((new \DateTime()));
                 $participation->setParticipants(['['.$user->getId().']','['.$footballer_target->getUser()->getId().']']);
                 $manager->persist($participation);
                 $manager->flush();
@@ -159,6 +164,7 @@ class SocialNetworkController extends AbstractController
                 $participation = new ParticipantConversation();
                 $participation->setConversation($conversation);
                 $participation->setUser($footballer_target->getUser());
+                $participation->setModifiedAt((new \DateTime()));
                 $participation->setParticipants(['['.$user->getId().']','['.$footballer_target->getUser()->getId().']']);
                 $manager->persist($participation);
                 $manager->flush();
@@ -224,6 +230,7 @@ class SocialNetworkController extends AbstractController
         $path .= $assetsManager->getUrl('/img/user/photo-profil/' .$user->getAccount()->getId(). '/'.$user->getProfilPhoto());
         return $path;
     }
+
     public function t($test){
         dump($test);
         die();

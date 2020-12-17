@@ -24,9 +24,11 @@
     <link rel="shortcut icon" type="image/png" href="images/fav.png"/>
 </head>
 <body>
+{% if is_granted('ROLE_USER') %}
 {{ render(controller(
     'App\\Controller\\FootballerController::formUser'
 )) }}
+{% endif %}
 
 <!--preloader-->
 {#<div id="spinner-wrapper">#}
@@ -181,9 +183,9 @@
             }
         });
 
-        $("#search-footballer").autocomplete({
+        $("#search-footballer-no-found").autocomplete({
             source: function( request, response ) {
-                $.ajax({
+                $.ajax( {
                     url: "{{ path('footballer_search_footballer') }}",
                     type: "POST",
                     dataType: "json",
@@ -195,7 +197,7 @@
                         response(results.slice(0, 10));
                         // response( data );
                     }
-                });
+                } );
             },
             minLength: 2,
             select: function( event, ui ) {

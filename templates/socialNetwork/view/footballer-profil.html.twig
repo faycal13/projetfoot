@@ -44,7 +44,13 @@
                 <h3>Quel est votre poste ?</h3>
                 <p>{{ footballer.position }}</p>
                 <h3>Quel est votre meilleur pied ?</h3>
-                <p>{{ footballer.betterFoot }}</p>
+                {% if footballer.betterFoot == 'D' %}
+                  <p>Droit</p>
+                {% elseif footballer.betterFoot == 'G' %}
+                  <p>Gauche</p>
+                {% else %}
+                  <p>Les deux</p>
+                {% endif %}
               </div>
             </div>
           </div>

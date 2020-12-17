@@ -33,7 +33,7 @@ class FootballerType extends AbstractType
             ->add('position', ChoiceType::class, [
                 'choices'  => [
                     'Gardien' => 'Gardien',
-                    'Défenseur' => 'Défenseur',
+                    'Défenseur' => 'Defenseur',
                     'Milieu' => 'Milieu',
                     'Attaquant' => 'Attaquant',
                 ],
@@ -41,9 +41,9 @@ class FootballerType extends AbstractType
             ])
             ->add('betterFoot', ChoiceType::class, [
                 'choices'  => [
-                    'Droit' => 'Droit',
-                    'Gauche' => 'Gauche',
-                    'Les deux' => 'Les deux',
+                    'Droit' => 'D',
+                    'Gauche' => 'G',
+                    'Les deux' => 'DG',
                 ],
                 'required' => true
             ])

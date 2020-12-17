@@ -1442,12 +1442,6 @@ ul.online-users li span.online-dot{
     margin-left: 50px;
 }
 
-.chat-room ul.contact-list li a .contact .msg-preview small{
-    position: absolute;
-    top: 20px;
-    right: 10px;
-}
-
 .chat-room ul.contact-list li a .contact .msg-preview .chat-alert{
     background: red;
     text-align: center;
@@ -1470,7 +1464,7 @@ ul.online-users li span.online-dot{
 /*Chat Messages*/
 
 .chat-room .chat-body{
-    height: 700px;
+    height: 400px;
     overflow-y: auto;
 }
 
@@ -2795,9 +2789,6 @@ ul.contact li i{
 @import url('https://fonts.googleapis.com/css?family=Lato:300');
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 
-#popupfriendsonline{
-    height: 100%;
-}
 /* type treatment */
 #call-us-cta {
     position: fixed;
@@ -2811,7 +2802,7 @@ ul.contact li i{
     box-shadow: 0px 11px 21px 0px rgba(0,0,0,0.32);
     height: 90%;
     overflow-y: scroll;
-    width: 290px;
+    width: 240px;
 }
 
 #call-us-cta::-webkit-scrollbar {

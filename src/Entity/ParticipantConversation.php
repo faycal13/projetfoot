@@ -34,6 +34,11 @@ class ParticipantConversation
      */
     private $participants;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $modifiedAt;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -71,6 +76,18 @@ class ParticipantConversation
     public function setParticipants(array $participants): self
     {
         $this->participants = $participants;
+
+        return $this;
+    }
+
+    public function getModifiedAt(): ?\DateTimeInterface
+    {
+        return $this->modifiedAt;
+    }
+
+    public function setModifiedAt(\DateTimeInterface $modifiedAt): self
+    {
+        $this->modifiedAt = $modifiedAt;
 
         return $this;
     }

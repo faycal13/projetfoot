@@ -1,4 +1,8 @@
+{% if app.session.get('footballer_cover_photo') is not null %}
 <div class="timeline-cover" style="background: url('{{ asset(footballer_photo_cover_directory~'/'~app.user.id~'/'~app.session.get('footballer_cover_photo')) }}') no-repeat;background-position: center;background-size: cover;">
+    {% else %}
+    <div class="timeline-cover" style="background: url('{{ asset('img/default/cover-footballer.png') }}') nreo-repeat;background-position: center;background-size: cover;">
+    {% endif %}
     <button class="btn cover-photo-button" style="position: absolute;right: 20px;top: 20px;">Modifier ma photo de couverture</button>
 
     <!--Timeline Menu for Large Screens-->
@@ -7,7 +11,11 @@
             <div class="col-md-3">
                 <div class="profile-info">
                     <div class="img-wrapper-profil">
-                        <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+                        {% if app.session.get('footballer_profil_photo') is not null %}
+                            <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+                        {% else %}
+                            <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="img-responsive profile-photo" />
+                        {% endif %}
                     </div>
                     {{ render(controller(
                         'App\\Controller\\FootballerController::footballerProfilPhoto'
@@ -35,7 +43,7 @@
         <div class="profile-info">
             <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
             {% if app.user.user is not null %}
-            <h4>{{ app.user.user.name }} {{ app.user.user.firstName }}</h4>
+                <h4>{{ app.user.user.name }} {{ app.user.user.firstName }}</h4>
             {% endif %}
             <p class="text-muted">Footballeur</p>
         </div>

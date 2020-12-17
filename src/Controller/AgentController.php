@@ -119,6 +119,7 @@ class AgentController extends AbstractController
         $user = $this->getUser()->getUser();
         //Récupérer de mes participations
         $participants = $participant_conversations_repo->getParticipants($user);
+
         //Récupération des conversations dans lesquelles je participe
         $other_participants = [];
         foreach ($participants as $participant) {
@@ -127,6 +128,7 @@ class AgentController extends AbstractController
                 $other_participants[] = $item;
             }
         }
+
         $participants = array_merge($participants, $other_participants);
         $conversations = [];
 
@@ -139,9 +141,19 @@ class AgentController extends AbstractController
                 }
             }
         }
+
         return $this->render('agent/messages.html.twig',[
             'conversations' => $conversations,
             'id' => $id
         ]);
+    }
+
+    public function t($test){
+        dump($test);
+        die();
+    }
+
+    public function v($test){
+        dump($test);
     }
 }

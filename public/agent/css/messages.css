@@ -48,7 +48,7 @@
 /*Chat Messages*/
 
 .chat-room .chat-body{
-    height: 700px;
+    height: 400px;
     overflow-y: auto;
 }
 
