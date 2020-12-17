@@ -8,4 +8,5 @@ twig:
         footballer_photo_cover_directory: 'img/footballer/photo-cover/'
         footballer_chatroom_directory: 'img/footballer/chatroom/'
         footballer_video_directory: 'video/footballer/'
+        agent_photo_profil_directory: 'img/agent/photo/'
         mercure_publish_url: '%env(MERCURE_PUBLISH_URL)%'

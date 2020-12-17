@@ -17,7 +17,7 @@
             <div class="row d-flex">
                 <div class="col-md-12">
                     <h1 class="title-4">
-                        Mes informations personnelles
+                        Changer ma photo de profil
                     </h1>
                     <hr class="line-seprate">
                     {% for message in app.flashes('success') %}
@@ -32,26 +32,12 @@
                     {% endfor %}
                     <div class="edit-block">
                         {{ form_start(form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}
-                        <div class="row flex-column">
-                            <label>Nom</label>
-                            {{ form_row(form.name, {'label': false,'attr': {'placeholder': 'Nom', 'class': ''}}) }}
-
-                            <label>Prénom</label>
-                            {{ form_row(form.firstName, {'label': false,'attr': {'placeholder': 'Prénom', 'class': ''}}) }}
-
-                            <label>Date de naissance</label>
-                            {{ form_row(form.dateOfBirth, {'label': false,'attr': {'placeholder': 'Date de naissance', 'class': ''}}) }}
-
-                            <label>Téléphone</label>
-                            {{ form_row(form.account.phone, {'label': false,'attr': {'placeholder': 'Téléphone', 'class': ''}}) }}
-
-                            <label>Sexe</label>
-                            {{ form_row(form.sexe, {'label': false,'attr': {'placeholder': 'Sexe', 'class': ''}}) }}
-
-                            <button class="btn btn-primary">Enregistrer</button>
-                        </div>
+                            <div class="row flex-column">
+                                <label>Photo de profil</label>
+                                {{ form_row(form.photoProfil, {'label': false,'attr': {'placeholder': 'Photo', 'class': ''}}) }}
+                                <button class="btn btn-primary">Enregistrer</button>
+                            </div>
                         {{ form_end(form) }}
-
                     </div>
                 </div>
 

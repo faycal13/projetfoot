@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserPhotoType;
 use App\Form\UserType;
 use Doctrine\ORM\EntityManagerInterface;
+use Intervention\Image\ImageManagerStatic as Image;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mercure\PublisherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -16,9 +19,20 @@ class AgentController extends AbstractController
     /**
      * @Route("/agent/home", name="agent_home")
      */
-    public function index()
+    public function index(Request $request, EntityManagerInterface $manager)
     {
-        return $this->render('agent/index.html.twig');
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $gardien = $footballer_repo->findBy(['position' => 'Gardien']);
+        $defenseur = $footballer_repo->findBy(['position' => 'Defenseur']);
+        $milieu = $footballer_repo->findBy(['position' => 'Milieu']);
+        $attaquant = $footballer_repo->findBy(['position' => 'Attaquant']);
+
+        return $this->render('agent/index.html.twig',[
+            'gardien' => count($gardien),
+            'defenseur' => count($defenseur),
+            'milieu' => count($milieu),
+            'attaquant' => count($attaquant),
+        ]);
     }
 
     /**
@@ -64,9 +78,47 @@ class AgentController extends AbstractController
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Modification effectuée !');
-
         }
         return $this->render('agent/setting.html.twig',[
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/agent/setting-photo", name="agent_setting_photo")
+     */
+    public function settingPhoto(Request $request, EntityManagerInterface $manager)
+    {
+        $user_repo = $manager->getRepository('App:User');
+        $user = $user_repo->findOneByAccount($this->getUser());
+        if(is_null($user)){
+            $user = new User();
+        }
+
+        $form = $this->createForm(UserPhotoType::Class, $user);
+        $form->handleRequest($request);
+        $session = $this->get('session');
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $photo = $form->get('photoProfil')->getData();
+
+            if ($photo) {
+                $filesystem = new Filesystem();
+                $filesystem->remove($this->getParameter('agent_photo_profil_directory'). '/' .$this->getUser()->getId());
+                $newFilename = $this->uploadFile($photo, 'agent_photo_profil_directory', 200);
+                $user->setProfilPhoto($newFilename);
+                $manager->persist($user);
+                $manager->flush();
+                $session->set('footballer_profil_photo',$user->getProfilPhoto());
+                $this->addFlash('success', 'La photo de profil a été mise à jour');
+
+                return $this->render('agent/setting-photo.html.twig',[
+                    'form' => $form->createView()
+                ]);
+            }
+        }
+
+        return $this->render('agent/setting-photo.html.twig',[
             'form' => $form->createView()
         ]);
     }
@@ -146,6 +198,52 @@ class AgentController extends AbstractController
             'conversations' => $conversations,
             'id' => $id
         ]);
+    }
+
+    private function uploadFile($photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){
+        $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
+        // this is needed to safely include the file name as part of the URL
+        $safeFilename = transliterator_transliterate('Any-Latin; Latin-ASCII; [^A-Za-z0-9_] remove; Lower()', $originalFilename);
+        $newFilename = $safeFilename . '-' . uniqid() . '.' . $photo->guessExtension();
+        // Move the file to the directory where photo are stored
+        try {
+            $filesystem = new Filesystem();
+            $photo->move(
+                $this->getParameter($photo_directory). '/' .$this->getUser()->getId(),
+                $newFilename
+            );
+
+            if($width > 0){
+                $manager_picture = Image::make($this->getParameter($photo_directory) . '/' .$this->getUser()->getId(). '/' .$newFilename);
+                // to finally create image instances
+                $manager_picture->resize($width, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
+                $manager_picture->save($this->getParameter($photo_directory) . '/' .$this->getUser()->getId(). '/' . $newFilename);
+
+                if(!is_null($photo_compress_directory)){
+                    $filesystem->copy(
+                        $this->getParameter($photo_directory).'/' .$this->getUser()->getId(). '/'.$newFilename,
+                        $this->getParameter($photo_compress_directory).'/' .$this->getUser()->getId(). '/'.$newFilename
+                    );
+                    //http://image.intervention.io/api/resize
+                    $manager_picture2 = Image::make($this->getParameter($photo_compress_directory) . '/' .$this->getUser()->getId(). '/' . $newFilename);
+                    $manager_picture2->resize($width_compressed, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+
+                    $manager_picture2->save($this->getParameter($photo_compress_directory) . '/' .$this->getUser()->getId(). '/' . $newFilename);
+                }
+            }
+
+
+            return $newFilename;
+
+
+        } catch (FileException $e) {
+            // ... handle exception if something happens during file upload
+        }
     }
 
     public function t($test){

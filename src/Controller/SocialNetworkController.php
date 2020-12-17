@@ -81,6 +81,7 @@ class SocialNetworkController extends AbstractController
                 $path = $this->getProfilPhoto($assetsManager, $message->getSender());
                 $final_message[$key]['photo'] = '<img src="'.$path.'" alt="" class="profile-photo-sm pull-'.$final_message[$key]['position'].'"/>';
             }
+
             return new JsonResponse(['result' => $final_message]);
         }
 
@@ -227,7 +228,20 @@ class SocialNetworkController extends AbstractController
             isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) {
             $path = $this->getParameter('url_dev');
         }
-        $path .= $assetsManager->getUrl('/img/user/photo-profil/' .$user->getAccount()->getId(). '/'.$user->getProfilPhoto());
+        if(in_array('ROLE_AGENT', $user->getAccount()->getRoles())){
+            if(!is_null($user->getProfilPhoto())){
+                $path .= $assetsManager->getUrl('/img/agent/photo/' .$user->getAccount()->getId(). '/'.$user->getProfilPhoto());
+            }else{
+                $path .= $assetsManager->getUrl('/img/default/profil-footballer.png');
+            }
+        }else{
+            if(!is_null($user->getProfilPhoto())) {
+                $path .= $assetsManager->getUrl('/img/user/photo/' . $user->getAccount()->getId() . '/' . $user->getProfilPhoto());
+            }
+            else{
+                $path .= $assetsManager->getUrl('/img/default/profil-agent.png');
+            }
+        }
         return $path;
     }
 

@@ -1,7 +1,7 @@
 {% if app.session.get('footballer_cover_photo') is not null %}
 <div class="timeline-cover" style="background: url('{{ asset(footballer_photo_cover_directory~'/'~app.user.id~'/'~app.session.get('footballer_cover_photo')) }}') no-repeat;background-position: center;background-size: cover;">
     {% else %}
-    <div class="timeline-cover" style="background: url('{{ asset('img/default/cover-footballer.png') }}') nreo-repeat;background-position: center;background-size: cover;">
+    <div class="timeline-cover" style="background: url('{{ asset('img/default/cover-footballer.png') }}') no-repeat;background-position: center;background-size: cover;">
     {% endif %}
     <button class="btn cover-photo-button" style="position: absolute;right: 20px;top: 20px;">Modifier ma photo de couverture</button>
 

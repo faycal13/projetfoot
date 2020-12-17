@@ -54,7 +54,11 @@
                     <div class="account-wrap">
                         <div class="account-item account-item--style2 clearfix js-item-menu">
                             <div class="image">
-                                <img src="images/icon/avatar-01.jpg" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
+                                {% if app.user.user is not null %}
+                                <img src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
+                                    {% else %}
+                                        <img src="{{ asset('img/default/profil-agent.png') }}" alt="" class="img-responsive profile-photo" />
+                                {% endif %}
                             </div>
                             <div class="content">
                                 <a class="js-acc-btn">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>
@@ -62,7 +66,7 @@
                             <div class="account-dropdown js-dropdown">
                                 <div class="info clearfix">
                                     <div class="image">
-                                        <img src="images/icon/avatar-01.jpg" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
+                                        <img src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
                                     </div>
                                     <div class="content">
                                         <h5 class="name">
@@ -73,6 +77,10 @@
                                 </div>
                                 <div class="account-dropdown__body">
                                     <div class="account-dropdown__item">
+                                        <a href="{{ path ("agent_setting_photo") }}">
+                                            <i class="zmdi zmdi-camera"></i>Changer ma photo de profil</a>
+                                    </div>
+                                    <div class="account-dropdown__item">
                                         <a href="{{ path ("agent_setting") }}">
                                             <i class="zmdi zmdi-account"></i>Mes informations personelles</a>
                                     </div>
@@ -82,8 +90,7 @@
                                     </div>
                                 </div>
                                 <div class="account-dropdown__footer">
-                                    <a href="{{ path('logout')}}">
-                                        <i class="zmdi zmdi-power"></i>Déconnexion</a>
+                                    <a href="{{ path('logout')}}"><i class="zmdi zmdi-power"></i>Déconnexion</a>
                                 </div>
                             </div>
                         </div>

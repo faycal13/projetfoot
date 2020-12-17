@@ -1195,7 +1195,6 @@ class FootballerController extends AbstractController
         }
     }
 
-
     public function t($test){
         dump($test);
         die();
