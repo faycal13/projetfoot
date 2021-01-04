@@ -85,7 +85,7 @@
                       </div>
                     </div>
                     <div class="media-grid">
-                      <div class="img-wrapper" data-toggle="modal" data-target="#modal-{{ video.id }}">
+                      <div>
                         {% if video.internalLink is not null %}
                         <video controls width="320" height="200">
                           <source src="{{ asset(footballer_video_directory~'/'~app.user.id~'/'~video.internalLink) }}" type="video/mp4">
@@ -95,32 +95,32 @@
                         {% endif %}
                       </div>
 
-                      <!--Popup-->
-                      <div class="modal fade" id="modal-{{ video.id }}" tabindex="-{{ video.id }}" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                          <div class="modal-content">
-                            <div class="post-content">
-                              <div class="post-container">
-                                <div class="post-detail">
-                                  <div class="user-info">
-                                    <h5>{{ video.title }}</h5>
-                                    <p class="text-muted">{{ video.description }}</p>
-                                  </div>
-                                </div>
-                                <div class="video-wrapper">
-                                  {% if video.internalLink is not null %}
-                                  <video controls>
-                                    <source src="{{ asset(footballer_video_directory~'/'~app.user.id~'/'~video.internalLink) }}" type="video/mp4">
-                                  </video>
-                                  {% else %}
-                                    <iframe width="800" height="450" src="//{{ video.externalLink }}" allowfullscreen></iframe>
-                                  {% endif %}
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div><!--Popup End-->
+{#                      <!--Popup-->#}
+{#                      <div class="modal fade" id="modal-{{ video.id }}" tabindex="-{{ video.id }}" role="dialog" aria-hidden="true">#}
+{#                        <div class="modal-dialog modal-lg">#}
+{#                          <div class="modal-content">#}
+{#                            <div class="post-content">#}
+{#                              <div class="post-container">#}
+{#                                <div class="post-detail">#}
+{#                                  <div class="user-info">#}
+{#                                    <h5>{{ video.title }}</h5>#}
+{#                                    <p class="text-muted">{{ video.description }}</p>#}
+{#                                  </div>#}
+{#                                </div>#}
+{#                                <div class="video-wrapper">#}
+{#                                  {% if video.internalLink is not null %}#}
+{#                                  <video controls>#}
+{#                                    <source src="{{ asset(footballer_video_directory~'/'~app.user.id~'/'~video.internalLink) }}" type="video/mp4">#}
+{#                                  </video>#}
+{#                                  {% else %}#}
+{#                                    <iframe src="//{{ video.externalLink }}" allowfullscreen></iframe>#}
+{#                                  {% endif %}#}
+{#                                </div>#}
+{#                              </div>#}
+{#                            </div>#}
+{#                          </div>#}
+{#                        </div>#}
+{#                      </div><!--Popup End-->#}
 
                     </div>
                   </div>

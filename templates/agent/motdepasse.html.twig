@@ -32,25 +32,20 @@
                         </div>
                     {% endfor %}
                 </div>
-                <div class="edit-block">
-                    <form id="education" action="{{ path('agent_password') }}" class="form-inline" method="post">
-                        <div class="row flex-column">
-                            <div class="form-group">
-                                <label for="my-mot-de-passe">Ancien mot de passe</label>
-                                <input id="my-mot-de-passe" class="form-control input-group-lg" type="password" name="old-password" title="Enter mot de passe" placeholder="Ancien mot de passe"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Nouveau mot de passe</label>
-                                <input class="form-control input-group-lg" type="password" name="new-password" title="Entrer votre nouveau mot de passe" placeholder="Nouveau mot de passe"/>
-                            </div>
-                            <div class="form-group">
-                                <label>Confirmez votre nouveau mot de passe</label>
-                                <input class="form-control input-group-lg" type="password" name="confirm-new-password" title="Confirmez votre mot de passe" placeholder="Confirmez votre nouveau mot de passe"/>
-                            </div>
+                <div class="col-md-12">
+                    <form id="education" action="{{ path('agent_password') }}" method="post">
+                        <div class="col-md-12 flex-column">
+                            <label for="my-mot-de-passe">Ancien mot de passe</label>
+                            <input id="my-mot-de-passe" class="form-control input-group-lg" type="password" name="old-password" title="Enter mot de passe" placeholder="Ancien mot de passe"/>
+                            <label>Nouveau mot de passe</label>
+                            <input class="form-control input-group-lg" type="password" name="new-password" title="Entrer votre nouveau mot de passe" placeholder="Nouveau mot de passe"/>
+                            <label>Confirmez votre nouveau mot de passe</label>
+                            <input class="form-control input-group-lg" type="password" name="confirm-new-password" title="Confirmez votre mot de passe" placeholder="Confirmez votre nouveau mot de passe"/>
+                            <br>
                             <button name="button-password" class="btn btn-primary">Modifier le mot de passe</button>
+
                         </div>
                         <div class="row">
-
                         </div>
                     </form>
                 </div>
@@ -59,33 +54,4 @@
     </section>
 {% endblock %}
 {% block javascripts %}
-<script src="{{ asset('agent/search/js/extention/choices.js') }}"></script>
-<script>
-    const choices = new Choices('[data-trigger]',
-        {
-            searchEnabled: false,
-            itemSelectText: '',
-        });
-
-</script>
-<script src="{{ asset('agent/search/js/extention/flatpickr.js') }}"></script>
-<script>
-    flatpickr(".datepicker",
-        {
-            dateFormat: "m/d/y"
-        });
-    var btnTypes = document.querySelectorAll('.travel-type-wrap .item')
-    for (var i = 0; i < btnTypes.length; i++)
-    {
-        btnTypes[i].addEventListener('click', function()
-        {
-            for (var i = 0; i < btnTypes.length; i++)
-            {
-                btnTypes[i].classList.remove('active')
-            }
-            btnTypes[i].classList.add('active')
-        })
-    }
-
-</script>
 {% endblock %}

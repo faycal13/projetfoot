@@ -3,198 +3,239 @@
     <link href="{{ asset('agent/search/css/main.css') }}" rel="stylesheet" />
 {% endblock %}
 {% block body %}
-        <!-- PAGE CONTENT-->
-        <div class="page-content--bgf7">
+    <!-- PAGE CONTENT-->
+    <div class="page-content--bgf7">
 
-            <!-- WELCOME-->
-            <section class="welcome p-t-10">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h1 class="title-4">
-                                Espace agent de joueur et club
-                            </h1>
-                            <hr class="line-seprate">
-                        </div>
+        <!-- WELCOME-->
+        <section class="welcome p-t-10">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="title-4">
+                            Espace agent de joueur et club
+                        </h1>
+                        <hr class="line-seprate">
                     </div>
                 </div>
-            </section>
-            <!-- END WELCOME-->
+            </div>
+        </section>
+        <!-- END WELCOME-->
 
-            <!-- STATISTIC-->
-            <section class="statistic statistic2">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 col-lg-3">
-                            <div class="statistic__item statistic__item--green">
-                                <h2 class="number">{{ gardien }}</h2>
-                                <span class="desc">Gardien</span>
-                                <div class="icon">
-                                    <i class="zmdi zmdi-account-o"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="statistic__item statistic__item--orange">
-                                <h2 class="number">{{ defenseur }}</h2>
-                                <span class="desc">Défenseur</span>
-                                <div class="icon">
-                                    <i class="zmdi zmdi-account-o"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="statistic__item statistic__item--blue">
-                                <h2 class="number">{{ milieu }}</h2>
-                                <span class="desc">Milieu</span>
-                                <div class="icon">
-                                    <i class="zmdi zmdi-account-o"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-lg-3">
-                            <div class="statistic__item statistic__item--red">
-                                <h2 class="number">{{ attaquant }}</h2>
-                                <span class="desc">Attaquant</span>
-                                <div class="icon">
-                                    <i class="zmdi zmdi-account-o"></i>
-                                </div>
+        <!-- STATISTIC-->
+        <section class="statistic statistic2">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-lg-3">
+                        <div class="statistic__item statistic__item--green">
+                            <h2 class="number">{{ gardien }}</h2>
+                            <span class="desc">Gardien</span>
+                            <div class="icon">
+                                <i class="zmdi zmdi-account-o"></i>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <section>
-                <div class="s012">
-                    <form method="post" action="{{ path('recherche_footballer') }}">
-                        <fieldset>
-                            <legend>Trouver des joueurs</legend>
-                        </fieldset>
-                        <div class="inner-form">
-                            <header>
-                                <div class="travel-type-wrap">
-                                    <div class="item">
-                                        <div class="group-icon">
-                                            <img width="30px" src="{{ asset('agent/search/images/goalkeeper.svg') }}" alt="">
-                                        </div>
-                                        <span>Gardien de but</span>
-                                        <input type="radio" name="position" required value="Gardien">
-                                    </div>
-                                    <div class="item">
-                                        <div class="group-icon">
-                                            <img width="30px" src="{{ asset('agent/search/images/defender.svg') }}" alt="">
-                                        </div>
-                                        <span>Défenseur</span>
-                                        <input type="radio" name="position" required value="Défenseur">
-                                    </div>
-                                    <div class="item">
-                                        <div class="group-icon">
-                                            <img width="30px" src="{{ asset('agent/search/images/midfielder.svg') }}" alt="">
-                                        </div>
-                                        <span>Milieu de terrain</span>
-                                        <input type="radio" name="position" required value="Milieu">
-                                    </div>
-                                    <div class="item">
-                                        <div class="group-icon">
-                                            <img width="30px" src="{{ asset('agent/search/images/forward.svg') }}" alt="">
-                                        </div>
-                                        <span>Attaquant</span>
-                                        <input type="radio" name="position" required value="Attaquant">
-                                    </div>
-                                </div>
-                            </header>
-                            <div class="main-form" id="main-form">
-                                <div class="row second">
-                                    <div class="input-wrap">
-                                        <div class="input-field">
-                                            <label>Localisation</label>
-                                            <div class="input-select">
-                                                <select data-trigger="" name="city" required>
-                                                    <option>Marseille</option>
-                                                    <option>Paris</option>
-                                                    <option>Bordeaux</option>
-                                                    <option>Nice</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="input-wrap">
-                                        <div class="input-field">
-                                            <label>Tranche d'âge</label>
-                                            <div class="input-select">
-                                                <select data-trigger="" name="age" required>
-                                                    <option value="15-18">15-18</option>
-                                                    <option value="18-21">18-21</option>
-                                                    <option value="22-25">22-25</option>
-                                                    <option value="25-28">25-28</option>
-                                                    <option value="29-32">29-32</option>
-                                                    <option value="33-36">33-36</option>
-                                                    <option value="37-40">37-40</option>
-                                                    <option value="40-43">40-43</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="input-wrap">
-                                        <div class="input-field">
-                                            <label>Meilleur pied</label>
-                                            <div class="input-select">
-                                                <select data-trigger="" name="better-foot">
-                                                    <option value="D">Droit</option>
-                                                    <option value="G">Gauche</option>
-                                                    <option value="DG">Bon dans les deux</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row last">
-                                    <input class="btn-search" type="submit" value="Trouver des joueurs">
-                                </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="statistic__item statistic__item--orange">
+                            <h2 class="number">{{ defenseur }}</h2>
+                            <span class="desc">Défenseur</span>
+                            <div class="icon">
+                                <i class="zmdi zmdi-account-o"></i>
                             </div>
                         </div>
-
-                    </form>
-                </div>
-            </section>
-
-            <!-- COPYRIGHT-->
-            <section class="p-t-60 p-b-20">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="copyright">
-                                <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés</p>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="statistic__item statistic__item--blue">
+                            <h2 class="number">{{ milieu }}</h2>
+                            <span class="desc">Milieu</span>
+                            <div class="icon">
+                                <i class="zmdi zmdi-account-o"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="statistic__item statistic__item--red">
+                            <h2 class="number">{{ attaquant }}</h2>
+                            <span class="desc">Attaquant</span>
+                            <div class="icon">
+                                <i class="zmdi zmdi-account-o"></i>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
-            <!-- END COPYRIGHT-->
-        </div>
+            </div>
+        </section>
+
+        <section>
+            <div class="s012">
+                <form method="post" action="{{ path('recherche_footballer') }}">
+                    <fieldset>
+                        <legend>Trouver des joueurs</legend>
+                    </fieldset>
+                    <div class="inner-form">
+                        <header>
+                            <div class="travel-type-wrap">
+                                <div class="item">
+                                    <div class="group-icon">
+                                        <img width="30px" src="{{ asset('agent/search/images/goalkeeper.svg') }}" alt="">
+                                    </div>
+                                    <span>Gardien de but</span>
+                                    <input type="radio" name="position" required value="Gardien">
+                                </div>
+                                <div class="item">
+                                    <div class="group-icon">
+                                        <img width="30px" src="{{ asset('agent/search/images/defender.svg') }}" alt="">
+                                    </div>
+                                    <span>Défenseur</span>
+                                    <input type="radio" name="position" required value="Défenseur">
+                                </div>
+                                <div class="item">
+                                    <div class="group-icon">
+                                        <img width="30px" src="{{ asset('agent/search/images/midfielder.svg') }}" alt="">
+                                    </div>
+                                    <span>Milieu de terrain</span>
+                                    <input type="radio" name="position" required value="Milieu">
+                                </div>
+                                <div class="item">
+                                    <div class="group-icon">
+                                        <img width="30px" src="{{ asset('agent/search/images/forward.svg') }}" alt="">
+                                    </div>
+                                    <span>Attaquant</span>
+                                    <input type="radio" name="position" required value="Attaquant">
+                                </div>
+                            </div>
+                        </header>
+                        <div class="main-form" id="main-form">
+                            <div class="row second">
+                                <div class="input-wrap">
+                                    <div class="input-field">
+                                        <label>Localisation</label>
+                                        <div class="input-select">
+                                            <input
+                                                    id="autocomplete"
+                                                    placeholder="Ville ou code postal"
+                                                    type="text"
+                                                    required
+                                            />
+                                            <input type="hidden" name="longitude">
+                                            <input type="hidden" name="latitude">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-wrap">
+                                    <div class="input-field">
+                                        <label>Tranche d'âge</label>
+                                        <div class="input-select">
+                                            <select data-trigger="" name="age" required>
+                                                <option selected value="6-9"> 6-9 ans</option>
+                                                <option value="10-13">10-13 ans</option>
+                                                <option value="14-17">14-17 ans</option>
+                                                <option value="18-21">18-21 ans</option>
+                                                <option value="22-25">22-25 ans</option>
+                                                <option value="26">26 ans et plus</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="input-wrap">
+                                    <div class="input-field">
+                                        <label>Meilleur pied</label>
+                                        <div class="input-select">
+                                            <select data-trigger="" name="better-foot">
+                                                <option value="D">Droit</option>
+                                                <option value="G">Gauche</option>
+                                                <option value="DG">Bon dans les deux</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row last">
+                                <input class="btn-search" type="submit" value="Trouver des joueurs">
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </section>
+
+        <!-- COPYRIGHT-->
+        <section class="p-t-60 p-b-20">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END COPYRIGHT-->
+    </div>
 {% endblock %}
 {% block javascripts %}
-<script src="{{ asset('agent/search/js/extention/choices.js') }}"></script>
-<script>
-    const choices = new Choices('[data-trigger]',
-        {
-            searchEnabled: false,
-            itemSelectText: '',
-        });
+    <script>
+        let placeSearch;
+        let autocomplete;
 
-</script>
-<script src="{{ asset('agent/search/js/extention/flatpickr.js') }}"></script>
-<script>
-    flatpickr(".datepicker",
-        {
-            dateFormat: "m/d/y"
-        });
-    $('.travel-type-wrap .item').click(function (){
-        $('.travel-type-wrap .item').removeClass('active');
-        $(this).addClass('active');
-        $(this).find('input[type=radio]').prop('checked', true);
-    })
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search predictions to
+            // geographical location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById("autocomplete"),
+                {
+                    types: ['(regions)'],
+                    componentRestrictions: {country: "fr"}
+                }
+            );
+            // Avoid paying for data that you don't need by restricting the set of
+            // place fields that are returned to just the address components.
+            autocomplete.setFields(["geometry"]);
+            // When the user selects an address from the drop-down, populate the
+            // address fields in the form.
+            autocomplete.addListener("place_changed", fillInAddress);
+        }
 
-</script>
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            const place = autocomplete.getPlace();
+
+            if (!place.geometry) {
+                window.alert("Veuillez sélectionner une autre adresse");
+                return;
+            }else{
+                $('input[name=longitude]').val(place.geometry.location.lng());
+                $('input[name=latitude]').val(place.geometry.location.lat());
+            }
+        }
+    </script>
+
+    <script src="{{ asset('agent/search/js/extention/choices.js') }}"></script>
+    <script>
+        const choices = new Choices('[data-trigger]',
+            {
+                searchEnabled: false,
+                itemSelectText: '',
+            });
+
+    </script>
+    <script src="{{ asset('agent/search/js/extention/flatpickr.js') }}"></script>
+    <script>
+        $(function (){
+            $('#autocomplete').val("");
+            $('select[name="age"] option:first').prop('checked', true);
+        })
+
+        flatpickr(".datepicker",
+            {
+                dateFormat: "m/d/y"
+            });
+        $('.travel-type-wrap .item').click(function (){
+            $('.travel-type-wrap .item').removeClass('active');
+            $(this).addClass('active');
+            $(this).find('input[type=radio]').prop('checked', true);
+        })
+
+    </script>
 {% endblock %}

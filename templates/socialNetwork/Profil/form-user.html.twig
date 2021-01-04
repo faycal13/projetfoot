@@ -1,22 +1,26 @@
 {% if app.user is not null %}
     {% if app.user.user is null %}
+        <style>
+            body{
+                overflow-y: hidden;
+            }
+        </style>
         <div class="edit-profile-container-modal">
-            <div class="block-title">
-                <h4 class="grey"><i class="icon ion-android-checkmark-circle"></i>Informations personnelles</h4>
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                {% for message in app.flashes('error') %}
-                    <div class="alert alert-danger">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-            </div>
             <div class="edit-block">
                 {{ form_start(form, {'attr': {'action': path('footballer_form_user_submission' )} }) }}
                 <div class="row">
+                    <h4 class="grey"><i class="icon ion-android-checkmark-circle"></i>Informations personnelles</h4>
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-danger">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+
                     <label>Nom</label>
                     {{ form_row(form.name, {'label': false,'attr': {'placeholder': 'Nom', 'class': ''}}) }}
 
@@ -29,6 +33,13 @@
                     <label>Téléphone</label>
                     {{ form_row(form.account, {'label': false,'attr': {'placeholder': 'Téléphone', 'class': ''}}) }}
 
+                    <label>Ville</label>
+                    {{ form_row(form.city, {'label': false, 'id': 'autocomplete2', 'attr': {'placeholder': 'Ville ou code postal', 'class': ''}}) }}
+
+                    {{ form_row(form.longitude, {'label': false, 'id': 'user_longitude2'}) }}
+
+                    {{ form_row(form.latitude, {'label': false, 'id': 'user_latitude2'}) }}
+
                     <label>Sexe</label>
                     {{ form_row(form.sexe, {'label': false,'attr': {'placeholder': 'Sexe', 'class': ''}}) }}
 
@@ -37,5 +48,6 @@
                 </div>
             </div>
         </div>
+
     {% endif %}
 {% endif %}

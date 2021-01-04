@@ -45,14 +45,32 @@ class AgentController extends AbstractController
         $position = $request->request->get('position');
         $age = $request->request->get('age');
         $better_foot = $request->request->get('better-foot');
+        $lat = $request->request->get('latitude');
+        $lng = $request->request->get('longitude');
         $today = new \DateTime();
         $today_2 = new \DateTime();
 
-        $age_tab = explode('-',$age);
-        $date_min = $today->modify('-'.$age_tab[0].' years');
-        $date_max = $today_2->modify('-'.$age_tab[1].' years');
+        if($age != '26'){
+            $age_tab = explode('-',$age);
+            $date_min = $today->modify('-'.$age_tab[0].' years');
+            $date_max = $today_2->modify('-'.$age_tab[1].' years');
+        }else{
+            $date_min = $today->modify('-26 years');
+            $date_max = $today_2->modify('-65 years');
+        }
 
         $footballers = $footballer_repo->searchFootballersForAgent($position, $date_min, $date_max, $better_foot);
+
+        //Footballeur se trouvant à 20km de la recherche
+        foreach ($footballers as $key => $footballer) {
+            if(!is_null($footballer->getUser()->getLongitude()) && !is_null($footballer->getUser()->getLatitude())){
+                if($this->distanceGeoPoints($lat, $lng, $footballer->getUser()->getLatitude(), $footballer->getUser()->getLongitude()) > 50){
+                    unset($footballers[$key]);
+                }
+            }else{
+                unset($footballers[$key]);
+            }
+        }
 
         return $this->render('agent/rechercher-footballer.html.twig',[
             'footballers' => $footballers
@@ -200,6 +218,12 @@ class AgentController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/agent/google", name="agent_google")
+     */
+    public function google(){
+        return $this->render('agent/google.html.twig');
+    }
     private function uploadFile($photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){
         $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
         // this is needed to safely include the file name as part of the URL
@@ -244,6 +268,27 @@ class AgentController extends AbstractController
         } catch (FileException $e) {
             // ... handle exception if something happens during file upload
         }
+    }
+
+    function distanceGeoPoints ($lat1, $lng1, $lat2, $lng2) {
+
+        $earthRadius = 3958.75;
+
+        $dLat = deg2rad($lat2-$lat1);
+        $dLng = deg2rad($lng2-$lng1);
+
+        $a = sin($dLat/2) * sin($dLat/2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($dLng/2) * sin($dLng/2);
+        $c = 2 * atan2(sqrt($a), sqrt(1-$a));
+        $dist = $earthRadius * $c;
+
+        // from miles
+        $meterConversion = 1609;
+        $geopointDistance = ($dist * $meterConversion)/1000;
+
+
+        return round($geopointDistance, 2);
     }
 
     public function t($test){

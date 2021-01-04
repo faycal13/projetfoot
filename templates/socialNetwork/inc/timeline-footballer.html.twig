@@ -32,7 +32,7 @@
                     <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
                     <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
                     <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>
-                    <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom')}}" target="_blank" class="btn-primary">Chatroom</a></li>
+{#                    <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom')}}" target="_blank" class="btn-primary">Chatroom</a></li>#}
                 </ul>
             </div>
         </div>
@@ -40,12 +40,14 @@
 
     <!--Timeline Menu for Small Screens-->
     <div class="navbar-mobile hidden-lg hidden-md">
-        <div class="profile-info">
-            <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
-            {% if app.user.user is not null %}
+        <div class="profile-info img-wrapper-profil-responsive">
+            {% if app.session.get('footballer_profil_photo') is not null %}
+                <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+            {% else %}
+                <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="img-responsive profile-photo" />
+            {% endif %}            {% if app.user.user is not null %}
                 <h4>{{ app.user.user.name }} {{ app.user.user.firstName }}</h4>
             {% endif %}
-            <p class="text-muted">Footballeur</p>
         </div>
         <div class="mobile-menu">
             <ul class="list-inline">
@@ -53,7 +55,7 @@
                 <li><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
                 <li><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
                 <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>
-                <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom') }}" class="btn-primary">Chatroom</a></li>
+{#                <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom') }}" class="btn-primary">Chatroom</a></li>#}
             </ul>
         </div>
     </div><!--Timeline Menu for Small Screens End-->

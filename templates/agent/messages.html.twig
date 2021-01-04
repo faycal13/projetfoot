@@ -5,9 +5,7 @@
     {% endblock %}
 {% block body %}
     <div id="page-contents">
-
         <div class="page-content--bgf7">
-
             <!-- WELCOME-->
             <section class="welcome p-t-10">
                 <div class="container">
@@ -16,6 +14,7 @@
                             <h1 class="title-4">
                                 Conversations avec les footballeurs
                             </h1>
+                            <p class="show-conversation" style="display: none"><i class="fa fa-arrow-circle-left"></i> Afficher les conversations</p>
                             <hr class="line-seprate">
                         </div>
                     </div>
@@ -28,11 +27,11 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="chat-room" style="display:none;">
-                                <div  class="row">
+                                <div class="row">
                                     {% if conversations is empty %}
                                         <h3>Vous n'avez aucune conversation</h3>
                                     {% endif %}
-                                    <div class="col-md-4" style="height: 500px;overflow-y: scroll;}">
+                                    <div class="col-md-4 conversations" style="height: 500px;overflow-y: scroll;}">
                                         <ul class="nav nav-tabs contact-list scrollbar-wrapper scrollbar-outer">
                                             {% for conversation in conversations %}
                                                 <li {% if id > 0 and conversation['conversation'].id == id %}class="active"{% endif %}>
@@ -88,7 +87,8 @@
             $('.contact-list li:first').addClass('active');
             $('div[id^=contact-]').removeClass('active');
             $('div[id^=contact-]:first').addClass('active');
-            $('input[name=conversation]').val($('.contact-list li.active a').attr('data-conf'))
+            $('input[name=conversation]').val($('.contact-list li.active a').attr('data-conf'));
+
             $('.contact-list li a').each(function (){
                 var id_conf = $(this).attr('data-conf');
                 var a_this = $(this);
@@ -104,6 +104,8 @@
                             result.forEach(element =>
                                 $('#contact-'+id_conf+' .chat-body .chat-message').append('<li class="'+element.position+'">'+element.photo+'<div class="chat-item"> <div class="chat-item-header"> <h5>'+element.nom+'</h5> <small class="text-muted message-date">'+element.date+'</small> </div> <p class="private-message">'+element.message+'</p> </div></li>')
                             );
+                            $('#contact-'+id_conf+' .chat-body').scrollTop($('#contact-'+id_conf+' .chat-body').height()+200);
+
                             a_this.find('.msg-preview').find('p.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .private-message').last().text());
                             a_this.find('.msg-preview').find('small.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .message-date').last().text());
                         }
@@ -120,7 +122,21 @@
                 $('.chat-message > div').removeClass('active');
                 $($(this).attr('href')).addClass('active');
                 $('input[name=conversation]').val($(this).attr('data-conf'));
+                if($(window).width() <= 765){
+                    $('.conversations').hide();
+                    $('.chat-message').show();
+                    $('.show-conversation').show();
+                    $("html, body").scrollTop($("html, body").height()+200);
+                }
+                $($(this).attr('href')+' .chat-body').scrollTop($($(this).attr('href')+' .chat-body').height()+200);
             });
+
+            $('.show-conversation').click(function (){
+                $('.conversations').show();
+                $('.chat-message').hide();
+                $(this).hide();
+            });
+
             $('#form-private-message').submit(function (e) {
                 e.preventDefault();
                 var form = $(this)[0];
@@ -164,6 +180,10 @@
                 if(eventSource != null){
                     eventSource.close()
                 }
+            }
+
+            if($(window).width() <= 765){
+                $('.chat-message').hide();
             }
 
         })

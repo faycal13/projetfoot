@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Place Autocomplete Address Form</title>
+    <script
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCqX6jU37gEKV1NCl8uOOSgEDF6cT9gNw&callback=initAutocomplete&libraries=places"
+            defer
+    ></script>
+    <style type="text/css">
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #locationField,
+        #controls {
+            position: relative;
+            width: 480px;
+        }
+
+        #autocomplete {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: 99%;
+        }
+
+        .label {
+            text-align: right;
+            font-weight: bold;
+            width: 100px;
+            color: #303030;
+            font-family: "Roboto", Arial, Helvetica, sans-serif;
+        }
+
+        #address {
+            border: 1px solid #000090;
+            background-color: #f0f9ff;
+            width: 480px;
+            padding-right: 2px;
+        }
+
+        #address td {
+            font-size: 10pt;
+        }
+
+        .field {
+            width: 99%;
+        }
+
+        .slimField {
+            width: 80px;
+        }
+
+        .wideField {
+            width: 200px;
+        }
+
+        #locationField {
+            height: 20px;
+            margin-bottom: 2px;
+        }
+    </style>
+    <script>
+
+        let placeSearch;
+        let autocomplete;
+
+        function initAutocomplete() {
+            // Create the autocomplete object, restricting the search predictions to
+            // geographical location types.
+            autocomplete = new google.maps.places.Autocomplete(
+                document.getElementById("autocomplete"),
+                {
+                    types: ['(cities)'],
+                    componentRestrictions: {country: "fr"}
+                }
+            );
+            // Avoid paying for data that you don't need by restricting the set of
+            // place fields that are returned to just the address components.
+            autocomplete.setFields(["geometry"]);
+            // When the user selects an address from the drop-down, populate the
+            // address fields in the form.
+            autocomplete.addListener("place_changed", fillInAddress);
+        }
+
+        function fillInAddress() {
+            // Get the place details from the autocomplete object.
+            const place = autocomplete.getPlace();
+
+            if (!place.geometry) {
+                // User entered the name of a Place that was not suggested and
+                // pressed the Enter key, or the Place Details request failed.
+                window.alert("No details available for input: '" + place.name + "'");
+                return;
+            }else{
+                alert(place.geometry.location.lat());
+                alert(place.geometry.location.lng());
+            }
+        }
+    </script>
+</head>
+<body>
+<div id="locationField">
+    <input
+            id="autocomplete"
+            placeholder="Enter your address"
+            type="text"
+    />
+</div>
+
+<!-- Note: The address components in this sample are typical. You might need to adjust them for
+           the locations relevant to your app. For more information, see
+     https://developers.google.com/maps/documentation/javascript/examples/places-autocomplete-addressform
+-->
+</body>
+</html>

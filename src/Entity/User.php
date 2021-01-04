@@ -49,11 +49,6 @@ class User
     private $footballer;
 
     /**
-     * @ORM\ManyToOne(targetEntity=City::class)
-     */
-    private $city;
-
-    /**
      * @ORM\Column(type="string", length=1, nullable=true)
      */
     private $sexe;
@@ -67,6 +62,21 @@ class User
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $profilPhoto;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $longitude;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $city;
 
     public function getId(): ?int
     {
@@ -133,18 +143,6 @@ class User
         return $this;
     }
 
-    public function getCity(): ?City
-    {
-        return $this->city;
-    }
-
-    public function setCity(?City $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
     public function getSexe(): ?string
     {
         return $this->sexe;
@@ -194,6 +192,42 @@ class User
     public function setProfilPhoto(?string $profilPhoto): self
     {
         $this->profilPhoto = $profilPhoto;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?string $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

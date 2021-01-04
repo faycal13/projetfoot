@@ -27,6 +27,7 @@ class UserPhotoType extends AbstractType
                         'mimeTypesMessage' => 'Format invalide',
                     ])
                 ],
+                'label' => false
             ])
         ;
     }

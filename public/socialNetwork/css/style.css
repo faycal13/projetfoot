@@ -309,7 +309,7 @@ img.profile-photo-xs{
     background-color: rgba(0,0,0, 0.4);
 }
 
-input#profil_photo_footballer_profilPhoto {
+input#user_photo_photoProfil {
     display: none;
 }
 
@@ -374,7 +374,6 @@ textarea{
 
 .form-control{
     background: #fff;
-    border: 1px solid #f1f2f2;
     box-shadow: none;
     border-radius: 4px;
     color: #939598;
@@ -2803,6 +2802,7 @@ ul.contact li i{
     height: 90%;
     overflow-y: scroll;
     width: 240px;
+    z-index: 10;
 }
 
 #call-us-cta::-webkit-scrollbar {
@@ -2855,6 +2855,34 @@ ul.contact li i{
 
 ul[id^=ui-id-]{
     z-index: 99999;
+}
+
+.pac-container{
+    z-index: 9999 !important;
+}
+
+@media (max-width: 767px) {
+    header .logo{
+        width: 50px;
+    }
+    #call-us-cta{
+        display: none;
+    }
+    .edit-career-container table tr th {
+        padding: 5px;
+    }
+    .phone-menu{
+        display: block !important;
+    }
+    .navbar-fixed-bottom .navbar-collapse, .navbar-fixed-top .navbar-collapse{
+        max-height: initial;
+    }
+    .phone-hide-menu{
+        display: none !important;
+    }
+    .chat-room ul.contact-list li a .contact .msg-preview {
+        margin-left: 0px;
+    }
 }
 
 

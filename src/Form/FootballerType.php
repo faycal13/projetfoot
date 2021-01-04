@@ -25,10 +25,10 @@ class FootballerType extends AbstractType
                 'required' => true
             ])
             ->add('weight', NumberType::class, [
-
+                'label' => false
             ])
             ->add('height', NumberType::class, [
-
+                'label' => false
             ])
             ->add('position', ChoiceType::class, [
                 'choices'  => [

@@ -56,15 +56,23 @@
 <script src="{{ asset("socialNetwork/js/jquery.incremental-counter.js") }}"></script>
 <script src="{{ asset("socialNetwork/js/script.js") }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCqX6jU37gEKV1NCl8uOOSgEDF6cT9gNw&callback=initAutocomplete&libraries=places"
+        defer
+></script>
 <script>
     $(function (){
         //PHOTO DE PROFIL
         $('.img-wrapper-profil').click(function (){
-            $('#profil_photo_footballer_profilPhoto').trigger('click');
+            $('#user_photo_photoProfil').trigger('click');
         })
 
-        $('#profil_photo_footballer_profilPhoto').change(function (){
-            $('form[name=profil_photo_footballer]').submit();
+        $('.img-wrapper-profil-responsive').click(function (){
+            $('#user_photo_photoProfil').trigger('click');
+        })
+
+        $('#user_photo_photoProfil').change(function (){
+            $('form[name=user_photo]').submit();
         })
 
         //PHOTO DE COUVERTURE

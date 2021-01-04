@@ -236,7 +236,7 @@ class SocialNetworkController extends AbstractController
             }
         }else{
             if(!is_null($user->getProfilPhoto())) {
-                $path .= $assetsManager->getUrl('/img/user/photo/' . $user->getAccount()->getId() . '/' . $user->getProfilPhoto());
+                $path .= $assetsManager->getUrl('/img/user/photo-profil/' . $user->getAccount()->getId() . '/' . $user->getProfilPhoto());
             }
             else{
                 $path .= $assetsManager->getUrl('/img/default/profil-agent.png');

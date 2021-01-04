@@ -14,6 +14,7 @@ class AccountType extends AbstractType
     {
         $builder
             ->add('phone', TextType::class, [
+                'label' => false,
                 'required' => true,
             ])
         ;

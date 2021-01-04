@@ -86,11 +86,14 @@
     <!--Timeline Menu for Small Screens-->
     <div class="navbar-mobile hidden-lg hidden-md">
         <div class="profile-info">
-            <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto )}}" alt="" class="img-responsive profile-photo" />
+            {% if footballer.user.profilPhoto is not null %}
+                <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto )}}" alt="" class="img-responsive profile-photo" />
+            {% else %}
+                <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="img-responsive profile-photo"/>
+            {% endif %}
             {% if footballer.user is not null %}
                 <h4>{{ footballer.user.name }} {{ footballer.user.firstName }}</h4>
             {% endif %}
-            <p class="text-muted">Footballeur</p>
         </div>
         <div class="mobile-menu">
             <ul class="list-inline">

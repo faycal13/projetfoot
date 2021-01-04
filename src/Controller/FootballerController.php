@@ -17,6 +17,7 @@ use App\Form\FootballerPhotoType;
 use App\Form\FootballerType;
 use App\Form\FootballerVideoType;
 use App\Form\ProfilPhotoFootballerType;
+use App\Form\UserPhotoType;
 use App\Form\UserType;
 use App\Service\CookieGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -92,7 +93,7 @@ class FootballerController extends AbstractController
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
-        $form = $this->createForm(ProfilPhotoFootballerType::Class, $footballer);
+        $form = $this->createForm(UserPhotoType::Class, $user);
         $form_cover = $this->createForm(CoverPhotoFootballerType::Class, $footballer);
 
         return $this->render('socialNetwork/profil/profil-photo.html.twig',[
@@ -113,22 +114,23 @@ class FootballerController extends AbstractController
             $footballer = new Footballer();
             $footballer->setUser($user);
         }
-        $form = $this->createForm(ProfilPhotoFootballerType::Class, $footballer);
+        $form = $this->createForm(UserPhotoType::Class, $user);
+        $form_cover = $this->createForm(CoverPhotoFootballerType::Class, $footballer);
         $form->handleRequest($request);
         $session = $this->get('session');
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $photo = $form->get('profilPhoto')->getData();
+            $photo = $form->get('photoProfil')->getData();
             if ($photo) {
                 $filesystem = new Filesystem();
                 $filesystem->remove($this->getParameter('footballer_photo_profil_directory'). '/' .$this->getUser()->getId());
                 $newFilename = $this->uploadFile($photo, 'footballer_photo_profil_directory', 200
                 );
 
-                $footballer->setProfilPhoto($newFilename);
-                $manager->persist($footballer);
+                $user->setProfilPhoto($newFilename);
+                $manager->persist($user);
                 $manager->flush();
-                $session->set('footballer_profil_photo',$footballer->getUser()->getProfilPhoto());
+                $session->set('footballer_profil_photo',$user->getProfilPhoto());
                 $this->addFlash('success', 'La photo de profil a été mise à jour');
                 return $this->redirectToRoute('footballer_edit_profil');
             }
@@ -136,7 +138,8 @@ class FootballerController extends AbstractController
 
 
         return $this->render('socialNetwork/profil/profil-photo.html.twig',[
-            'form_profil_photo' => $form->createView()
+            'form_profil_photo' => $form->createView(),
+            'form_cover_photo' => $form_cover->createView(),
         ]);
     }
 

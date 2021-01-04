@@ -33,12 +33,6 @@ class FootballerCarrer
     private $endDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity=city::class)
-     * @ORM\JoinColumn(nullable=true)
-     */
-    private $city;
-
-    /**
      * @ORM\ManyToOne(targetEntity=footballer::class, inversedBy="footballerCarrers")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -53,6 +47,21 @@ class FootballerCarrer
      * @ORM\Column(type="string", length=255)
      */
     private $categorie;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $longitude;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $city;
 
     public function getId(): ?int
     {
@@ -103,18 +112,6 @@ class FootballerCarrer
         $this->endDate = $endDate;
     }
 
-    public function getCity(): ?city
-    {
-        return $this->city;
-    }
-
-    public function setCity(?city $city): self
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
     public function getFootballer(): ?footballer
     {
         return $this->footballer;
@@ -144,6 +141,42 @@ class FootballerCarrer
     public function setCategorie($categorie): void
     {
         $this->categorie = $categorie;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(string $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
     }
 
 }

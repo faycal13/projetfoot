@@ -1,7 +1,6 @@
 {% extends 'socialNetwork/base.html.twig' %}
 {% block body %}
   <div class="container">
-
     <!-- Timeline
     ================================================= -->
     <div class="timeline">
@@ -13,7 +12,7 @@
             <!--Edit Profile Menu-->
             {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
           </div>
-          <div class="col-md-7">
+          <div class="col-md-7" style="padding-top: 0;padding: 0 30px;">
 
             <!-- Basic Information
             ================================================= -->
@@ -46,19 +45,91 @@
                   <label>Téléphone</label>
                   {{ form_row(form.account, {'label': false,'attr': {'placeholder': 'Téléphone', 'class': ''}}) }}
 
+                  <label>Ville</label>
+                  {{ form_row(form.city, {'label': false, 'id': 'autocomplete', 'attr': {'placeholder': 'Ville ou code postal', 'class': ''}}) }}
+
+                  {{ form_row(form.longitude, {'label': false}) }}
+
+                  {{ form_row(form.latitude, {'label': false}) }}
+
                   <label>Sexe</label>
                   {{ form_row(form.sexe, {'label': false,'attr': {'placeholder': 'Sexe', 'class': ''}}) }}
 
-                <button class="btn btn-primary">Enregistrer</button>
-                {{ form_end(form) }}
+                  <button class="btn btn-primary">Enregistrer</button>
+                  {{ form_end(form) }}
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-md-2 static">
+            <div class="col-md-2 static">
 
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
+{% endblock %}
+{% block javascripts %}
+  <script>
+    let autocomplete;
+    let autocomplete2;
+
+    function initAutocomplete() {
+      // Create the autocomplete object, restricting the search predictions to
+      // geographical location types.
+      autocomplete = new google.maps.places.Autocomplete(
+              document.getElementById("autocomplete"),
+              {
+                types: ['(regions)'],
+                componentRestrictions: {country: "fr"}
+              }
+      );
+      // Avoid paying for data that you don't need by restricting the set of
+      // place fields that are returned to just the address components.
+      autocomplete.setFields(["geometry"]);
+      // When the user selects an address from the drop-down, populate the
+      // address fields in the form.
+      autocomplete.addListener("place_changed", fillInAddress);
+
+      autocomplete2 = new google.maps.places.Autocomplete(
+              document.getElementById("autocomplete2"),
+              {
+                types: ['(regions)'],
+                componentRestrictions: {country: "fr"}
+              }
+      );
+      // Avoid paying for data that you don't need by restricting the set of
+      // place fields that are returned to just the address components.
+      autocomplete2.setFields(["geometry"]);
+      // When the user selects an address from the drop-down, populate the
+      // address fields in the form.
+      autocomplete2.addListener("place_changed", fillInAddress);
+    }
+
+    function fillInAddress() {
+      // Get the place details from the autocomplete object.
+      const place = autocomplete.getPlace();
+      const place2 = autocomplete2.getPlace();
+
+      if(typeof place !== 'undefined'){
+        if (!place.geometry) {
+          window.alert("Veuillez sélectionner une autre adresse");
+          return;
+        }else{
+          $('#user_longitude').val(place.geometry.location.lng());
+          $('#user_latitude').val(place.geometry.location.lat());
+        }
+      }
+
+      if(typeof place2 !== 'undefined'){
+        if (!place2.geometry) {
+          window.alert("Veuillez sélectionner une autre adresse");
+          return;
+        } else {
+          $('#user_longitude2').val(place2.geometry.location.lng());
+          $('#user_latitude2').val(place2.geometry.location.lat());
+        }
+      }
+    }
+  </script>
 {% endblock %}

@@ -1897,18 +1897,24 @@ span.flatpickr-weekday {
     overflow: hidden;
   }
   .s012 form .inner-form header .travel-type-wrap {
-    overflow-x: auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   .s012 form .inner-form header .travel-type-wrap .item {
     width: 100%;
-    min-width: 170px;
+    margin: 10px;
   }
   .s012 form .inner-form .main-form .row.second {
     display: block;
+    width: 100%;
   }
   .s012 form .inner-form .main-form .row.second .input-wrap {
     width: 100%;
-    margin-bottom: 15px;
+    margin: 20px;
+  }
+  .s012 form .btn-search{
+    margin: 20px;
   }
   .s012 form .inner-form .main-form .row.third {
     margin-bottom: 0;
