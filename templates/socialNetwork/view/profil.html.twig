@@ -49,8 +49,8 @@
       url : "{{ path('footballer_check_friend',{id:footballer.id}) }}",
       type : 'POST',
       success : function (serverResponse) {
-        if(serverResponse.result == 1){
-          $('#add-footballer').show();
+        if(serverResponse.result == 0){
+          $('.add-footballer').show();
         }
       }
     })

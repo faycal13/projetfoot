@@ -44,7 +44,7 @@
                       <div class="friend-card">
                         <i class="fa fa-close" title="Supprimer un ami" data-toggle="modal" style="cursor: pointer; color: red" data-target="#remove-{{ friend.id }}"></i>
                         <div class="card-info">
-                          <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.friend.user.account.id~'/'~friend.friend.profilPhoto) }}" alt="user" class="profile-photo-lg" />
+                          <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.friend.user.account.id~'/'~friend.friend.user.profilPhoto) }}" alt="user" class="profile-photo-lg" />
                           <div class="friend-info">
                             <h5><a href="{{ path('footballer_view_footballer_profil',{'id':friend.friend.id}) }}" class="profile-link">{{ friend.friend.user.name }} {{ friend.friend.user.firstName }}</a></h5>
                             <p>{{ friend.friend.position }}</p>
@@ -80,7 +80,7 @@
                     <div class="friend-card">
                       <i class="fa fa-close" data-toggle="modal" style="cursor: pointer; color: red" data-target="#remove-{{ friend.id }}"></i>
                       <div class="card-info">
-                        <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.footballer.user.account.id~'/'~friend.footballer.profilPhoto) }}" alt="user" class="profile-photo-lg" />
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.footballer.user.account.id~'/'~friend.footballer.user.profilPhoto) }}" alt="user" class="profile-photo-lg" />
                         <div class="friend-info">
                           <h5><a href="{{ path('footballer_view_footballer_profil',{'id':friend.footballer.id}) }}" class="profile-link">{{ friend.footballer.user.name }} {{ friend.footballer.user.firstName }}</a></h5>
                           <p>{{ friend.footballer.position }}</p>

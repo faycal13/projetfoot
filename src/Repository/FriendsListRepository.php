@@ -87,7 +87,6 @@ class FriendsListRepository extends ServiceEntityRepository
             ->setParameter('footballer', $footballer_current->getId())
             ->andWhere('f.friend = :friend')
             ->setParameter('friend', $footballer->getId())
-            ->andWhere('f.accept = 1')
             ->getQuery()
             ->getOneOrNullResult()
             ;
@@ -101,7 +100,6 @@ class FriendsListRepository extends ServiceEntityRepository
             ->setParameter('friend', $footballer_current->getId())
             ->andWhere('f.footballer = :footballer')
             ->setParameter('footballer', $footballer->getId())
-            ->andWhere('f.accept = 1')
             ->getQuery()
             ->getOneOrNullResult()
             ;

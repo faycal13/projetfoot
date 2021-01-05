@@ -28,7 +28,11 @@
                 <div class="col-md-6 col-sm-6">
                   <div class="friend-card">
                     <div class="card-info">
-                      <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.user.account.id~'/'~friend.profilPhoto )}}" alt="user" class="profile-photo-lg" />
+                      {% if friend.user.profilPhoto is not null %}
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.user.account.id~'/'~friend.user.profilPhoto )}}" alt="user" class="profile-photo-lg" />
+                      {% else %}
+                        <img src="{{ asset('img/default/profil-footballer.png') }}" alt="user" class="profile-photo-lg" />
+                      {% endif %}
                       <div class="friend-info">
                         <h5><a href="{{ path('footballer_view_footballer_profil',{'id':friend.id}) }}" class="profile-link">{{ friend.user.name }} {{ friend.user.firstName }}</a></h5>
                         <p>{{ friend.position }}</p>
@@ -55,8 +59,8 @@
       url : "{{ path('footballer_check_friend',{id:footballer.id}) }}",
       type : 'POST',
       success : function (serverResponse) {
-        if(serverResponse.result){
-          $('#add-footballer').show();
+        if(serverResponse.result == 0){
+          $('.add-footballer').show();
         }
       }
     })

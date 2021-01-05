@@ -223,7 +223,7 @@
             }
         });
 
-        $('#add-footballer').click(function (){
+        $('.add-footballer').click(function (){
             var ifootballer = $(this).find('i');
             if(!$(this).hasClass('active')){
                 $(this).addClass('active');
@@ -235,7 +235,7 @@
                     },
                     success : function (serverResponse){
                         if(serverResponse){
-                            ifootballer.css('color','#ff1313');
+                            ifootballer.css('color','green');
                         }
                     },
                     error : function (){

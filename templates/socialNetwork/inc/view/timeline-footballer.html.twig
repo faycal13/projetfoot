@@ -33,7 +33,7 @@
                             {% endif %}
                             {% if is_granted('ROLE_USER') %}
                                 <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
-                                <li id="add-footballer" style="display: none"><a style="cursor: pointer"  data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
+                                <li class="add-footballer" data-id="{{ footballer.id }}" style="display: none"><a style="cursor: pointer" data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
                             {% endif %}
                         {% endif %}
                         {% if is_granted('ROLE_USER') %}
@@ -45,7 +45,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Ajouter une photo</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Envoyer un message</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -106,7 +106,7 @@
                         {% endif %}
                         {% if is_granted('ROLE_USER') %}
                             <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
-                            <li id="add-footballer" style="display: none"><a style="cursor: pointer"  data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
+                            <li class="add-footballer" data-id="{{ footballer.id }}" style="display: none"><a style="cursor: pointer" data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
                         {% endif %}
                     {% endif %}
                     {% if is_granted('ROLE_USER') %}
