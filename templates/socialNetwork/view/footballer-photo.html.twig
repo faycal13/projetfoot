@@ -1,7 +1,7 @@
 {% extends 'socialNetwork/base.html.twig' %}
 {% block body %}
 
-  <div class="container">
+  <div class="container main-container">
     <div class="timeline">
       {% include('socialNetwork/inc/view/timeline-footballer.html.twig') %}
       <div id="page-contents">
@@ -55,6 +55,39 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="send-message" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Envoyer un message <i class="close fa fa-times" data-dismiss="modal" aria-label="Close"></i></h5>
+
+        </div>
+        <div class="modal-body">
+          <form action="{{ path('social_network_send_message',{id:footballer.id}) }}" method="post" style="display: flex;flex-direction: column;">
+            <input type="text" name="message" required placeholder="Saisir un message">
+            <button class="btn btn-primary" style="border-radius: 5px;width: 250px;margin-top: 10px;">Envoyer le message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="blocked" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Bloquer {{ footballer.user.name }} {{ footballer.user.firstName }} <i class="close fa fa-times" data-dismiss="modal" aria-label="Close"></i></h5>
+        </div>
+        <div class="modal-body">
+          Êtes-vous sur de vouloir bloquer {{ footballer.user.name }} {{ footballer.user.firstName }} ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+          <a type="button" href="{{ path('footballer_blocked_friend',{'id':footballer.id}) }}" class="btn btn-primary">Bloquer</a>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 {% block javascripts %}
   <script>
@@ -65,6 +98,10 @@
       success : function (serverResponse) {
         if(serverResponse.result == 0){
           $('.add-footballer').show();
+        }
+        if(serverResponse.result == 1){
+          $('.add-footballer').show();
+          $('.add-footballer i').css('color','green');
         }
       }
     })

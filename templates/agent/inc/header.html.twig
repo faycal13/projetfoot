@@ -85,7 +85,7 @@
                                     </div>
                                 </div>
                                 <div class="account-dropdown__footer">
-                                    <a href="{{ path('logout')}}"><i class="zmdi zmdi-power"></i>Déconnexion</a>
+                                    <a href="{{ path('logout') }}"><i class="zmdi zmdi-power"></i>Déconnexion</a>
                                 </div>
                             </div>
                         </div>
@@ -175,6 +175,26 @@
                             <i class="fas fa-envelope"></i>
                             <span class="bot-line"></span>Mes messages</a>
                     </li>
+                    <li>
+                        <a href="{{ path ("agent_setting_photo") }}">
+                            <i class="fas fa-picture-o"></i>
+                            <span class="bot-line"></span>Changer ma photo de profil</a>
+                    </li>
+                    <li>
+                        <a href="{{ path ("agent_setting") }}">
+                            <i class="fas fa-user"></i>
+                            <span class="bot-line"></span>Mes informations personelles</a>
+                    </li>
+                    <li>
+                        <a href="{{ path ("agent_password") }}">
+                            <i class="fas fa-key"></i>
+                            <span class="bot-line"></span>Modifier mon mot de passe</a>
+                    </li>
+                    <li>
+                        <a href="{{ path('logout') }}">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span class="bot-line"></span>Déconnexion</a>
+                    </li>
                 {% else %}
                     <li>
                         <a href="#">
@@ -198,74 +218,74 @@
 </header>
 
 
-<div class="sub-header-mobile-2 d-block d-lg-none">
-    <div class="header__tool">
-        <div class="header-button-item has-noti js-item-menu">
-            <i class="zmdi zmdi-notifications"></i>
-            <div class="notifi-dropdown notifi-dropdown--no-bor js-dropdown">
-                <div class="notifi__item">
-                    <div class="bg-c1 img-cir img-40">
-                        <i class="zmdi zmdi-email-open"></i>
-                    </div>
-                    <div class="content">
-                        <p>You got a email notification</p>
-                        <span class="date">April 12, 2018 06:50</span>
-                    </div>
-                </div>
-                <div class="notifi__footer">
-                    <a href="#">All notifications</a>
-                </div>
-            </div>
-        </div>
-        <div class="account-wrap">
-            <div class="account-item account-item--style2 clearfix js-item-menu">
-                <div class="image">
-                    {% if app.user.user is not null %}
-                        <img src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
-                    {% else %}
-                        <img src="{{ asset('img/default/profil-agent.png') }}"/>
-                    {% endif %}
-                </div>
-                <div class="content">
-                    <a class="js-acc-btn" href="#">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>
-                </div>
-                <div class="account-dropdown js-dropdown">
-                    <div class="info clearfix">
-                        <div class="image">
-                            <a href="#">
-                                {% if app.user.user is not null %}
-                                    <img src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
-                                {% else %}
-                                    <img src="{{ asset('img/default/profil-agent.png') }}" alt="" class="img-responsive profile-photo" />
-                                {% endif %}                            </a>
-                        </div>
-                        <div class="content">
-                            <h5 class="name">
-                                <a href="#">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>
-                            </h5>
-                            <span class="email">{{ app.user.username }}</span>
-                        </div>
-                    </div>
-                    <div class="account-dropdown__body">
-                        <div class="account-dropdown__item">
-                            <a href="{{ path ("agent_setting_photo") }}">
-                                <i class="zmdi zmdi-camera"></i>Changer ma photo de profil</a>
-                        </div>
-                        <div class="account-dropdown__item">
-                            <a href="{{ path ("agent_setting") }}">
-                                <i class="zmdi zmdi-account"></i>Mes informations personelles</a>
-                        </div>
-                        <div class="account-dropdown__item">
-                            <a href="{{ path ("agent_password") }}">
-                                <i class="zmdi zmdi-settings"></i>Modifier mon mot de passe</a>
-                        </div>
-                    </div>
-                    <div class="account-dropdown__footer">
-                        <a href="{{ path('logout')}}"><i class="zmdi zmdi-power"></i>Déconnexion</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+{#<div class="sub-header-mobile-2 d-block d-lg-none">#}
+{#    <div class="header__tool">#}
+{#        <div class="header-button-item has-noti js-item-menu">#}
+{#            <i class="zmdi zmdi-notifications"></i>#}
+{#            <div class="notifi-dropdown notifi-dropdown--no-bor js-dropdown">#}
+{#                <div class="notifi__item">#}
+{#                    <div class="bg-c1 img-cir img-40">#}
+{#                        <i class="zmdi zmdi-email-open"></i>#}
+{#                    </div>#}
+{#                    <div class="content">#}
+{#                        <p>You got a email notification</p>#}
+{#                        <span class="date">April 12, 2018 06:50</span>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="notifi__footer">#}
+{#                    <a href="#">All notifications</a>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="account-wrap">#}
+{#            <div class="account-item account-item--style2 clearfix js-item-menu">#}
+{#                <div class="image">#}
+{#                    {% if app.user.user is not null %}#}
+{#                        <img src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />#}
+{#                    {% else %}#}
+{#                        <img src="{{ asset('img/default/profil-agent.png') }}"/>#}
+{#                    {% endif %}#}
+{#                </div>#}
+{#                <div class="content">#}
+{#                    <a class="js-acc-btn" href="#">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>#}
+{#                </div>#}
+{#                <div class="account-dropdown js-dropdown">#}
+{#                    <div class="info clearfix">#}
+{#                        <div class="image">#}
+{#                            <a href="#">#}
+{#                                {% if app.user.user is not null %}#}
+{#                                    <img src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />#}
+{#                                {% else %}#}
+{#                                    <img src="{{ asset('img/default/profil-agent.png') }}" alt="" class="img-responsive profile-photo" />#}
+{#                                {% endif %}                            </a>#}
+{#                        </div>#}
+{#                        <div class="content">#}
+{#                            <h5 class="name">#}
+{#                                <a href="#">{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}</a>#}
+{#                            </h5>#}
+{#                            <span class="email">{{ app.user.username }}</span>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="account-dropdown__body">#}
+{#                        <div class="account-dropdown__item">#}
+{#                            <a href="{{ path ("agent_setting_photo") }}">#}
+{#                                <i class="zmdi zmdi-camera"></i>Changer ma photo de profil</a>#}
+{#                        </div>#}
+{#                        <div class="account-dropdown__item">#}
+{#                            <a href="{{ path ("agent_setting") }}">#}
+{#                                <i class="zmdi zmdi-account"></i>Mes informations personelles</a>#}
+{#                        </div>#}
+{#                        <div class="account-dropdown__item">#}
+{#                            <a href="{{ path ("agent_password") }}">#}
+{#                                <i class="zmdi zmdi-settings"></i>Modifier mon mot de passe</a>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                    <div class="account-dropdown__footer">#}
+{#                        <a href="{{ path('logout')}}"><i class="zmdi zmdi-power"></i>Déconnexion</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
 <!-- END HEADER MOBILE -->

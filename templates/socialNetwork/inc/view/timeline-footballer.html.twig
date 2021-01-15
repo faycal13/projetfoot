@@ -18,7 +18,6 @@
                     {% if footballer.user is not null %}
                         <h3>{{ footballer.user.name }} {{ footballer.user.firstName }}</h3>
                     {% endif %}
-                    <p class="text-muted">Footballeur</p>
                 </div>
             </div>
 
@@ -29,10 +28,10 @@
                     {% if app.user is not null %}
                         {% if footballer.user.account.id != app.user.id %}
                             {% if is_granted('ROLE_USER') or is_granted('ROLE_AGENT') %}
-                                <li><a data-toggle="modal" data-target="#send-message">Envoyer un message</a></li>
+                                <li><a style="cursor: pointer" data-toggle="modal" data-target="#send-message" id="send-message-modal">Envoyer un message</a></li>
                             {% endif %}
                             {% if is_granted('ROLE_USER') %}
-                                <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
+                                <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked" id="blocked-modal"><i class="fa fa-ban"></i></a></li>
                                 <li class="add-footballer" data-id="{{ footballer.id }}" style="display: none"><a style="cursor: pointer" data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
                             {% endif %}
                         {% endif %}
@@ -41,43 +40,6 @@
                         {% endif %}
                     {% endif %}
                     <!-- Modal -->
-                    <div class="modal fade" id="send-message" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Envoyer un message</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="{{ path('social_network_send_message',{id:footballer.id}) }}" method="post">
-                                        <input type="text" name="message" required>
-                                        <button class="btn btn-primary">Envoyer le message</button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal fade" id="blocked" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Bloquer {{ footballer.user.name }} {{ footballer.user.firstName }}</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    Êtes-vous sur de vouloir bloquer {{ footballer.user.name }} {{ footballer.user.firstName }} ?
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                                    <a type="button" href="{{ path('footballer_blocked_friend',{'id':footballer.id}) }}" class="btn btn-primary">Bloquer</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </ul>
             </div>
         </div>
@@ -97,15 +59,15 @@
         </div>
         <div class="mobile-menu">
             <ul class="list-inline">
-                <li><a href="{{ path('footballer_view_picture',{id:footballer.id}) }}">Photos</a></li>
-                <li><a href="{{ path('footballer_view_video',{id:footballer.id}) }}">Vidéos</a></li>
+                <li><a class="photo-link" href="{{ path('footballer_view_picture',{id:footballer.id}) }}">Photos</a></li>
+                <li><a class="video-link" href="{{ path('footballer_view_video',{id:footballer.id}) }}">Vidéos</a></li>
                 {% if app.user is not null %}
                     {% if footballer.user.account.id != app.user.id %}
                         {% if is_granted('ROLE_USER') or is_granted('ROLE_AGENT') %}
-                            <li><a data-toggle="modal" data-target="#send-message">Envoyer un message</a></li>
+                            <li><a style="cursor: pointer" data-toggle="modal" data-target="#send-message" id="send-message-modal">Envoyer un message</a></li>
                         {% endif %}
                         {% if is_granted('ROLE_USER') %}
-                            <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked"><i class="fa fa-ban"></i></a></li>
+                            <li><a style="cursor: pointer" title="Bloquer" data-toggle="modal" data-target="#blocked" id="blocked-modal"><i class="fa fa-ban"></i></a></li>
                             <li class="add-footballer" data-id="{{ footballer.id }}" style="display: none"><a style="cursor: pointer" data-id="{{ footballer.id }}" title="Ajouter le footballeur"><i class="fa fa-user-plus"></i></a></li>
                         {% endif %}
                     {% endif %}

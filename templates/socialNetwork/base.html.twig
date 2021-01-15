@@ -25,15 +25,15 @@
 </head>
 <body>
 {% if is_granted('ROLE_USER') %}
-{{ render(controller(
-    'App\\Controller\\FootballerController::formUser'
-)) }}
+    {{ render(controller(
+        'App\\Controller\\FootballerController::formUser'
+    )) }}
 {% endif %}
 
 <!--preloader-->
-{#<div id="spinner-wrapper">#}
-{#    <div class="spinner"></div>#}
-{#</div>#}
+<div id="spinner-wrapper">
+    <div class="spinner"></div>
+</div>
 {% block header %}
     {% include ('socialNetwork/inc/header.html.twig') %}
 {% endblock %}
@@ -57,7 +57,7 @@
 <script src="{{ asset("socialNetwork/js/script.js") }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDCqX6jU37gEKV1NCl8uOOSgEDF6cT9gNw&callback=initAutocomplete&libraries=places"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_HjJF8QPWNN2hcV6qsCMYA-9GzgCgRrw&callback=initAutocomplete&libraries=places"
         defer
 ></script>
 <script>
@@ -163,6 +163,28 @@
             }
         })
 
+        //ON INITIALISE L'URL DE MERCURE
+        const url3 = new URL('{{ mercure_publish_url }}');
+        //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
+        url3.searchParams.append('topic', 'http://skillfoot.fr/users/private-message')
+
+        //ECOUTEUR DE LURL DE MERCURE
+        const eventSource3 = new EventSource(url3, { withCredentials: true });
+
+        eventSource3.onmessage = e => {
+            var serverResponse3 = JSON.parse(e.data);
+            if(serverResponse3 != false){
+                $('#message-title').html('Mes messages <i class="fa fa-comment"></i>');
+            }
+        }
+
+        //Fermer l'event source avant de quitter la page
+        window.onbeforeunload = function(){
+            if(eventSource != null){
+                eventSource.close()
+            }
+        }
+
         {% endif %}
         {% endif %}
         {% endif %}
@@ -245,6 +267,30 @@
             }
 
         });
+
+        $('#send-message-modal').click(function (){
+            $('#send-message').css({ "display": "flex", "align-items": "center", "justify-content": "center" });
+        });
+
+        $('#blocked-modal').click(function (){
+            $('#blocked').css({ "display": "flex", "align-items": "center", "justify-content": "center" });
+        });
+
+        if(window.location.href.includes('footballer-profil/profil/')){
+            $('.personal-information').css({'color': 'red', 'font-weight': 'bold' });
+        }
+        if(window.location.href.includes('footballer-profil/footballer-profil/')){
+            $('.profil-footballer').css({'color': 'red', 'font-weight': 'bold' });
+        }
+        if(window.location.href.includes('footballer-profil/career/')){
+            $('.career-footballer').css({'color': 'red', 'font-weight': 'bold' });
+        }
+        if(window.location.href.includes('footballer-profil/picture/')){
+            $('.photo-link').css({'color': 'red', 'font-weight': 'bold' });
+        }
+        if(window.location.href.includes('footballer-profil/video/')){
+            $('.video-link').css({'color': 'red', 'font-weight': 'bold' });
+        }
 
     })
 </script>

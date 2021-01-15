@@ -1,5 +1,5 @@
 <ul class="edit-menu">
-    <li><a href="{{ path('footballer_view_profil',{'id':footballer.id}) }}">Informations personnelles</a></li>
-    <li><a href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}">Profil de footballeur</a></li>
-    <li><a href="{{ path('footballer_view_career',{'id':footballer.id}) }}">Ma carrière</a></li>
+    <li><a class="personal-information" href="{{ path('footballer_view_profil',{'id':footballer.id}) }}"><i class="fa fa-user"></i>  Informations personnelles</a></li>
+    <li><a class="profil-footballer" href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}"><i class="fa fa-futbol-o"></i>   Profil de footballeur</a></li>
+    <li><a class="career-footballer" href="{{ path('footballer_view_career',{'id':footballer.id}) }}"><i class="fa fa-address-card"></i>  Ma carrière</a></li>
 </ul>

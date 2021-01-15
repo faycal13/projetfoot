@@ -4,9 +4,50 @@
         footer{
             display: none;
         }
+        .show-conversation {
+            display: none;
+        }
+        @media (max-width: 767px) {
+            #page-contents {
+                padding: 0;
+                padding-bottom: 0;
+            }
+            .show-conversation {
+                background-color: white;
+                position: fixed;
+                z-index: 10;
+                width: 100%;
+                height: 50px;
+                text-align: center;
+                line-height: 43px;
+                font-size: 17px;
+                left: 0;
+                box-shadow: 2px 2px 5px 0px;
+                top: 0;
+            }
+            .chat-room .tab-pane{
+                margin-top: 60px !important;
+            }
+            .scrollbar-wrapper.tab-content{
+                display: none;
+            }
+            .conversations .scrollbar-wrapper.contact-list{
+                height: 90%;
+                margin: 0;
+            }
+            .chat-room .chat-body {
+                height: 100vh;
+                overflow-y: auto;
+            }
+            .chat-room .chat-body ul.chat-message{
+                width: 100%;
+                height: 100%;
+            }
+
+        }
     </style>
     <div id="page-contents">
-        <div class="container">
+        <div class="container main-container">
             <div class="row">
                 <div class="col-md-12">
                     {% if conversations is empty %}
@@ -20,7 +61,7 @@
                             </div>
                         </form>
                     {% endif %}
-                    <div class="show-conversation" style="display: none;background-color: white;position: fixed;top: 51px;z-index: 10;width: 100%;"><i class="fa fa-arrow-circle-left"></i> Afficher les conversations</div>
+                    <div class="show-conversation"><i class="fa fa-arrow-circle-left"></i> Afficher les conversations</div>
 
                     <div class="chat-room" style="display:none;">
                         <div  class="row">
@@ -28,12 +69,12 @@
                                 <ul class="nav nav-tabs contact-list scrollbar-wrapper scrollbar-outer">
                                     {% for conversation in conversations %}
                                         <li {% if id > 0 and conversation['conversation'].id == id %}class="active"{% endif %}>
-                                            <a href="#contact-{{ conversation['conversation'].id }}" data-toggle="tab" data-conf="{{ conversation['conversation'].id }}">
+                                            <a href="#contact-{{ conversation['conversation'].id }}" data-toggle="tab" data-conf="{{ conversation['conversation'].id }}" data-participant="{{ conversation['participant'].id }}">
                                                 <div class="contact">
                                                     <div class="msg-preview">
-                                                        <h6>{{ conversation['participant'].name }} {{ conversation['participant'].firstName }}</h6>
-                                                        <p class="text-muted"></p>
-                                                        <small class="text-muted"></small>
+                                                        <h6>{{ conversation['participant'].user.name }} {{ conversation['participant'].user.firstName }}</h6>
+                                                        <p style="{% if conversation['notify'] %}color: rgb(0, 0, 0);font-weight: bold;{% endif %}" class="text-muted"></p>
+                                                        <small style="{% if conversation['notify'] %}color: rgb(0, 0, 0);font-weight: bold;{% endif %}" class="text-muted"></small>
                                                         {#                                                        <div class="chat-alert">1</div>#}
                                                     </div>
                                                 </div>
@@ -51,11 +92,11 @@
                                         {% endfor %}
 
                                         <div class="send-message">
-                                            <div class="input-group">
-                                                <form id="form-private-message">
+                                            <div class="input-group" style="margin: 0 auto;">
+                                                <form id="form-private-message" style="display: flex;">
                                                     <input type="hidden" name="conversation">
                                                     <input type="text" name="message" class="form-control" placeholder="Envoyer un message">
-                                                    <button>Envoyer</button>
+                                                    <button style="border-radius: 6px;">Envoyer</button>
                                                 </form>
                                             </div>
                                         </div>
@@ -98,7 +139,6 @@
                             result.forEach(element =>
                                 $('#contact-'+id_conf+' .chat-body .chat-message').append('<li class="'+element.position+'">'+element.photo+'<div class="chat-item"> <div class="chat-item-header"> <h5>'+element.nom+'</h5> <small class="text-muted message-date">'+element.date+'</small> </div> <p class="private-message">'+element.message+'</p> </div></li>')
                             );
-
                             a_this.find('.msg-preview').find('p.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .private-message').last().text());
                             a_this.find('.msg-preview').find('small.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .message-date').last().text());
                         }
@@ -108,7 +148,9 @@
                     },
                 })
             });
+
             $('.chat-room').show();
+
             $('.contact-list li a').click(function () {
                 $('.contact-list li').removeClass('active');
                 $(this).addClass('active');
@@ -117,17 +159,33 @@
                 $('input[name=conversation]').val($(this).attr('data-conf'));
                 if($(window).width() <= 765){
                     $('.conversations').hide();
+                    $('#header').hide();
                     $('.chat-message').show();
                     $('.show-conversation').show();
                     $("html, body").scrollTop($("html, body").height()+200);
                 }
                 $($(this).attr('href')+' .chat-body').scrollTop($($(this).attr('href')+' .chat-body .chat-message').height()+200);
 
-                // $($(this).attr('href')+' .chat-body').scrollTop($($(this).attr('href')+' .chat-body').height()+200);
+                $.ajax({
+                    'url' : "{{ path('social_network_remove_notify') }}",
+                    'type' : 'POST',
+                    'data' : {'participant':$(this).attr('data-participant')},
+                    success : function (serverResponse){
+                        if(serverResponse.result != false){
+                            $('.contact-list li.active a .msg-preview p').css({'color':'#939598','font-weight':'initial'});
+                            $('.contact-list li.active a .msg-preview small').css({'color':'#939598','font-weight':'initial'});
+                        }
+                    },
+                    error : function (error){
+                        console.log(error);
+                    },
+                })
+
             });
 
             $('.show-conversation').click(function (){
                 $('.conversations').show();
+                $('#header').show();
                 $('.chat-message').hide();
                 $(this).hide();
             });
@@ -150,6 +208,24 @@
                 })
             })
 
+
+            $('input[name=message]').click(function (){
+                $.ajax({
+                    'url' : "{{ path('social_network_remove_notify') }}",
+                    'type' : 'POST',
+                    'data' : {'participant':$('.contact-list li.active a').attr('data-participant')},
+                    success : function (serverResponse){
+                        if(serverResponse.result != false){
+                            $('.contact-list li.active a .msg-preview p').css({'color':'#939598','font-weight':'initial'});
+                            $('.contact-list li.active a .msg-preview small').css({'color':'#939598','font-weight':'initial'});
+                        }
+                    },
+                    error : function (error){
+                        console.log(error);
+                    },
+                })
+            })
+
             //ON INITIALISE L'URL DE MERCURE
             const url = new URL('{{ mercure_publish_url }}');
             //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
@@ -168,11 +244,13 @@
                         '<div class="chat-item"> <div class="chat-item-header"> <h5>'+serverResponse.nom+'</h5> ' +
                         '<small class="text-muted message-date">'+serverResponse.date+'</small> ' +
                         '</div> <p class="private-message">'+serverResponse.message+'</p> </div></li>')
-                    $('.contact-list li.active a').attr('data-conf');
                     $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
+                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').css({'color':'black','font-weight':'bold'});
                     $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
+                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').css({'color':'black','font-weight':'bold'});
                     // $('#contact-'+serverResponse.conversation+' .chat-body').scrollTop($('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height()+200);
                     $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
+                    $("html, body").scrollTop($("html, body").height()+200);
                 }
             }
 

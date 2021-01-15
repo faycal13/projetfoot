@@ -1892,6 +1892,7 @@ span.flatpickr-weekday {
   }
   .s012 form fieldset legend {
     text-align: center;
+    font-size: 26px;
   }
   .s012 form .inner-form header {
     overflow: hidden;
@@ -1902,7 +1903,7 @@ span.flatpickr-weekday {
     justify-content: center;
   }
   .s012 form .inner-form header .travel-type-wrap .item {
-    width: 100%;
+    width: 115px;
     margin: 10px;
   }
   .s012 form .inner-form .main-form .row.second {

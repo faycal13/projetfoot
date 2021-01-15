@@ -14650,3 +14650,10 @@ section {
 .vue-lists ul, .vue-lists ol {
     padding-left: 30px;
 }
+
+@media (max-width: 575px) {
+    .title-4 {
+        font-size: 20px;
+    }
+}
+

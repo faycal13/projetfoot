@@ -39,6 +39,11 @@ class ParticipantConversation
      */
     private $modifiedAt;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $notify;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +93,18 @@ class ParticipantConversation
     public function setModifiedAt(\DateTimeInterface $modifiedAt): self
     {
         $this->modifiedAt = $modifiedAt;
+
+        return $this;
+    }
+
+    public function getNotify(): ?bool
+    {
+        return $this->notify;
+    }
+
+    public function setNotify(?bool $notify): self
+    {
+        $this->notify = $notify;
 
         return $this;
     }

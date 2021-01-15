@@ -29,6 +29,7 @@ class SocialNetworkController extends AbstractController
         $footballer = $footballer_repo->findOneByUser($user);
         //Récupérer de mes participations
         $participants = $participant_conversations_repo->getParticipants($user);
+
         //Récupération des conversations dans lesquelles je participe
         $other_participants = [];
         foreach ($participants as $participant) {
@@ -37,6 +38,7 @@ class SocialNetworkController extends AbstractController
                 $other_participants[] = $item;
             }
         }
+
         $participants = array_merge($participants, $other_participants);
         $conversations = [];
 
@@ -44,11 +46,20 @@ class SocialNetworkController extends AbstractController
             if($participant->getUser()->getId() != $user->getId()){
                 $blocked_list_of_footballer = $blocked_list_repo->getBlockedFootballer($footballer, $participant->getUser());
                 if(is_null($blocked_list_of_footballer)){
-                    $conversations[$participant->getConversation()->getId()]['participant'] = $participant->getUser();
+                    $conversations[$participant->getConversation()->getId()]['participant'] = $participant;
                     $conversations[$participant->getConversation()->getId()]['conversation'] = $participant->getConversation();
+                    $conversations[$participant->getConversation()->getId()]['notify'] = $participant->getNotify();
+                    $conversations[$participant->getConversation()->getId()]['date'] = $participant->getModifiedAt()->format('Y-m-d H:i:s');
                 }
             }
         }
+
+        $dates = array_column($conversations, 'date');
+        array_multisort($dates, SORT_DESC, $conversations);
+
+        $user->setNotifyMessage(0);
+        $manager->persist($user);
+        $manager->flush();
 
         return $this->render('socialNetwork/newsfeed/show-conversation.html.twig',[
             'conversations' => $conversations,
@@ -101,13 +112,24 @@ class SocialNetworkController extends AbstractController
         $date = new \DateTime('now');
         if(!is_null($message) && $message != '' && !is_null($conversation_id) && $conversation_id != ''){
             //Vérification si la conversation est bien associé au user
+
             $participation = $participant_conversations_repo->getMyParticipation($user, $conversation_id);
             $conversation = $conversation_repo->findOneById($conversation_id);
+
+            $participations = $participant_conversations_repo->findByConversation($conversation_id);
+
+            foreach ($participations as $participation_item) {
+                if($participation_item->getUser()->getId() != $user->getId()) $participation_item->getUser()->setNotifyMessage(1);
+                $manager->persist($participation_item);
+            }
+
             if(!is_null($participation)){
                 //MAJ de la date de participation
                 $participation->setModifiedAt((new \DateTime()));
+                $participation->setNotify(1);
+                $user->setNotifyMessage(1);
                 $manager->persist($participation);
-
+                $manager->persist($user);
                 //Ajouter un message
                 $private_message = new PrivateMessage();
                 $private_message->setMessage($message);
@@ -220,6 +242,30 @@ class SocialNetworkController extends AbstractController
                 return $this->redirectToRoute('social_network_show_conversations',['id' => $conversation->getId()]);
             }
         }
+    }
+
+    /**
+     * @Route("/remove-notify", name="remove_notify", methods={"POST"})
+     */
+    public function removeNotify(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager, PublisherInterface $publisher){
+        $user = $this->getUser()->getUser();
+        $participant_conversations_repo = $manager->getRepository('App:ParticipantConversation');
+        $params = $request->request->all();
+        $participation = $participant_conversations_repo->findOneById($params['participant']);
+        $conversation = $participation->getConversation();
+        $all_participationt = $participant_conversations_repo->findByConversation($conversation);
+
+        foreach ($all_participationt as $item) {
+            if($item->getUser()->getId() == $user->getId()){
+                $participation->setNotify(0);
+                $manager->persist($participation);
+                $manager->flush();
+                return new JsonResponse(['result' => true]);
+            }
+        }
+
+        return new JsonResponse(['result' => false]);
+
     }
 
     public function getProfilPhoto($assetsManager, $user){

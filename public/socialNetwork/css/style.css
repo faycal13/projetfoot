@@ -1468,7 +1468,7 @@ ul.online-users li span.online-dot{
     overflow-y: auto;
 }
 
-.chat-room .chat-body ul.chat-message{
+.chat-room .chat-body ul.chat-message {
     padding: 0;
     margin: 0;
     display: flex;
@@ -1925,7 +1925,7 @@ ul.edit-menu li.active a{
 
 .edit-profile-container h4 i{
     margin-right: 15px;
-    color: #ff1313;
+    color: white;
 }
 
 .edit-block{
@@ -2856,12 +2856,43 @@ ul[id^=ui-id-]{
     z-index: 9999 !important;
 }
 
+#message-title i{
+    font-size: 10px;
+    position: absolute;
+    bottom: 20px;
+    right: 5px;
+    color: red;
+    animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
 @media (max-width: 767px) {
     header .logo{
         width: 50px;
     }
+    #form-search-footballer{
+        width: 300px;
+        margin: 0 auto;
+    }
     #call-us-cta{
         display: none;
+    }
+    #page-contents {
+        padding: 0;
+    }
+
+    .img-wrapper-profil-responsive{
+        height: 200px;
+        margin: auto;
+        width: 200px;
+        margin-bottom: 70px;
+    }
+
+    .main-container{
+        margin-top: 55px;
     }
     .edit-career-container table tr th {
         padding: 5px;
@@ -2877,6 +2908,21 @@ ul[id^=ui-id-]{
     }
     .chat-room ul.contact-list li a .contact .msg-preview {
         margin-left: 0px;
+    }
+    ul.edit-menu{
+        padding: 0;
+    }
+    ul.edit-menu li{
+        padding: 0;
+    }
+    ul.edit-menu li a{
+        margin: 0;
+    }
+    .block-title .grey{
+        background-color: #d20000;
+        color: white;
+        padding: 10px;
+        text-align: center;
     }
 }
 

@@ -2,6 +2,11 @@
     {% block stylesheets %}
         <link href="{{ asset('agent/search/css/main.css') }}" rel="stylesheet" />
         <link href="{{ asset('agent/css/messages.css') }}" rel="stylesheet" />
+        <style>
+            .sub-header-mobile-2.d-lg-none.d-block {
+                display: none !important;
+            }
+        </style>
     {% endblock %}
 {% block body %}
     <div id="page-contents">
@@ -11,11 +16,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h1 class="title-4">
-                                Conversations avec les footballeurs
-                            </h1>
-                            <p class="show-conversation" style="display: none"><i class="fa fa-arrow-circle-left"></i> Afficher les conversations</p>
-                            <hr class="line-seprate">
+                            <p class="show-conversation" style="display: none;position: fixed;z-index: 10;background-color: rgb(247 247 247);width: 100%;top: 0;left: 0;height: 50px;text-align: center;line-height: 47px;box-shadow: 2px 2px 6px 0px;"><i class="fa fa-arrow-circle-left"></i> Afficher les conversations</p>
                         </div>
                     </div>
                 </div>
@@ -31,7 +32,7 @@
                                     {% if conversations is empty %}
                                         <h3>Vous n'avez aucune conversation</h3>
                                     {% endif %}
-                                    <div class="col-md-4 conversations" style="height: 500px;overflow-y: scroll;}">
+                                    <div class="col-md-4 conversations">
                                         <ul class="nav nav-tabs contact-list scrollbar-wrapper scrollbar-outer">
                                             {% for conversation in conversations %}
                                                 <li {% if id > 0 and conversation['conversation'].id == id %}class="active"{% endif %}>
@@ -49,7 +50,7 @@
                                             {% endfor %}
                                         </ul>
                                     </div>
-                                    <div class="col-md-8">
+                                    <div class="col-md-8" style="padding-top: 45px;">
                                         {% if conversations is not empty %}
                                             <!--Chat Messages in Right-->
                                             <div class="tab-content chat-message scrollbar-wrapper wrapper scrollbar-outer">
@@ -58,10 +59,10 @@
                                                 {% endfor %}
                                                 <div class="send-message">
                                                     <div class="input-group">
-                                                        <form id="form-private-message">
+                                                        <form id="form-private-message" style="display: flex;">
                                                             <input type="hidden" name="conversation">
                                                             <input type="text" name="message" class="form-control" placeholder="Envoyer un message">
-                                                            <button>Envoyer</button>
+                                                            <button style="padding: 10px;border-radius: 6px;">Envoyer</button>
                                                         </form>
                                                     </div>
                                                 </div>
@@ -104,7 +105,7 @@
                             result.forEach(element =>
                                 $('#contact-'+id_conf+' .chat-body .chat-message').append('<li class="'+element.position+'">'+element.photo+'<div class="chat-item"> <div class="chat-item-header"> <h5>'+element.nom+'</h5> <small class="text-muted message-date">'+element.date+'</small> </div> <p class="private-message">'+element.message+'</p> </div></li>')
                             );
-                            $('#contact-'+id_conf+' .chat-body').scrollTop($('#contact-'+id_conf+' .chat-body').height()+200);
+                            $('#contact-'+id_conf+' .chat-body').scrollTop($('#contact-'+id_conf+' .chat-body .chat-message').height()+200);
 
                             a_this.find('.msg-preview').find('p.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .private-message').last().text());
                             a_this.find('.msg-preview').find('small.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .message-date').last().text());
@@ -127,14 +128,24 @@
                     $('.chat-message').show();
                     $('.show-conversation').show();
                     $("html, body").scrollTop($("html, body").height()+200);
+                    $('.sub-header-mobile-2.d-block.d-lg-none').hide();
+                    $('.sub-header-mobile-2.d-block.d-lg-none').removeClass('d-block');
+                    $('.header-mobile.header-mobile-2.d-lg-none').hide();
+                    $('.header-mobile.header-mobile-2.d-lg-none').removeClass('d-block');
+                    $('.welcome .title-4').hide();
                 }
-                $($(this).attr('href')+' .chat-body').scrollTop($($(this).attr('href')+' .chat-body').height()+200);
+                $($(this).attr('href')+' .chat-body').scrollTop($($(this).attr('href')+' .chat-body .chat-message').height()+200);
             });
 
             $('.show-conversation').click(function (){
                 $('.conversations').show();
                 $('.chat-message').hide();
                 $(this).hide();
+                $('.sub-header-mobile-2.d-lg-none').show();
+                $('.sub-header-mobile-2.d-lg-none').addClass('d-block');
+                $('.header-mobile.header-mobile-2.d-lg-none').show();
+                $('.header-mobile.header-mobile-2.d-lg-none').addClass('d-block');
+                // $('.welcome .title-4').show();
             });
 
             $('#form-private-message').submit(function (e) {
@@ -172,6 +183,10 @@
                     $('.contact-list li.active a').attr('data-conf')
                     $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
                     $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
+
+                    $("html, body").scrollTop($("html, body").height()+200);
+                    $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
+
                 }
             }
 

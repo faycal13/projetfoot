@@ -99,7 +99,7 @@ class SecurityController extends AbstractController
                 $session = $this->get('session');
                 $footballer_repo = $manager->getRepository('App:Footballer');
                 $account_repo = $manager->getRepository('App:Account');
-                $friends_list_repo = $manager->getRepository('App:Friendslist');
+                $friends_list_repo = $manager->getRepository('App:FriendsList');
                 $user = $this->getUser()->getUser();
                 $account = $account_repo->findOneById($this->getUser()->getId());
                 $account->setOnline(1);
@@ -122,7 +122,11 @@ class SecurityController extends AbstractController
                         $path = '';
                         if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
                             isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
-                        $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFootballer()->getUser()->getAccount()->getId(). '/'.$friend->getFootballer()->getProfilPhoto());
+                        if(!is_null($friend->getFootballer()->getUser()->getProfilPhoto())){
+                            $path .= $assetsManager->getUrl('/img/user/photo-profil/' .$friend->getFootballer()->getUser()->getAccount()->getId(). '/'.$friend->getFootballer()->getUser()->getProfilPhoto());
+                        }else{
+                            $path .= $assetsManager->getUrl('/img/default/profil-footballer.png');
+                        }
                         $friend_tab['nom-prenom'] = $friend->getFootballer()->getUser()->getName().' '.$friend->getFootballer()->getUser()->getFirstName();
                         $friend_tab['photo'] = $path;
                         $friend_tab['id'] = $friend->getFootballer()->getUser()->getAccount()->getId();
@@ -136,7 +140,11 @@ class SecurityController extends AbstractController
                         $path = '';
                         if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
                             isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
-                        $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend_2->getFriend()->getUser()->getAccount()->getId(). '/'.$friend_2->getFriend()->getProfilPhoto());
+                        if(!is_null($friend_2->getFriend()->getUser()->getProfilPhoto())){
+                            $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend_2->getFriend()->getUser()->getAccount()->getId(). '/'.$friend_2->getFriend()->getUser()->getProfilPhoto());
+                        }else{
+                            $path .= $assetsManager->getUrl('/img/default/profil-footballer.png');
+                        }
                         $friend_tab['nom-prenom'] = $friend_2->getFriend()->getUser()->getName().' '.$friend_2->getFriend()->getUser()->getFirstName();
                         $friend_tab['photo'] = $path;
                         $friend_tab['id'] = $friend_2->getFriend()->getUser()->getAccount()->getId();
@@ -158,7 +166,7 @@ class SecurityController extends AbstractController
      * @Route("/before-logout", name="before_logout")
      */
     public function beforeLogout(EntityManagerInterface $manager, PublisherInterface $publisher){
-        $friends_list_repo = $manager->getRepository('App:Friendslist');
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
         $account_repo = $manager->getRepository('App:Account');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();

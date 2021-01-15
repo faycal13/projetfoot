@@ -774,16 +774,20 @@ class FootballerController extends AbstractController
         $id = $request->request->get('id');
         $user = $this->getUser()->getUser();
         $footballer_repo = $manager->getRepository('App:Footballer');
+        $friends_list_repo = $manager->getRepository('App:FriendsList');
         $footballer_current = $footballer_repo->findOneByUser($user);
         $footballer_friend = $footballer_repo->findOneById($id);
 
-        $friend = new FriendsList();
-        $friend->setFootballer($footballer_current);
-        $friend->setFriend($footballer_friend);
-        $friend->setCreationDate((new \DateTime('now')));
-        $friend->setAccept(0);
-        $manager->persist($friend);
-        $manager->flush();
+        //Vérifier si l'ami est déjà présent
+        if(is_null($friends_list_repo->findOneBy(['footballer' => $footballer_current->getId(), 'friend' => $footballer_friend->getId()]))){
+            $friend = new FriendsList();
+            $friend->setFootballer($footballer_current);
+            $friend->setFriend($footballer_friend);
+            $friend->setCreationDate((new \DateTime('now')));
+            $friend->setAccept(0);
+            $manager->persist($friend);
+            $manager->flush();
+        }
 
         return new JsonResponse(['result' => true]);
     }
@@ -880,7 +884,11 @@ class FootballerController extends AbstractController
                     $path = '';
                     if(isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
                         isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev'); $path = $this->getParameter('url_dev');
-                    $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFriend()->getUser()->getAccount()->getId(). '/'.$friend->getFriend()->getProfilPhoto());
+                    if(!is_null($friend->getFriend()->getUser()->getProfilPhoto())){
+                        $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' .$friend->getFriend()->getUser()->getAccount()->getId(). '/'.$friend->getFriend()->getUser()->getProfilPhoto());
+                    }else{
+                        $path .= $assetsManager->getUrl('/img/default/profil-footballer.png');
+                    }
                     $friends_tab[$counter]['nom-prenom'] = $friend->getFriend()->getUser()->getName().' '.$friend->getFriend()->getUser()->getFirstName();
                     $friends_tab[$counter]['photo'] = $path;
                     $friends_tab[$counter]['id'] = $friend->getFriend()->getUser()->getAccount()->getId();
@@ -899,7 +907,11 @@ class FootballerController extends AbstractController
                     if (isset($_SERVER['HTTP_HOST']) && strpos($_SERVER['HTTP_HOST'], 'localhost') !== false ||
                         isset($_SERVER['HTTP_REFERER']) && strpos($_SERVER['HTTP_REFERER'], 'localhost') !== false) $path = $this->getParameter('url_dev');
                     $path = $this->getParameter('url_dev');
-                    $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' . $friend2->getFootballer()->getUser()->getAccount()->getId() . '/' . $friend2->getFootballer()->getProfilPhoto());
+                    if(!is_null($friend2->getFootballer()->getUser()->getProfilPhoto())){
+                        $path .= $assetsManager->getUrl('/img/footballer/photo-profil/' . $friend2->getFootballer()->getUser()->getAccount()->getId() . '/' . $friend2->getFootballer()->getUser()->getProfilPhoto());
+                    }else{
+                        $path .= $assetsManager->getUrl('/img/default/profil-footballer.png');
+                    }
                     $friends_tab[$counter]['nom-prenom'] = $friend2->getFootballer()->getUser()->getName() . ' ' . $friend2->getFootballer()->getUser()->getFirstName();
                     $friends_tab[$counter]['photo'] = $path;
                     $friends_tab[$counter]['id'] = $friend2->getFootballer()->getUser()->getAccount()->getId();

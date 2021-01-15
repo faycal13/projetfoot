@@ -95,6 +95,7 @@ class FootballerViewController extends AbstractController
         }
         $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
         $friends2 = $friends_list_repo->findBy(array('friend' => $footballer, 'accept' => 1));
+        $friends_final = [];
         foreach ($friends as $key => $friend) {
             if(!in_array($friend->getFriend()->getId(), $id_footballer_blocked)){
                 $friends_final[] = $friend->getFriend();

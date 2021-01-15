@@ -1,7 +1,7 @@
 {% extends 'socialNetwork/base.html.twig' %}
 {% block body %}
 
-  <div class="container">
+  <div class="container main-container">
     <div class="timeline">
       {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
       <div id="page-contents">
@@ -29,16 +29,20 @@
                   <div class="nearby-user">
                     <div class="row">
                       <div class="col-md-2 col-sm-2">
-                        <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.footballer.user.account.id~'/'~friend.footballer.user.profilPhoto) }}" alt="user" class="profile-photo-lg" />
+                        {% if friend.footballer.user.profilPhoto is not null %}
+                          <img src="{{ asset(footballer_photo_profil_directory~'/'~friend.footballer.user.account.id~'/'~friend.footballer.user.profilPhoto) }}" alt="user" class="profile-photo-lg" />
+                        {% else %}
+                          <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="img-responsive profile-photo"/>
+                        {% endif %}
                       </div>
                       <div class="col-md-7 col-sm-7">
                         <h5><a href="#" class="profile-link">{{ friend.footballer.user.name }} {{ friend.footballer.user.firstName }}</a></h5>
                         <p>{{ friend.footballer.position }}</p>
-                        <p class="text-muted">Marseille</p>
+                        <p class="text-muted">{{ friend.footballer.user.city }}</p>
                       </div>
-                      <div class="col-md-3 col-sm-3">
-                        <button class="btn btn-primary pull-right add-friend inactive" data-id="{{ friend.id }}">Accepter</button>
-                        <button class="btn btn-primary pull-right not-add-friend inactive" data-id="{{ friend.id }}">Refuser</button>
+                      <div class="col-md-3 col-sm-3" style="display: flex;">
+                        <button class="btn btn-success pull-right add-friend inactive" style="margin: 10px" data-id="{{ friend.id }}">Accepter</button>
+                        <button class="btn btn-danger pull-right not-add-friend inactive" style="margin: 10px" data-id="{{ friend.id }}">Refuser</button>
                       </div>
                     </div>
                   </div>

@@ -78,6 +78,11 @@ class User
      */
     private $city;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $notifyMessage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -228,6 +233,18 @@ class User
     public function setCity(?string $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getNotifyMessage(): ?bool
+    {
+        return $this->notifyMessage;
+    }
+
+    public function setNotifyMessage(?bool $notifyMessage): self
+    {
+        $this->notifyMessage = $notifyMessage;
 
         return $this;
     }
