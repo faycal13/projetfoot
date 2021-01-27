@@ -127,7 +127,6 @@ class SocialNetworkController extends AbstractController
                 //MAJ de la date de participation
                 $participation->setModifiedAt((new \DateTime()));
                 $participation->setNotify(1);
-                $user->setNotifyMessage(1);
                 $manager->persist($participation);
                 $manager->persist($user);
                 //Ajouter un message
@@ -253,9 +252,9 @@ class SocialNetworkController extends AbstractController
         $params = $request->request->all();
         $participation = $participant_conversations_repo->findOneById($params['participant']);
         $conversation = $participation->getConversation();
-        $all_participationt = $participant_conversations_repo->findByConversation($conversation);
+        $all_participation = $participant_conversations_repo->findByConversation($conversation);
 
-        foreach ($all_participationt as $item) {
+        foreach ($all_participation as $item) {
             if($item->getUser()->getId() == $user->getId()){
                 $participation->setNotify(0);
                 $manager->persist($participation);
@@ -263,6 +262,10 @@ class SocialNetworkController extends AbstractController
                 return new JsonResponse(['result' => true]);
             }
         }
+
+        $user->setNotifyMessage(0);
+        $manager->persist($user);
+        $manager->flush();
 
         return new JsonResponse(['result' => false]);
 

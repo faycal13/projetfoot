@@ -9,7 +9,8 @@
     <meta name="keywords" content="au theme template">
 
     <!-- Title Page-->
-    <title>Dashboard 3</title>
+    <title>Skillfoot - Espace recruteur</title>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('agent/images/icon/favicon.png') }}"/>
 
     <!-- Fontfaces CSS-->
     <link href="{{ asset('agent/css/font-face.css') }}" rel="stylesheet" media="all">
@@ -35,6 +36,11 @@
 </head>
 
 <body class="animsition">
+{% if is_granted('ROLE_USER') %}
+    {{ render(controller(
+        'App\\Controller\\AgentController::formUser'
+    )) }}
+{% endif %}
 {% include 'agent/inc/header.html.twig' %}
 <div class="page-wrapper" style="padding: 0;">
     {% block body %}{% endblock %}
@@ -59,13 +65,41 @@
 <script src="{{ asset('agent/vendor/chartjs/Chart.bundle.min.js') }}"></script>
 <script src="{{ asset('agent/vendor/select2/select2.min.js') }}"></script>
 <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_HjJF8QPWNN2hcV6qsCMYA-9GzgCgRrw&callback=initAutocomplete&libraries=places"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBthDcw86Rl-KjMtT47sKZO3ocUeyw03o8&callback=initAutocomplete&libraries=places"
         defer
 ></script>
 
 <!-- Main JS-->
 <script src="{{ asset('agent/js/main.js') }}"></script>
+<script>
+    {% if app.user.user is not null %}
+    if(!window.location.href.includes('/agent/messages')){
+        //ON INITIALISE L'URL DE MERCURE
+        const url = new URL('{{ mercure_publish_url }}');
+        //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
+        url.searchParams.append('topic', 'http://skillfoot.fr/users/private-message')
 
+        //ECOUTEUR DE LURL DE MERCURE
+        const eventSource = new EventSource(url, { withCredentials: true });
+
+        eventSource.onmessage = e => {
+            var serverResponse = JSON.parse(e.data);
+            if(serverResponse != false){
+                if(serverResponse.id != {{ app.user.user.id }}) {
+                    $('.header-button-item').removeClass('has-not-noti');
+                    $('.header-button-item').addClass('has-noti');
+                }
+            }
+        }
+        //Fermer l'event source avant de quitter la page
+        window.onbeforeunload = function(){
+            if(eventSource != null){
+                eventSource.close()
+            }
+        }
+    }
+    {% endif %}
+</script>
 {% block javascripts %}{% endblock %}
 
 </body>

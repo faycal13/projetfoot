@@ -272,6 +272,7 @@ class FootballerController extends AbstractController
             $manager->persist($new_footballer_career);
             $manager->flush();
             $this->addFlash('success', 'Le club a été ajouté !');
+            return $this->redirect($request->getUri());
 
         }
 

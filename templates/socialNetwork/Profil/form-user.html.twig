@@ -33,12 +33,15 @@
                     <label>Téléphone</label>
                     {{ form_row(form.account, {'label': false,'attr': {'placeholder': 'Téléphone', 'class': ''}}) }}
 
-                    <label>Ville</label>
-                    {{ form_row(form.city, {'label': false, 'id': 'autocomplete2', 'attr': {'placeholder': 'Ville ou code postal', 'class': ''}}) }}
+                    <label>Code postal et Ville</label>
+                    {{ form_row(form.city, {'label': false, 'id': 'autocomplete2', 'attr': {'placeholder': 'Ville', 'class': ''}}) }}
 
                     {{ form_row(form.longitude, {'label': false, 'id': 'user_longitude2'}) }}
 
                     {{ form_row(form.latitude, {'label': false, 'id': 'user_latitude2'}) }}
+
+                    <label>Code postal</label>
+                    {{ form_row(form.zipCode, {'label': false, 'id': 'zipcode2', 'attr': {'placeholder': 'Veuillez remplir la ville', 'class': '', 'readonly': 'true'}}) }}
 
                     <label>Sexe</label>
                     {{ form_row(form.sexe, {'label': false,'attr': {'placeholder': 'Sexe', 'class': ''}}) }}

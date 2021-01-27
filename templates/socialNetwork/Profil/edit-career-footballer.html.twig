@@ -36,21 +36,19 @@
                 <button class="btn btn-danger" data-toggle="modal" data-target="#add-career">Ajouter un club</button>
                 <table style="width: 100%;">
                   <tr>
-                    <th>Années</th>
+                    <th>Date</th>
                     <th>Club</th>
-                    <th>Catégorie</th>
                     <th>Poste</th>
                     <th>Ville</th>
-                    <th>Options</th>
+                    <th></th>
                   </tr>
                   <tbody>
                   {% for career in careers %}
                     <tr>
                       <td>{{ career.startDate }}-{{ career.endDate }}</td>
-                      <td>{{ career.club }}</td>
-                      <td>{{ career.categorie }}</td>
+                      <td>{{ career.club }} <br> {{ career.categorie }}</td>
                       <td>{{ career.position }}</td>
-                      <td>{% if career.city is not null %}{{ career.city.name }}{% endif %}</td>
+                      <td>{{ career.city }}</td>
                       <td>
                         <i class="fa fa-edit" data-toggle="modal" data-target="#edit-{{ career.id }}"></i>
                         <i class="fa fa-close" data-toggle="modal" data-target="#remove-{{ career.id }}"></i>
@@ -85,6 +83,8 @@
                       {{ form_row(form.startDate, {'label': 'Année de début','attr': {'placeholder': '2017'}}) }}
                       {{ form_row(form.endDate, {'label': 'Année de fin','attr': {'placeholder': '2019'}}) }}
                       {{ form_row(form.position, {'label': 'Poste','attr': {'placeholder': 'Milieu'}}) }}
+                      {{ form_row(form.city, {'label': 'Ville', 'id': 'autocomplete-modify-'~key, 'attr': {'placeholder': 'Ville ou code postal', 'class': ''}}) }}
+                      {{ form_row(form.longitude, {'label': false}) }}
                       <button class="btn" data-dismiss="modal">Annuler</button>
                       <button class="btn btn-primary">Enregistrer</button>
                     </div>
@@ -133,6 +133,9 @@
                     {{ form_row(new_form.startDate, {'label': 'Année de début','attr': {'placeholder': '2017'}}) }}
                     {{ form_row(new_form.endDate, {'label': 'Année de fin','attr': {'placeholder': '2019'}}) }}
                     {{ form_row(new_form.position, {'label': 'Poste','attr': {'placeholder': 'Milieu'}}) }}
+                    {{ form_row(new_form.city, {'label': 'Ville', 'id': 'autocomplete-create', 'attr': {'placeholder': 'Ville ou code postal', 'class': ''}}) }}
+                    {{ form_row(new_form.longitude, {'label': false, 'id': 'career-longitude'}) }}
+                    {{ form_row(new_form.latitude, {'label': false, 'id': 'career-latitude'}) }}
                     <button class="btn" data-dismiss="modal">Annuler</button>
                     <button class="btn btn-primary">Enregistrer</button>
                   </div>
@@ -145,4 +148,99 @@
       </div>
     </div>
   </div>
+{% endblock %}
+{% block javascripts %}
+  <script>
+    let autocomplete;
+    let autocomplete2;
+    var autocomplete_tab = [];
+
+    function initAutocomplete() {
+      // Create the autocomplete object, restricting the search predictions to
+      // geographical location types.
+      autocomplete = new google.maps.places.Autocomplete(
+              document.getElementById("autocomplete-create"),
+              {
+                types: ['(regions)'],
+                componentRestrictions: {country: "fr"}
+              }
+      );
+      // Avoid paying for data that you don't need by restricting the set of
+      // place fields that are returned to just the address components.
+      autocomplete.setFields(["geometry"]);
+      // When the user selects an address from the drop-down, populate the
+      // address fields in the form.
+      autocomplete.addListener("place_changed", fillInAddress);
+
+      autocomplete2 = new google.maps.places.Autocomplete(
+              document.getElementById("autocomplete2"),
+              {
+                types: ['(regions)'],
+                componentRestrictions: {country: "fr"}
+              }
+      );
+      // Avoid paying for data that you don't need by restricting the set of
+      // place fields that are returned to just the address components.
+      autocomplete2.setFields(["geometry"]);
+      // When the user selects an address from the drop-down, populate the
+      // address fields in the form.
+      autocomplete2.addListener("place_changed", fillInAddress);
+
+      // Create the autocomplete object, restricting the search predictions to
+      // geographical location types.
+
+      for (let i = 0; i < 50; i++) {
+        autocomplete_tab[i] = new google.maps.places.Autocomplete(
+                document.getElementById('autocomplete-modify-'+i),
+                {
+                  types: ['(regions)'],
+                  componentRestrictions: {country: "fr"}
+                }
+        );
+        autocomplete_tab[i].setFields(["geometry"]);
+        autocomplete_tab[i].addListener("place_changed", fillInAddress);
+      }
+
+    }
+
+    function fillInAddress() {
+      // Get the place details from the autocomplete object.
+      const place = autocomplete.getPlace();
+      const place2 = autocomplete2.getPlace();
+
+      if(typeof place !== 'undefined'){
+        if (!place.geometry) {
+          window.alert("Veuillez sélectionner une autre adresse");
+          return;
+        }else{
+          $('#career-longitude').val(place.geometry.location.lng());
+          $('#career-latitude').val(place.geometry.location.lat());
+        }
+      }
+
+      if(typeof place2 !== 'undefined'){
+        if (!place2.geometry) {
+          window.alert("Veuillez sélectionner une autre adresse");
+          return;
+        } else {
+          $('#user_longitude2').val(place2.geometry.location.lng());
+          $('#user_latitude2').val(place2.geometry.location.lat());
+        }
+      }
+
+      var place_tab = [];
+      for (let i = 0; i < 50; i++) {
+        place_tab[i] = autocomplete_tab[i].getPlace();
+        if(typeof place_tab[i] !== 'undefined'){
+          if (!place_tab[i].geometry) {
+            window.alert("Veuillez sélectionner une autre adresse");
+            return;
+          } else {
+            $('#user_longitude2').val(place_tab[i].geometry.location.lng());
+            $('#user_latitude2').val(place_tab[i].geometry.location.lat());
+          }
+        }
+      }
+    }
+  </script>
 {% endblock %}

@@ -39,10 +39,6 @@
                 height: 100vh;
                 overflow-y: auto;
             }
-            .chat-room .chat-body ul.chat-message{
-                width: 100%;
-                height: 100%;
-            }
 
         }
     </style>
@@ -188,6 +184,20 @@
                 $('#header').show();
                 $('.chat-message').hide();
                 $(this).hide();
+                $.ajax({
+                    'url' : "{{ path('social_network_remove_notify') }}",
+                    'type' : 'POST',
+                    'data' : {'participant':$('.contact-list li a.active').attr('data-participant')},
+                    success : function (serverResponse){
+                        if(serverResponse.result != false){
+                            $('.contact-list li a.active .msg-preview p').attr('style', 'color:#939598 !important; font-weight:initial');
+                            $('.contact-list li a.active .msg-preview small').attr('style', 'color:#939598 !important; font-weight:initial');
+                        }
+                    },
+                    error : function (error){
+                        console.log(error);
+                    },
+                })
             });
 
             $('#form-private-message').submit(function (e) {
@@ -245,9 +255,17 @@
                         '<small class="text-muted message-date">'+serverResponse.date+'</small> ' +
                         '</div> <p class="private-message">'+serverResponse.message+'</p> </div></li>')
                     $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
-                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').css({'color':'black','font-weight':'bold'});
                     $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
-                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').css({'color':'black','font-weight':'bold'});
+                    if(serverResponse.id != {{ app.user.user.id }}) {
+                        $('.contact-list li.active a[data-conf=' + serverResponse.conversation + ']').find('.msg-preview').find('p.text-muted').css({
+                            'color': 'black',
+                            'font-weight': 'bold'
+                        });
+                        $('.contact-list li.active a[data-conf=' + serverResponse.conversation + ']').find('.msg-preview').find('small.text-muted').css({
+                            'color': 'black',
+                            'font-weight': 'bold'
+                        });
+                    }
                     // $('#contact-'+serverResponse.conversation+' .chat-body').scrollTop($('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height()+200);
                     $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
                     $("html, body").scrollTop($("html, body").height()+200);

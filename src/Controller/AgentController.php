@@ -27,6 +27,11 @@ class AgentController extends AbstractController
         $milieu = $footballer_repo->findBy(['position' => 'Milieu']);
         $attaquant = $footballer_repo->findBy(['position' => 'Attaquant']);
 
+        if(is_null($this->getUser()->getUser())) {
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles pour poursuivre.');
+            return $this->redirectToRoute('agent_setting');
+        }
+
         return $this->render('agent/index.html.twig',[
             'gardien' => count($gardien),
             'defenseur' => count($defenseur),
@@ -40,6 +45,10 @@ class AgentController extends AbstractController
      */
     public function recherche(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser()->getUser())) {
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles pour poursuivre.');
+            return $this->redirectToRoute('agent_setting');
+        }
         $footballer_repo = $manager->getRepository('App:Footballer');
         //Récupération des infos du formulaire
         $position = $request->request->get('position');
@@ -107,6 +116,10 @@ class AgentController extends AbstractController
      */
     public function settingPhoto(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser()->getUser())) {
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles pour poursuivre.');
+            return $this->redirectToRoute('agent_setting');
+        }
         $user_repo = $manager->getRepository('App:User');
         $user = $user_repo->findOneByAccount($this->getUser());
         if(is_null($user)){
@@ -146,6 +159,10 @@ class AgentController extends AbstractController
      */
     public function motdepasse(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
+        if(is_null($this->getUser()->getUser())) {
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles pour poursuivre.');
+            return $this->redirectToRoute('agent_setting');
+        }
         $params = $request->request->all();
         if(isset($params['button-password'])){
             $account_repo = $manager->getRepository('App:Account');
@@ -172,18 +189,14 @@ class AgentController extends AbstractController
     }
 
     /**
-     * @Route("/agent/abonnements", name="agent_abonnement")
-     */
-    public function paiement()
-    {
-        return $this->render('agent/pricing.html.twig');
-    }
-
-    /**
      * @Route("/agent/messages/{id}", name="agent_messages",defaults={"id"=0})
      */
     public function messages($id, Request $request, EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager)
     {
+        if(is_null($this->getUser()->getUser())) {
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles pour poursuivre.');
+            return $this->redirectToRoute('agent_setting');
+        }
         $participant_conversations_repo = $manager->getRepository('App:ParticipantConversation');
         $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
         $user = $this->getUser()->getUser();
@@ -208,9 +221,15 @@ class AgentController extends AbstractController
                 if(is_null($blocked_list_of_footballer)){
                     $conversations[$participant->getConversation()->getId()]['participant'] = $participant;
                     $conversations[$participant->getConversation()->getId()]['conversation'] = $participant->getConversation();
+                    $conversations[$participant->getConversation()->getId()]['notify'] = $participant->getNotify();
+                    $conversations[$participant->getConversation()->getId()]['date'] = $participant->getModifiedAt()->format('Y-m-d H:i:s');
                 }
             }
         }
+
+        $user->setNotifyMessage(0);
+        $manager->persist($user);
+        $manager->flush();
 
         return $this->render('agent/messages.html.twig',[
             'conversations' => $conversations,

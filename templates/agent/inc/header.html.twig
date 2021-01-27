@@ -5,7 +5,7 @@
             {% if is_granted('ROLE_AGENT') %}
                 <div class="header__logo">
                     <a href="{{ path('agent_home') }}">
-                        <img src="images/icon/logo-white.png" alt="Logo skillfoot" />
+                        <img src="{{ asset('agent/images/icon/logo-white.png') }}" alt="Logo skillfoot" />
                     </a>
                 </div>
                 <div class="header__navbar">
@@ -21,7 +21,7 @@
 
                 <div class="header__logo">
                     <a href="#">
-                        <img src="images/icon/logo-white.png" alt="Logo skillfoot" />
+                        <img src="{{ asset('agent/images/icon/logo-white.png') }}" alt="Logo skillfoot" />
                     </a>
                 </div>
                 <div class="header__navbar">
@@ -49,7 +49,7 @@
                     <div class="account-wrap">
                         <div class="account-item account-item--style2 clearfix js-item-menu">
                             <div class="image">
-                                {% if app.user.user is not null %}
+                                {% if app.user.user is not null and app.user.user.profilPhoto is not null %}
                                     <img src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
                                 {% else %}
                                     <img src="{{ asset('img/default/profil-agent.png') }}" alt="" class="img-responsive profile-photo" />
@@ -61,7 +61,11 @@
                             <div class="account-dropdown js-dropdown">
                                 <div class="info clearfix">
                                     <div class="image">
-                                        <img src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
+                                        {% if app.user.user is not null and app.user.user.profilPhoto is not null %}
+                                            <img src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
+                                        {% else %}
+                                            <img src="{{ asset('img/default/profil-agent.png') }}" alt="" class="img-responsive profile-photo" />
+                                        {% endif %}
                                     </div>
                                     <div class="content">
                                         <h5 class="name">
@@ -146,13 +150,18 @@
             <div class="header-mobile-inner">
                 {% if is_granted('ROLE_AGENT') %}
                     <a class="logo" href="{{ path('agent_home') }}">
-                        <img src="images/icon/logo-white.png" alt="Logo skillfoot" />
+                        <img src="{{ asset('agent/images/icon/logo-white.png') }}" alt="Logo skillfoot" />
                     </a>
                 {% else %}
                     <a class="logo" href="{{ path('admin_home') }}">
-                        <img src="images/icon/logo-white.png" alt="Logo skillfoot" />
+                        <img src="{{ asset('agent/images/icon/logo-white.png') }}" alt="Logo skillfoot" />
                     </a>
                 {% endif %}
+                        <div class="header-button-item {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}has-noti{% else %}has-not-noti{% endif %}{% endif %}">
+                            <a href="{{ path('agent_messages') }}">
+                                <i class="zmdi zmdi-email"></i>
+                            </a>
+                        </div>
                 <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
                                 <span class="hamburger-inner"></span>
@@ -171,20 +180,16 @@
                             <span class="bot-line"></span>Accueil</a>
                     </li>
                     <li>
-                        <a href="{{ path('agent_messages') }}">
-                            <i class="fas fa-envelope"></i>
-                            <span class="bot-line"></span>Mes messages</a>
+                        <a href="{{ path ("agent_setting") }}">
+                            <i class="fas fa-user"></i>
+                            <span class="bot-line"></span>Mes informations personelles</a>
                     </li>
                     <li>
                         <a href="{{ path ("agent_setting_photo") }}">
                             <i class="fas fa-picture-o"></i>
                             <span class="bot-line"></span>Changer ma photo de profil</a>
                     </li>
-                    <li>
-                        <a href="{{ path ("agent_setting") }}">
-                            <i class="fas fa-user"></i>
-                            <span class="bot-line"></span>Mes informations personelles</a>
-                    </li>
+
                     <li>
                         <a href="{{ path ("agent_password") }}">
                             <i class="fas fa-key"></i>

@@ -36,10 +36,10 @@
                 <div class="filters-content">
                     <div class="row grid">
                         {% for footballer in footballers %}
-                            <div class="single-portfolio col-sm-2 all corporate">
+                            <div class="single-portfolio col-sm-2 all corporate" style="text-align: center">
                                 <a href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}">
                                     <div class="item">
-                                        {% if app.session.get('footballer_profil_photo') is not null %}
+                                        {% if footballer.user.profilPhoto is not null %}
                                             <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto) }}">
                                         {% else %}
                                             <img src="{{ asset('img/default/profil-footballer.png') }}"/>

@@ -2450,11 +2450,21 @@ section {
     }
 }
 
-.has-noti > i {
+.has-noti i {
     position: relative;
 }
 
-.has-noti > i:after {
+.has-noti a {
+    text-decoration: none;
+    color: white;
+}
+
+.has-not-noti a {
+    text-decoration: none;
+    color: white;
+}
+
+.has-noti i:after {
     content: '';
     height: 8px;
     width: 8px;
@@ -2465,6 +2475,11 @@ section {
     border-radius: 100%;
     top: 0;
     right: -6px;
+    animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
 }
 
 .search-dropdown {

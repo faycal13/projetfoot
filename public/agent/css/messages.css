@@ -48,7 +48,7 @@
 /*Chat Messages*/
 
 .chat-room .chat-body{
-    height: 400px;
+    height: 500px;
     overflow-y: auto;
 }
 
@@ -132,7 +132,7 @@
 }
 
 .chat-room .conversations{
-    height: 500px;
+    height: 700px;
     overflow-y: scroll;
 }
 
@@ -298,13 +298,23 @@ input#cover_photo_footballer_coverPhoto {
         font-size: 15px;
     }
 
+    .chat-room > .row{
+        padding-top: 0px !important;
+    }
+
     .chat-room ul.contact-list li a .contact .msg-preview {
         margin-left: 0px;
     }
 
     .chat-room .chat-body{
-        height: 500px;
+        height: 100vh;
         overflow-y: auto;
+        margin-top: 60px
+    }
+
+    .chat-room .conversations {
+        height: 500px;
+        overflow-y: scroll;
     }
 }
 

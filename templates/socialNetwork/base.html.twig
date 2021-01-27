@@ -57,7 +57,7 @@
 <script src="{{ asset("socialNetwork/js/script.js") }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_HjJF8QPWNN2hcV6qsCMYA-9GzgCgRrw&callback=initAutocomplete&libraries=places"
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBthDcw86Rl-KjMtT47sKZO3ocUeyw03o8&callback=initAutocomplete&libraries=places"
         defer
 ></script>
 <script>
@@ -163,25 +163,31 @@
             }
         })
 
-        //ON INITIALISE L'URL DE MERCURE
-        const url3 = new URL('{{ mercure_publish_url }}');
-        //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
-        url3.searchParams.append('topic', 'http://skillfoot.fr/users/private-message')
+        if(!window.location.href.includes('/footballer-social-network/show-conversations')) {
+            //ON INITIALISE L'URL DE MERCURE
+            const url3 = new URL('{{ mercure_publish_url }}');
+            //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
+            url3.searchParams.append('topic', 'http://skillfoot.fr/users/private-message')
 
-        //ECOUTEUR DE LURL DE MERCURE
-        const eventSource3 = new EventSource(url3, { withCredentials: true });
+            //ECOUTEUR DE LURL DE MERCURE
+            const eventSource3 = new EventSource(url3, {withCredentials: true});
 
-        eventSource3.onmessage = e => {
-            var serverResponse3 = JSON.parse(e.data);
-            if(serverResponse3 != false){
-                $('#message-title').html('Mes messages <i class="fa fa-comment"></i>');
+            eventSource3.onmessage = e => {
+                var serverResponse3 = JSON.parse(e.data);
+                console.log(serverResponse3);
+                if (serverResponse3 != false) {
+                    if(serverResponse3.id != {{ app.user.user.id }}){
+                        $('#message-title').html('Mes messages <i class="fa fa-comment"></i>');
+                    }
+
+                }
             }
-        }
 
-        //Fermer l'event source avant de quitter la page
-        window.onbeforeunload = function(){
-            if(eventSource != null){
-                eventSource.close()
+            //Fermer l'event source avant de quitter la page
+            window.onbeforeunload = function () {
+                if (eventSource != null) {
+                    eventSource.close()
+                }
             }
         }
 

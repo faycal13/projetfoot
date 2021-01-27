@@ -2862,7 +2862,7 @@ ul[id^=ui-id-]{
     bottom: 20px;
     right: 5px;
     color: red;
-    animation: blinker 2s linear infinite;
+    animation: blinker 1s linear infinite;
 }
 
 @keyframes blinker {
@@ -2896,6 +2896,10 @@ ul[id^=ui-id-]{
     }
     .edit-career-container table tr th {
         padding: 5px;
+    }
+
+    .edit-career-container table tr th:nth-of-type(2) {
+        width: 100px;
     }
     .phone-menu{
         display: block !important;

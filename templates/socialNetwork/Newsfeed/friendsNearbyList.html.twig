@@ -1,6 +1,12 @@
 {% extends 'socialNetwork/base.html.twig' %}
 {% block body %}
-
+  <style>
+    @media (max-width: 767px) {
+      img.profile-photo {
+        margin: 0 auto;
+      }
+    }
+  </style>
   <div class="container main-container">
     <div class="timeline">
       {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
@@ -27,21 +33,27 @@
               <div class="edit-block">
                 {% for footballer in footballers %}
                   {% if footballer.user.account.id != app.user.id %}
-                  <div class="nearby-user">
-                    <div class="row">
-                      <div class="col-md-2 col-sm-2">
-                        <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto) }}" alt="user" class="profile-photo-lg" />
-                      </div>
-                      <div class="col-md-7 col-sm-7">
-                        <h5><a href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}" class="profile-link">{{ footballer.user.name }} {{ footballer.user.firstName }}</a></h5>
-                        <p>{{ footballer.position }}</p>
-                        <p class="text-muted">Marseille</p>
-                      </div>
-                      <div class="col-md-3 col-sm-3">
-                        <button class="btn btn-primary pull-right add-friend inactive" data-id="{{ footballer.id }}">Ajouter</button>
+                    <div class="nearby-user">
+                      <div class="row">
+                        <div class="col-md-2 col-sm-2">
+                          {% if footballer.user.profilPhoto is not null %}
+                            <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto) }}" alt="user" class="profile-photo-lg" />
+                          {% else %}
+                            <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="img-responsive profile-photo"/>
+                          {% endif %}
+                        </div>
+                        <div class="col-md-7 col-sm-7">
+                          <h5><a href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}" class="profile-link">{{ footballer.user.name }} {{ footballer.user.firstName }}</a></h5>
+                          <p>{{ footballer.position }}</p>
+                          <p class="text-muted">Marseille</p>
+                        </div>
+                        <div class="col-md-3 col-sm-3">
+                          {% if footballer.friend == false %}
+                            <button class="btn btn-primary pull-right add-friend inactive" data-id="{{ footballer.id }}">Ajouter</button>
+                          {% endif %}
+                        </div>
                       </div>
                     </div>
-                  </div>
                   {% endif %}
                 {% endfor %}
               </div>

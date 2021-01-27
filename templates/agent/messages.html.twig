@@ -28,31 +28,34 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="chat-room" style="display:none;">
-                                <div class="row">
+                                <div class="row" style="padding-top: 45px;{% if conversations is empty %}display: block{% endif %}">
                                     {% if conversations is empty %}
-                                        <h3>Vous n'avez aucune conversation</h3>
+                                        <div style="padding: 20px">
+                                            <h3>Vous n'avez aucune conversation</h3>
+                                            <p>Pour débuter une nouvelle conversation, trouver un footballeur en
+                                                <a href="{{ path('agent_home') }}">cliquant ici</a></p>
+                                        </div>
                                     {% endif %}
-                                    <div class="col-md-4 conversations">
-                                        <ul class="nav nav-tabs contact-list scrollbar-wrapper scrollbar-outer">
-                                            {% for conversation in conversations %}
-                                                <li {% if id > 0 and conversation['conversation'].id == id %}class="active"{% endif %}>
-                                                    <a href="#contact-{{ conversation['conversation'].id }}" data-toggle="tab" data-conf="{{ conversation['conversation'].id }}">
-                                                        <div class="contact">
-                                                            <div class="msg-preview">
-                                                                <h6>{{ conversation['participant'].user.name }} {{ conversation['participant'].user.firstName }}</h6>
-                                                                <p class="text-muted"></p>
-                                                                <small class="text-muted"></small>
-                                                                {#                                                        <div class="chat-alert">1</div>#}
+                                    {% if conversations is not empty %}
+                                        <div class="col-md-4 conversations">
+                                            <ul class="nav nav-tabs contact-list scrollbar-wrapper scrollbar-outer">
+                                                {% for conversation in conversations %}
+                                                    <li {% if id > 0 and conversation['conversation'].id == id %}class="active"{% endif %}>
+                                                        <a href="#contact-{{ conversation['conversation'].id }}" data-toggle="tab" data-conf="{{ conversation['conversation'].id }}" data-participant="{{ conversation['participant'].id }}">
+                                                            <div class="contact">
+                                                                <div class="msg-preview">
+                                                                    <h6>{{ conversation['participant'].user.name }} {{ conversation['participant'].user.firstName }}</h6>
+                                                                    <p style="{% if conversation['notify'] %}color: rgb(10, 175, 254) !important;font-weight: bold;{% endif %}" class="text-muted"></p>
+                                                                    <small style="{% if conversation['notify'] %}color: rgb(10, 175, 254) !important;font-weight: bold;{% endif %}" class="text-muted"></small>
+                                                                    {#                                                        <div class="chat-alert">1</div>#}
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </a>
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                    <div class="col-md-8" style="padding-top: 45px;">
-                                        {% if conversations is not empty %}
-                                            <!--Chat Messages in Right-->
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-8">
                                             <div class="tab-content chat-message scrollbar-wrapper wrapper scrollbar-outer">
                                                 {% for conversation in conversations %}
                                                     <div class="tab-pane" id="contact-{{ conversation['conversation'].id }}"></div>
@@ -67,8 +70,8 @@
                                                     </div>
                                                 </div>
                                             </div><!--Chat Messages in Right End-->
-                                        {% endif %}
-                                    </div>
+                                        </div>
+                                    {% endif %}
                                     <div class="clearfix"></div>
                                 </div>
                             </div>
@@ -135,6 +138,23 @@
                     $('.welcome .title-4').hide();
                 }
                 $($(this).attr('href')+' .chat-body').scrollTop($($(this).attr('href')+' .chat-body .chat-message').height()+200);
+                $(this).find('p.text-muted').attr('style', 'color:#6c757d !important; font-weight:initial');
+                $(this).find('small.text-muted').attr('style', 'color:#6c757d !important; font-weight:initial');
+
+                $.ajax({
+                    'url' : "{{ path('social_network_remove_notify') }}",
+                    'type' : 'POST',
+                    'data' : {'participant':$(this).attr('data-participant')},
+                    success : function (serverResponse){
+                        if(serverResponse.result != false){
+                            $('.contact-list li.active a .msg-preview p').css({'color':'#939598','font-weight':'initial'});
+                            $('.contact-list li.active a .msg-preview small').css({'color':'#939598','font-weight':'initial'});
+                        }
+                    },
+                    error : function (error){
+                        console.log(error);
+                    },
+                })
             });
 
             $('.show-conversation').click(function (){
@@ -145,6 +165,21 @@
                 $('.sub-header-mobile-2.d-lg-none').addClass('d-block');
                 $('.header-mobile.header-mobile-2.d-lg-none').show();
                 $('.header-mobile.header-mobile-2.d-lg-none').addClass('d-block');
+                $.ajax({
+                    'url' : "{{ path('social_network_remove_notify') }}",
+                    'type' : 'POST',
+                    'data' : {'participant':$('.contact-list li a.active').attr('data-participant')},
+                    success : function (serverResponse){
+                        if(serverResponse.result != false){
+                            $('.contact-list li a.active .msg-preview p').attr('style', 'color:#939598 !important; font-weight:initial');
+                            $('.contact-list li a.active .msg-preview small').attr('style', 'color:#939598 !important; font-weight:initial');
+                        }
+                    },
+                    error : function (error){
+                        console.log(error);
+                    },
+                });
+                $(window).scrollTop(0);
                 // $('.welcome .title-4').show();
             });
 
@@ -166,6 +201,7 @@
                 })
             })
 
+            {% if conversations is not empty %}
             //ON INITIALISE L'URL DE MERCURE
             const url = new URL('{{ mercure_publish_url }}');
             //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
@@ -181,11 +217,15 @@
                     else var position = 'left';
                     $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').append('<li class="'+position+'"><img src="'+serverResponse.photo+'" alt="" class="profile-photo-sm pull-'+position+'"/><div class="chat-item"> <div class="chat-item-header"> <h5>'+serverResponse.nom+'</h5> <small class="text-muted message-date">'+serverResponse.date+'</small> </div> <p class="private-message">'+serverResponse.message+'</p> </div></li>')
                     $('.contact-list li.active a').attr('data-conf')
-                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
-                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
+                    $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
+                    $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
+                    if(serverResponse.id != {{ app.user.user.id }}){
+                        $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').attr('style', 'color:rgb(10, 175, 254) !important; font-weight:bold');
+                        $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').attr('style', 'color:rgb(10, 175, 254) !important; font-weight:bold');
+                    }
 
-                    $("html, body").scrollTop($("html, body").height()+200);
-                    $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
+                    // $("html, body").scrollTop($("html, body").height()+200);
+                    // $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
 
                 }
             }
@@ -196,7 +236,7 @@
                     eventSource.close()
                 }
             }
-
+            {% endif %}
             if($(window).width() <= 765){
                 $('.chat-message').hide();
             }
