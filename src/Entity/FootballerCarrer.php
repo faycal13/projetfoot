@@ -23,16 +23,6 @@ class FootballerCarrer
     private $club;
 
     /**
-     * @ORM\Column(type="string", length=4)
-     */
-    private $startDate;
-
-    /**
-     * @ORM\Column(type="string", length=4)
-     */
-    private $endDate;
-
-    /**
      * @ORM\ManyToOne(targetEntity=footballer::class, inversedBy="footballerCarrers")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -63,6 +53,26 @@ class FootballerCarrer
      */
     private $city;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $goalNumber;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $matchNumber;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $saisonDate;
+
+    /**
+     * @ORM\Column(type="string", length=10, nullable=true)
+     */
+    private $zipCode;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -78,38 +88,6 @@ class FootballerCarrer
         $this->club = $club;
 
         return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStartDate()
-    {
-        return $this->startDate;
-    }
-
-    /**
-     * @param mixed $startDate
-     */
-    public function setStartDate($startDate): void
-    {
-        $this->startDate = $startDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEndDate()
-    {
-        return $this->endDate;
-    }
-
-    /**
-     * @param mixed $endDate
-     */
-    public function setEndDate($endDate): void
-    {
-        $this->endDate = $endDate;
     }
 
     public function getFootballer(): ?footballer
@@ -175,6 +153,54 @@ class FootballerCarrer
     public function setCity(?string $city): self
     {
         $this->city = $city;
+
+        return $this;
+    }
+
+    public function getGoalNumber(): ?int
+    {
+        return $this->goalNumber;
+    }
+
+    public function setGoalNumber(?int $goalNumber): self
+    {
+        $this->goalNumber = $goalNumber;
+
+        return $this;
+    }
+
+    public function getMatchNumber(): ?int
+    {
+        return $this->matchNumber;
+    }
+
+    public function setMatchNumber(?int $matchNumber): self
+    {
+        $this->matchNumber = $matchNumber;
+
+        return $this;
+    }
+
+    public function getSaisonDate(): ?string
+    {
+        return $this->saisonDate;
+    }
+
+    public function setSaisonDate(?string $saisonDate): self
+    {
+        $this->saisonDate = $saisonDate;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?string
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(?string $zipCode): self
+    {
+        $this->zipCode = $zipCode;
 
         return $this;
     }

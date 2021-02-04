@@ -276,7 +276,7 @@ class FootballerController extends AbstractController
 
         }
 
-        $footballer_careers = $footballer_career_repo->findByFootballer($footballer, ['startDate' => 'DESC']);
+        $footballer_careers = $footballer_career_repo->findByFootballer($footballer, ['saisonDate' => 'DESC']);
         $forms = [];
         foreach ($footballer_careers as $footballer_career) {
             $form = $this->createForm(FootballerCareerType::Class, $footballer_career);

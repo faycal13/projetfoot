@@ -20,7 +20,7 @@
             ================================================= -->
             <div class="edit-career-container">
               <div class="block-title">
-                <h4 class="grey">Ma carrière</h4>
+{#                <h4 class="grey">Ma carrière</h4>#}
                 {% for message in app.flashes('success') %}
                   <div class="alert alert-success">
                     {{ message }}
@@ -34,29 +34,52 @@
               </div>
               <div class="edit-block">
                 <button class="btn btn-danger" data-toggle="modal" data-target="#add-career">Ajouter un club</button>
-                <table style="width: 100%;">
-                  <tr>
-                    <th>Date</th>
-                    <th>Club</th>
-                    <th>Poste</th>
-                    <th>Ville</th>
-                    <th></th>
-                  </tr>
-                  <tbody>
-                  {% for career in careers %}
-                    <tr>
-                      <td>{{ career.startDate }}-{{ career.endDate }}</td>
-                      <td>{{ career.club }} <br> {{ career.categorie }}</td>
-                      <td>{{ career.position }}</td>
-                      <td>{{ career.city }}</td>
-                      <td>
-                        <i class="fa fa-edit" data-toggle="modal" data-target="#edit-{{ career.id }}"></i>
-                        <i class="fa fa-close" data-toggle="modal" data-target="#remove-{{ career.id }}"></i>
-                      </td>
-                    </tr>
-                  {% endfor %}
-                  </tbody>
-                </table>
+                <br>
+                <br>
+                {% for career in careers %}
+                  <div>
+                    <div>
+                      <button style="width: 100%;" class="btn btn-danger">{{ career.club }} ({{ career.saisonDate }})</button>
+                      <div style="display: flex; justify-content: space-around">
+                        <div style="width: 50%">
+                          <h5>Niveau</h5>
+                          <p>{{ career.categorie }}</p>
+                        </div>
+                        <div style="width: 50%">
+                          <h5>Ville</h5>
+                          <p>{{ career.city }}</p>
+                        </div>
+                      </div>
+                      <div style="display: flex; justify-content: space-around">
+                        {% if career.matchNumber is not null %}
+                          <div style="width: 50%">
+                            <h5>Nombre de match</h5>
+                            <p>{{ career.matchNumber }}</p>
+                          </div>
+                        {% endif %}
+                        {% if career.goalNumber is not null %}
+                          <div style="width: 50%">
+                            <h5>Nombre de but</h5>
+                            <p>{{ career.goalNumber }}</p>
+                          </div>
+                        {% endif %}
+                      </div>
+                      <div style="display: flex; justify-content: space-around">
+                        <div style="width: 50%">
+                          <h5>Poste</h5>
+                          <p>{{ career.position }}</p>
+                        </div>
+                        <div style="width: 50%">
+                          <h5>Options</h5>
+                          <p>
+                            <i class="fa fa-edit btn btn-danger" data-toggle="modal" data-target="#edit-{{ career.id }}"></i>
+                            <i class="fa fa-close btn btn-danger" data-toggle="modal" data-target="#remove-{{ career.id }}"></i>
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -78,13 +101,15 @@
 
                     {{ form_start(form, {'attr': {'action': path('footballer_editCareerSubmission',{'id':key})} }) }}
                     <div class="row" style="padding: 30px">
-                      {{ form_row(form.club, {'label': 'Club','attr': {'placeholder': 'Le nom du club'}}) }}
-                      {{ form_row(form.categorie, {'label': 'Niveau','attr': {'placeholder': 'Ex : U21'}}) }}
-                      {{ form_row(form.startDate, {'label': 'Année de début','attr': {'placeholder': '2017'}}) }}
-                      {{ form_row(form.endDate, {'label': 'Année de fin','attr': {'placeholder': '2019'}}) }}
+                      {{ form_row(form.club, {'label': 'Club','attr': {'placeholder': 'Nom du club'}}) }}
+                      {{ form_row(form.categorie, {'label': 'Niveau','attr': {'placeholder': 'Ex : Ligue 1'}}) }}
+                      {{ form_row(form.saisonDate, {'label': 'Saison','attr': {'placeholder': '2020-2021'}}) }}
                       {{ form_row(form.position, {'label': 'Poste','attr': {'placeholder': 'Milieu'}}) }}
+                      {{ form_row(form.matchNumber, {'label': 'Nombre de match','attr': {'placeholder': 'Plus de 15'}}) }}
+                      {{ form_row(form.goalNumber, {'label': 'Nombre de but','attr': {'placeholder': '20'}}) }}
                       {{ form_row(form.city, {'label': 'Ville', 'id': 'autocomplete-modify-'~key, 'attr': {'placeholder': 'Ville ou code postal', 'class': ''}}) }}
                       {{ form_row(form.longitude, {'label': false}) }}
+                      {{ form_row(form.latitude, {'label': false}) }}
                       <button class="btn" data-dismiss="modal">Annuler</button>
                       <button class="btn btn-primary">Enregistrer</button>
                     </div>
@@ -128,11 +153,12 @@
                 <div class="modal-body">
                   {{ form_start(new_form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}
                   <div class="row" style="padding: 30px">
-                    {{ form_row(new_form.club, {'label': 'Club','attr': {'placeholder': 'Le nom du club'}}) }}
+                    {{ form_row(new_form.club, {'label': 'Club','attr': {'placeholder': 'Nom du club'}}) }}
                     {{ form_row(new_form.categorie, {'label': 'Niveau','attr': {'placeholder': 'Ex : U21'}}) }}
-                    {{ form_row(new_form.startDate, {'label': 'Année de début','attr': {'placeholder': '2017'}}) }}
-                    {{ form_row(new_form.endDate, {'label': 'Année de fin','attr': {'placeholder': '2019'}}) }}
+                    {{ form_row(new_form.saisonDate, {'label': 'Saison'}) }}
                     {{ form_row(new_form.position, {'label': 'Poste','attr': {'placeholder': 'Milieu'}}) }}
+                    {{ form_row(new_form.matchNumber, {'label': 'Nombre de match','attr': {'placeholder': 'Plus de 15'}}) }}
+                    {{ form_row(new_form.goalNumber, {'label': 'Nombre de but','attr': {'placeholder': '20'}}) }}
                     {{ form_row(new_form.city, {'label': 'Ville', 'id': 'autocomplete-create', 'attr': {'placeholder': 'Ville ou code postal', 'class': ''}}) }}
                     {{ form_row(new_form.longitude, {'label': false, 'id': 'career-longitude'}) }}
                     {{ form_row(new_form.latitude, {'label': false, 'id': 'career-latitude'}) }}

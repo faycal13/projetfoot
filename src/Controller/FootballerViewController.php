@@ -64,7 +64,7 @@ class FootballerViewController extends AbstractController
             return $this->redirectToRoute('footballer_profil');
         }
         $footballer_career_repo = $manager->getRepository('App:FootballerCarrer');
-        $footballer_careers = $footballer_career_repo->findByFootballer($footballer, ['startDate' => 'ASC']);
+        $footballer_careers = $footballer_career_repo->findByFootballer($footballer, ['saisonDate' => 'ASC']);
         $footballer->setNumberFriends($this->getNumberFriends($manager, $footballer));
         return $this->render('socialNetwork/view/footballer-career.html.twig',[
             'footballer' => $footballer,
