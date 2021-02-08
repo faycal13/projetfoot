@@ -68,11 +68,6 @@ class FootballerCarrer
      */
     private $saisonDate;
 
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
-    private $zipCode;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -189,18 +184,6 @@ class FootballerCarrer
     public function setSaisonDate(?string $saisonDate): self
     {
         $this->saisonDate = $saisonDate;
-
-        return $this;
-    }
-
-    public function getZipCode(): ?string
-    {
-        return $this->zipCode;
-    }
-
-    public function setZipCode(?string $zipCode): self
-    {
-        $this->zipCode = $zipCode;
 
         return $this;
     }

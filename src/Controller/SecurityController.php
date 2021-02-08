@@ -17,6 +17,13 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    private $mailer;
+
+    public function __construct(\Swift_Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     /**
      * @Route("/login", name="login")
      */
@@ -68,11 +75,18 @@ class SecurityController extends AbstractController
             $account->setIsDelete(0);
             $manager->persist($account);
             $manager->flush();
-            // ... perform some action, such as saving the task to the database
-            // for example, if Task is a Doctrine entity, save it!
-            // $entityManager = $this->getDoctrine()->getManager();
-            // $entityManager->persist($task);
-            // $entityManager->flush();
+
+            $this->mail(
+                $account->getUsername(),
+                'Inscription SkillFoot | Skillfoot',
+                'Inscription SkillFoot',
+                '
+                <p style="font-size: 18px">Bienvenue chez SkillFoot,</p>
+                <p style="font-size: 18px">Vous venez d\'effectuer votre inscription sur la plateforme skillfoot.fr.</p>
+                <p style="font-size: 18px">Connectez-vous dès maintenant et profitez de l\'expérience skillfoot !</p>
+                <p style="font-size: 18px"><a style="color: white" href="https://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
+                '
+            );
 
             return $this->render('security/post-signup.html.twig');
         }
@@ -203,6 +217,35 @@ class SecurityController extends AbstractController
     public function logout(){
     }
 
+    /**
+     * @Route("/mot-de-passe-oublie", name="forgot_password")
+     */
+    public function forgotPassword(EntityManagerInterface $manager, Request $request, UserPasswordEncoderInterface $encoder)
+    {
+        $email = $request->request->get('email');
+        if(!is_null($email)){
+            $account_repo = $manager->getRepository('App:Account');
+            $account = $account_repo->findOneByUsername($email);
+            if(!is_null($account)){
+                //Envoi du mail avec un mot de passe fictif
+                $new_password = substr(str_shuffle(MD5(microtime())), 0, 10);
+                $encoded = $encoder->encodePassword($account, $new_password);
+                $account->setPassword($encoded);
+                $manager->persist($account);
+                $manager->flush();
+                //Envoi du mail mot de passe oublié
+                $this->mail(
+                    $email,
+                    'Réinitialisation du mot de passe | Skillfoot',
+                    'Réinitialisation du mot de passe',
+                    'Bonjour, <br>Votre nouveau mot de passe est : '.$new_password.' <br> Connectez-vous pour le modifier.'
+                );
+            }
+            $this->addFlash('success_forgot', 'Un email vous a été envoyé, si votre compte est existant.');
+        }
+        return $this->render('security/forgot-password.html.twig');
+    }
+
     public function t($test){
         dump($test);
         die();
@@ -210,5 +253,29 @@ class SecurityController extends AbstractController
 
     public function v($test){
         dump($test);
+    }
+
+    function mail($mail, $objet, $titre, $contain)
+    {
+        $message = (new \Swift_Message())
+            ->setFrom('noreply@hskillfoot.fr')
+            ->setTo($mail)
+            ->setSubject($objet);
+
+        $img = $message->embed(\Swift_Image::fromPath('img/logo/logo.png'));
+        $message->setBody(
+            $this->renderView(
+            // templates/emails/registration.html.twig
+                'mail.html.twig',
+                [
+                    'img' => $img,
+                    'titre' => $titre,
+                    'message' => $contain,
+                ]
+            ),
+            'text/html'
+        );
+
+        $this->mailer->send($message);
     }
 }

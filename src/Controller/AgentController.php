@@ -50,8 +50,9 @@ class AgentController extends AbstractController
             return $this->redirectToRoute('agent_setting');
         }
         $footballer_repo = $manager->getRepository('App:Footballer');
+        $footballer_career_repo = $manager->getRepository('App:FootballerCarrer');
         //Récupération des infos du formulaire
-        $position = $request->request->get('position');
+        $positions = $request->request->get('position');
         $age = $request->request->get('age');
         $better_foot = $request->request->get('better-foot');
         $lat = $request->request->get('latitude');
@@ -68,9 +69,10 @@ class AgentController extends AbstractController
             $date_max = $today_2->modify('-65 years');
         }
 
-        $footballers = $footballer_repo->searchFootballersForAgent($position, $date_min, $date_max, $better_foot);
+        $footballers = $footballer_repo->searchFootballersForAgent($positions, $date_min, $date_max, $better_foot);
 
         //Footballeur se trouvant à 20km de la recherche
+        $footballers_final = [];
         foreach ($footballers as $key => $footballer) {
             if(!is_null($footballer->getUser()->getLongitude()) && !is_null($footballer->getUser()->getLatitude())){
                 if($this->distanceGeoPoints($lat, $lng, $footballer->getUser()->getLatitude(), $footballer->getUser()->getLongitude()) > 50){
@@ -79,10 +81,15 @@ class AgentController extends AbstractController
             }else{
                 unset($footballers[$key]);
             }
+
+            //Récupération du dernier club
+            $career = $footballer_career_repo->findOneBy(['footballer' => $footballer], ['saisonDate' => 'DESC'], 1);
+            $footballers_final[$key]['footballer'] = $footballer;
+            $footballers_final[$key]['career'] = $career;
         }
 
         return $this->render('agent/rechercher-footballer.html.twig',[
-            'footballers' => $footballers
+            'footballers' => $footballers_final
         ]);
     }
 

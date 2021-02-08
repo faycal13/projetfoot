@@ -39,7 +39,7 @@ class FootballerRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('f')
             ->join('f.user', 'u')
-            ->andWhere('f.position = :position')
+            ->andWhere('f.position IN (:position)')
             ->setParameter('position', $position)
             ->andWhere('f.betterFoot = :betterFoot')
             ->setParameter('betterFoot', $better_foot)

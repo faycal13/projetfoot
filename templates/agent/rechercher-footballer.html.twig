@@ -36,16 +36,24 @@
                 <div class="filters-content">
                     <div class="row grid">
                         {% for footballer in footballers %}
-                            <div class="single-portfolio col-sm-2 all corporate" style="text-align: center">
-                                <a href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}">
+                            <div class="single-portfolio col-sm-3 all corporate" style="text-align: center">
+                                <a href="{{ path('footballer_view_footballer_profil',{'id':footballer['footballer'].id}) }}">
                                     <div class="item">
-                                        {% if footballer.user.profilPhoto is not null %}
-                                            <img src="{{ asset(footballer_photo_profil_directory~'/'~footballer.user.account.id~'/'~footballer.user.profilPhoto) }}">
+                                        {% if footballer['footballer'].user.profilPhoto is not null %}
+                                            <img style="border-radius: 50px;" src="{{ asset(footballer_photo_profil_directory~'/'~footballer['footballer'].user.account.id~'/'~footballer['footballer'].user.profilPhoto) }}">
                                         {% else %}
-                                            <img src="{{ asset('img/default/profil-footballer.png') }}"/>
+                                            <img style="border-radius: 50px;" src="{{ asset('img/default/profil-footballer.png') }}"/>
                                         {% endif %}
                                         <div class="p-inner">
-                                            <h4>{{ footballer.user.name }} {{ footballer.user.firstName }}</h4>
+                                            {% set difference = date().diff(date(footballer['footballer'].user.dateOfBirth)) %}
+                                            <h4 style="font-size: 14px">{{ footballer['footballer'].user.name }} {{ footballer['footballer'].user.firstName }}</h4>
+                                            <p style="color: black;text-align: left;margin: 0"><strong>Age</strong> : {{ difference.y }} ans</p>
+                                            <p style="color: black;text-align: left;margin: 0"><strong>Poste</strong> : {{ footballer['footballer'].position }}</p>
+                                            {% if footballer['career'] is not null %}
+                                                <p style="color: black;text-align: left;margin: 0"><strong>Dernier club</strong> : {{ footballer['career'].club }}</p>
+                                                <p style="color: black;text-align: left;margin: 0"><strong>Niveau</strong> : {{ footballer['career'].categorie }}</p>
+                                                <p style="color: black;text-align: left;margin: 0"><strong>Nombre de match</strong> : {{ footballer['career'].matchNumber }}</p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </a>

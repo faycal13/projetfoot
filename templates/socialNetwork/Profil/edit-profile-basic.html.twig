@@ -45,15 +45,12 @@
                   <label>Téléphone</label>
                   {{ form_row(form.account, {'label': false,'attr': {'placeholder': 'Téléphone', 'class': ''}}) }}
 
-                  <label>Ville</label>
-                  {{ form_row(form.city, {'label': false, 'id': 'autocomplete', 'attr': {'placeholder': 'Ville ou code postal', 'class': ''}}) }}
+                  <label>Code postal et Ville</label>
+                  {{ form_row(form.city, {'label': false, 'id': 'autocomplete', 'attr': {'placeholder': 'Code postal et Ville', 'class': ''}}) }}
 
                   {{ form_row(form.longitude, {'label': false}) }}
 
                   {{ form_row(form.latitude, {'label': false}) }}
-
-                  <label>Code postal</label>
-                  {{ form_row(form.zipCode, {'label': false, 'id': 'zipcode', 'attr': {'placeholder': 'Veuillez remplir la ville', 'class': '', 'readonly': 'true'}}) }}
 
                   <label>Sexe</label>
                   {{ form_row(form.sexe, {'label': false,'attr': {'placeholder': 'Sexe', 'class': ''}}) }}
@@ -87,11 +84,7 @@
                 componentRestrictions: {country: "fr"}
               }
       );
-      // Avoid paying for data that you don't need by restricting the set of
-      // place fields that are returned to just the address components.
-      // autocomplete.setFields(["geometry"]);
-      // When the user selects an address from the drop-down, populate the
-      // address fields in the form.
+
       autocomplete.addListener("place_changed", fillInAddress);
 
       autocomplete2 = new google.maps.places.Autocomplete(
@@ -101,11 +94,7 @@
                 componentRestrictions: {country: "fr"}
               }
       );
-      // Avoid paying for data that you don't need by restricting the set of
-      // place fields that are returned to just the address components.
-      // autocomplete2.setFields(["geometry"]);
-      // When the user selects an address from the drop-down, populate the
-      // address fields in the form.
+
       autocomplete2.addListener("place_changed", fillInAddress);
     }
 
@@ -113,30 +102,6 @@
       // Get the place details from the autocomplete object.
       const place = autocomplete.getPlace();
       const place2 = autocomplete2.getPlace();
-
-      var flag = 0;
-      for (var i = 0; i < place.address_components.length; i++) {
-        for (var j = 0; j < place.address_components[i].types.length; j++) {
-          if (place.address_components[i].types[j] == "postal_code") {
-            $('#zipcode').val(place.address_components[i].long_name);
-            flag = 1;
-          }
-        }
-      }
-
-      if(flag == 0) $('#zipcode').val("");
-
-      var flag = 0;
-      for (var i = 0; i < place2.address_components.length; i++) {
-        for (var j = 0; j < place2.address_components[i].types.length; j++) {
-          if (place2.address_components[i].types[j] == "postal_code") {
-            $('#zipcode2').val(place2.address_components[i].long_name);
-            flag = 1;
-          }
-        }
-      }
-
-      if(flag == 0) $('#zipcode2').val("");
 
       if(typeof place !== 'undefined'){
         if (!place.geometry) {

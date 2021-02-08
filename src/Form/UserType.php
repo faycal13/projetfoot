@@ -47,10 +47,6 @@ class UserType extends AbstractType
             ->add('city', TextType::class, [
                 'required' => true,
             ])
-            ->add('zipCode', TextType::class, [
-                'required' => true,
-                'attr' => ['readonly' => true],
-            ])
             ->add('latitude', HiddenType::class, [
                 'required' => false,
             ])

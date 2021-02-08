@@ -67,7 +67,7 @@
 
         <section>
             <div class="s012">
-                <form method="post" action="{{ path('recherche_footballer') }}">
+                <form method="post" action="{{ path('recherche_footballer') }}" novalidate>
                     <fieldset>
                         <legend>Trouver des joueurs</legend>
                     </fieldset>
@@ -79,28 +79,28 @@
                                         <img width="30px" src="{{ asset('agent/search/images/goalkeeper.svg') }}" alt="">
                                     </div>
                                     <span>Gardien de but</span>
-                                    <input type="radio" name="position" required value="Gardien">
+                                    <input type="checkbox" name="position[]" required value="Gardien">
                                 </div>
                                 <div class="item">
                                     <div class="group-icon">
                                         <img width="30px" src="{{ asset('agent/search/images/defender.svg') }}" alt="">
                                     </div>
                                     <span>Défenseur</span>
-                                    <input type="radio" name="position" required value="Défenseur">
+                                    <input type="checkbox" name="position[]" required value="Défenseur">
                                 </div>
                                 <div class="item">
                                     <div class="group-icon">
                                         <img width="30px" src="{{ asset('agent/search/images/midfielder.svg') }}" alt="">
                                     </div>
                                     <span>Milieu de terrain</span>
-                                    <input type="radio" name="position" required value="Milieu">
+                                    <input type="checkbox" name="position[]" required value="Milieu">
                                 </div>
                                 <div class="item">
                                     <div class="group-icon">
                                         <img width="30px" src="{{ asset('agent/search/images/forward.svg') }}" alt="">
                                     </div>
                                     <span>Attaquant</span>
-                                    <input type="radio" name="position" required value="Attaquant">
+                                    <input type="checkbox" name="position[]" required value="Attaquant">
                                 </div>
                             </div>
                         </header>
@@ -232,9 +232,15 @@
                 dateFormat: "m/d/y"
             });
         $('.travel-type-wrap .item').click(function (){
-            $('.travel-type-wrap .item').removeClass('active');
-            $(this).addClass('active');
-            $(this).find('input[type=radio]').prop('checked', true);
+            // $('.travel-type-wrap .item').removeClass('active');
+            if($(this).hasClass('active')){
+                $(this).removeClass('active');
+                $(this).find('input[type=checkbox]').prop('checked', false);
+            }else{
+                $(this).addClass('active');
+                $(this).find('input[type=checkbox]').prop('checked', true);
+            }
+
         })
 
     </script>

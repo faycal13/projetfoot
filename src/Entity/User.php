@@ -83,11 +83,6 @@ class User
      */
     private $notifyMessage;
 
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
-    private $zipCode;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -250,18 +245,6 @@ class User
     public function setNotifyMessage(?bool $notifyMessage): self
     {
         $this->notifyMessage = $notifyMessage;
-
-        return $this;
-    }
-
-    public function getZipCode(): ?string
-    {
-        return $this->zipCode;
-    }
-
-    public function setZipCode(?string $zipCode): self
-    {
-        $this->zipCode = $zipCode;
 
         return $this;
     }
