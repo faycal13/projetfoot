@@ -16,7 +16,8 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <p class="show-conversation" style="display: none;position: fixed;z-index: 10;background-color: rgb(247 247 247);width: 100%;top: 0;left: 0;height: 50px;text-align: center;line-height: 47px;box-shadow: 2px 2px 6px 0px;"><i class="fa fa-arrow-circle-left"></i> Afficher les conversations</p>
+                            <p class="show-conversation" data-conf="" style="display: none;position: fixed;z-index: 10;background-color: rgb(247 247 247);width: 100%;top: 0;left: 0;height: 50px;text-align: center;line-height: 47px;box-shadow: 2px 2px 6px 0px;">
+                                <i class="fa fa-arrow-circle-left"></i> Afficher les conversations <span id="notif-new-message"><span></span></span></p>
                         </div>
                     </div>
                 </div>
@@ -130,6 +131,7 @@
                     $('.conversations').hide();
                     $('.chat-message').show();
                     $('.show-conversation').show();
+                    $('.show-conversation').attr('data-conf',$(this).attr('data-conf'));
                     $("html, body").scrollTop($("html, body").height()+200);
                     $('.sub-header-mobile-2.d-block.d-lg-none').hide();
                     $('.sub-header-mobile-2.d-block.d-lg-none').removeClass('d-block');
@@ -188,7 +190,6 @@
                 var form = $(this)[0];
                 var formData = new FormData(form);
                 var conversation = $('.contact-list li.active a').attr('data-conf');
-
                 $.ajax({
                     url : "{{ path('social_network_add_message') }}",
                     type : 'POST',
@@ -196,7 +197,8 @@
                     contentType: false,
                     data: formData,
                     success : function (serverResponse){
-                        $('#form-private-message input[type=text]').val(" ");
+                        $('#form-private-message input[type=text]').val("");
+                        $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
                     }
                 })
             })
@@ -216,12 +218,40 @@
                     if(serverResponse.id == {{ app.user.user.id }}) var position = 'right';
                     else var position = 'left';
                     $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').append('<li class="'+position+'"><img src="'+serverResponse.photo+'" alt="" class="profile-photo-sm pull-'+position+'"/><div class="chat-item"> <div class="chat-item-header"> <h5>'+serverResponse.nom+'</h5> <small class="text-muted message-date">'+serverResponse.date+'</small> </div> <p class="private-message">'+serverResponse.message+'</p> </div></li>')
-                    $('.contact-list li.active a').attr('data-conf')
+                    $('.contact-list li.active a').attr('data-conf');
                     $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
                     $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
                     if(serverResponse.id != {{ app.user.user.id }}){
                         $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').attr('style', 'color:rgb(10, 175, 254) !important; font-weight:bold');
                         $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').attr('style', 'color:rgb(10, 175, 254) !important; font-weight:bold');
+
+                        if($(window).width() <= 765){
+                            if($('.show-conversation').attr('data-conf') != serverResponse.conversation){
+                                $('.show-conversation #notif-new-message span').text('Nouveau message de '+serverResponse.nom);
+                                $('.show-conversation #notif-new-message').show();
+                                setTimeout(function() {
+                                    $('.show-conversation #notif-new-message').hide(1000);
+                                }, 5000);
+                            }else{
+                                var heightchatmessage = $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height();
+                                var scrolltopchatbody = $('#contact-'+serverResponse.conversation+' .chat-body').scrollTop();
+                                if(heightchatmessage-scrolltopchatbody > 760){
+                                    $('.show-conversation #notif-new-message span').text('Nouveau message de '+serverResponse.nom);
+                                    $('.show-conversation #notif-new-message').show();
+                                    setTimeout(function() {
+                                        $('.show-conversation #notif-new-message').hide(1000);
+                                    }, 5000);
+                                }else{
+                                    $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
+                                }
+                            }
+                        }else{
+                            var heightchatmessage = $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height();
+                            var scrolltopchatbody = $('#contact-'+serverResponse.conversation+' .chat-body').scrollTop();
+                            if(heightchatmessage-scrolltopchatbody < 735){
+                                $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
+                            }
+                        }
                     }
 
                     // $("html, body").scrollTop($("html, body").height()+200);

@@ -2869,6 +2869,15 @@ ul[id^=ui-id-]{
     50% { opacity: 0; }
 }
 
+.fa.fa-bell{
+    color: #ea2e2e;
+    animation: blinker2 1s linear infinite;
+}
+
+@keyframes blinker2 {
+    50% { opacity: 0; }
+}
+
 @media (max-width: 767px) {
     header .logo{
         width: 50px;
@@ -2882,6 +2891,10 @@ ul[id^=ui-id-]{
     }
     #page-contents {
         padding: 0;
+    }
+
+    .edit-profile-container-modal .edit-block {
+        width: initial;
     }
 
     .img-wrapper-profil-responsive{

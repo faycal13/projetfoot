@@ -132,7 +132,7 @@
 }
 
 .chat-room .conversations{
-    height: 700px;
+    height: 600px;
     overflow-y: scroll;
 }
 
@@ -293,6 +293,27 @@ input#cover_photo_footballer_coverPhoto {
     display: block;
 }
 
+.show-conversation #notif-new-message{
+    border-radius: 12px;
+    background-color: #2ac325;
+    padding: 10px;
+    position: absolute;
+    top: 7px;
+    right: 22px;
+    display: none;
+}
+
+.show-conversation #notif-new-message span{
+    color: #ffffff;
+    animation: blinker-new-message 2s linear infinite;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+@keyframes blinker-new-message {
+    50% { opacity: 0; }
+}
+
 @media (max-width: 767px) {
     .welcome .title-4{
         font-size: 15px;
@@ -307,13 +328,13 @@ input#cover_photo_footballer_coverPhoto {
     }
 
     .chat-room .chat-body{
-        height: 100vh;
         overflow-y: auto;
-        margin-top: 60px
+        margin-top: 60px;
+        height: 600px;
     }
 
     .chat-room .conversations {
-        height: 500px;
+        height: 640px;
         overflow-y: scroll;
     }
 }

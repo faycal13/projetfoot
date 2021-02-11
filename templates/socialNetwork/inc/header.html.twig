@@ -35,8 +35,9 @@
                             </ul>
                         </li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_edit_profil') }}">Mes informations personnelles</a></li>
-                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editFootballerProfil')}}">Mon profil de footballeur</a></li>
-                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editCareer')}}">Ma carrière</a></li>
+                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editFootballerProfil')}}">Mon profil de footballeur {% if app.user.user.footballer is null %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</a>
+                        </li>
+                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editCareer')}}">Ma carrière {% if app.user.user.footballer is null or app.user.user.footballer.footballerCarrers.values is empty %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editPassword') }}">Paramètres</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('before_logout') }}">Déconnexion</a></li>
 

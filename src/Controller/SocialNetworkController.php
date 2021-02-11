@@ -17,6 +17,13 @@ use Symfony\Component\Routing\Annotation\Route;
 /** @Route("/footballer-social-network", name="social_network_") */
 class SocialNetworkController extends AbstractController
 {
+    private $mailer;
+
+    public function __construct(\Swift_Mailer $mailer)
+    {
+        $this->mailer = $mailer;
+    }
+
     /**
      * @Route("/show-conversations/{id}", name="show_conversations", defaults={"id"=0})
      */
@@ -119,8 +126,21 @@ class SocialNetworkController extends AbstractController
             $participations = $participant_conversations_repo->findByConversation($conversation_id);
 
             foreach ($participations as $participation_item) {
-                if($participation_item->getUser()->getId() != $user->getId()) $participation_item->getUser()->setNotifyMessage(1);
-                $manager->persist($participation_item);
+                if($participation_item->getUser()->getId() != $user->getId()) {
+                    $participation_item->getUser()->setNotifyMessage(1);
+                    $manager->persist($participation_item);
+
+                    $this->mail(
+                        $participation_item->getUser()->getAccount()->getUsername(),
+                        'Nouveau message de '.$user->getFirstName(),
+                        'Nouveau message',
+                        '
+                <p style="font-size: 18px">Vous avez reçu un nouveau message de '.$user->getFirstName().'</p>
+                <p style="font-size: 18px"><a style="color: white" href="https://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
+                '
+                    );
+
+                }
             }
 
             if(!is_null($participation)){
@@ -292,6 +312,30 @@ class SocialNetworkController extends AbstractController
             }
         }
         return $path;
+    }
+
+    function mail($mail, $objet, $titre, $contain)
+    {
+        $message = (new \Swift_Message())
+            ->setFrom('noreply@hskillfoot.fr')
+            ->setTo($mail)
+            ->setSubject($objet);
+
+        $img = $message->embed(\Swift_Image::fromPath('img/logo/logo.png'));
+        $message->setBody(
+            $this->renderView(
+            // templates/emails/registration.html.twig
+                'mail.html.twig',
+                [
+                    'img' => $img,
+                    'titre' => $titre,
+                    'message' => $contain,
+                ]
+            ),
+            'text/html'
+        );
+
+        $this->mailer->send($message);
     }
 
     public function t($test){
