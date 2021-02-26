@@ -39,6 +39,7 @@
                                     {% endif %}
                                     {% if conversations is not empty %}
                                         <div class="col-md-4 conversations">
+                                            <h3>Mes conversations</h3>
                                             <ul class="nav nav-tabs contact-list scrollbar-wrapper scrollbar-outer">
                                                 {% for conversation in conversations %}
                                                     <li {% if id > 0 and conversation['conversation'].id == id %}class="active"{% endif %}>

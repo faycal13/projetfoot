@@ -8,7 +8,7 @@ use App\Entity\FootballerPhoto;
 use App\Entity\FootballerVideo;
 use App\Entity\FriendsList;
 use App\Entity\User;
-use App\Form\CoverPhotoFootballerType;
+use App\Form\CoverPhotoType;
 use App\Form\FootballerCareerType;
 use App\Form\FootballerPhotoType;
 use App\Form\FootballerType;
@@ -64,7 +64,7 @@ class FootballerViewController extends AbstractController
             return $this->redirectToRoute('footballer_profil');
         }
         $footballer_career_repo = $manager->getRepository('App:FootballerCarrer');
-        $footballer_careers = $footballer_career_repo->findByFootballer($footballer, ['saisonDate' => 'ASC']);
+        $footballer_careers = $footballer_career_repo->findByFootballer($footballer, ['saisonDate' => 'DESC']);
         $footballer->setNumberFriends($this->getNumberFriends($manager, $footballer));
         return $this->render('socialNetwork/view/footballer-career.html.twig',[
             'footballer' => $footballer,

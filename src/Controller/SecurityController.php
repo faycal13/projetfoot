@@ -17,12 +17,6 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
-    private $mailer;
-
-    public function __construct(\Swift_Mailer $mailer)
-    {
-        $this->mailer = $mailer;
-    }
 
     /**
      * @Route("/login", name="login")
@@ -76,17 +70,18 @@ class SecurityController extends AbstractController
             $manager->persist($account);
             $manager->flush();
 
-            $this->mail(
-                $account->getUsername(),
-                'Inscription SkillFoot | Skillfoot',
-                'Inscription SkillFoot',
-                '
-                <p style="font-size: 18px">Bienvenue chez SkillFoot,</p>
-                <p style="font-size: 18px">Vous venez d\'effectuer votre inscription sur la plateforme skillfoot.fr.</p>
-                <p style="font-size: 18px">Connectez-vous dès maintenant et profitez de l\'expérience skillfoot !</p>
-                <p style="font-size: 18px"><a style="color: white" href="https://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
-                '
-            );
+//            $this->mail(
+//                $account->getUsername(),
+//                'Inscription SkillFoot | Skillfoot',
+//                'Inscription SkillFoot',
+//                '
+//                <p style="font-size: 18px">Bienvenue chez SkillFoot,</p>
+//                <p style="font-size: 18px">Vous venez d\'effectuer votre inscription sur la plateforme skillfoot.fr.</p>
+//                <p style="font-size: 18px">Connectez-vous dès maintenant et profitez de l\'expérience skillfoot !</p>
+//                <p style="font-size: 18px"><a style="color: white" href="https://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
+//                ',
+//                $mailer
+//            );
 
             return $this->render('security/post-signup.html.twig');
         }
@@ -125,8 +120,8 @@ class SecurityController extends AbstractController
 
                     $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
                     $friends_2 = $friends_list_repo->findBy(array('friend' => $footballer, 'accept' => 1));
-                    $session->set('footballer_profil_photo',$footballer->getUser()->getProfilPhoto());
-                    $session->set('footballer_cover_photo',$footballer->getCoverPhoto());
+                    $session->set('footballer_profil_photo',$user->getProfilPhoto());
+                    $session->set('footballer_cover_photo',$user->getCoverPhoto());
                     $session->set('number_friend',count($friends_list_repo->findByFootballer($footballer)));
                     $session->set('footballer_id',$footballer->getId());
 
@@ -234,12 +229,12 @@ class SecurityController extends AbstractController
                 $manager->persist($account);
                 $manager->flush();
                 //Envoi du mail mot de passe oublié
-                $this->mail(
-                    $email,
-                    'Réinitialisation du mot de passe | Skillfoot',
-                    'Réinitialisation du mot de passe',
-                    'Bonjour, <br>Votre nouveau mot de passe est : '.$new_password.' <br> Connectez-vous pour le modifier.'
-                );
+//                $this->mail(
+//                    $email,
+//                    'Réinitialisation du mot de passe | Skillfoot',
+//                    'Réinitialisation du mot de passe',
+//                    'Bonjour, <br>Votre nouveau mot de passe est : '.$new_password.' <br> Connectez-vous pour le modifier.'
+//                );
             }
             $this->addFlash('success_forgot', 'Un email vous a été envoyé, si votre compte est existant.');
         }
@@ -255,27 +250,27 @@ class SecurityController extends AbstractController
         dump($test);
     }
 
-    function mail($mail, $objet, $titre, $contain)
-    {
-        $message = (new \Swift_Message())
-            ->setFrom('noreply@hskillfoot.fr')
-            ->setTo($mail)
-            ->setSubject($objet);
-
-        $img = $message->embed(\Swift_Image::fromPath('img/logo/logo.png'));
-        $message->setBody(
-            $this->renderView(
-            // templates/emails/registration.html.twig
-                'mail.html.twig',
-                [
-                    'img' => $img,
-                    'titre' => $titre,
-                    'message' => $contain,
-                ]
-            ),
-            'text/html'
-        );
-
-        $this->mailer->send($message);
-    }
+//    function mail($mail, $objet, $titre, $contain, $mailer)
+//    {
+//        $message = (new \Swift_Message())
+//            ->setFrom('noreply@hskillfoot.fr')
+//            ->setTo($mail)
+//            ->setSubject($objet);
+//
+//        $img = $message->embed(\Swift_Image::fromPath('img/logo/logo.png'));
+//        $message->setBody(
+//            $this->renderView(
+//            // templates/emails/registration.html.twig
+//                'mail.html.twig',
+//                [
+//                    'img' => $img,
+//                    'titre' => $titre,
+//                    'message' => $contain,
+//                ]
+//            ),
+//            'text/html'
+//        );
+//
+//        $mailer->send($message);
+//    }
 }

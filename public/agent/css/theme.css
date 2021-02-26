@@ -14670,5 +14670,18 @@ section {
     .title-4 {
         font-size: 20px;
     }
+
+    .statistic2 .col-md-6.col-lg-3.col-sm-6 {
+        width: 50%;
+        height: 195px;
+    }
+
+    .statistic{
+        padding-top: 0;
+    }
+
+    .statistic2{
+        padding-top: 0;
+    }
 }
 

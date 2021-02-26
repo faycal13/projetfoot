@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -41,7 +41,7 @@
 {% endblock %}
 
 {% block popupfriendsonline %}
-    <div id="popupfriendsonline"></div>
+    <div id="popupfriendsonline" style="display: none;"></div>
 {% endblock %}
 
 {% block footer %}
@@ -77,11 +77,11 @@
 
         //PHOTO DE COUVERTURE
         $('.cover-photo-button').click(function (){
-            $('#cover_photo_footballer_coverPhoto').trigger('click');
+            $('#cover_photo_coverPhoto').trigger('click');
         })
 
-        $('#cover_photo_footballer_coverPhoto').change(function (){
-            $('form[name=cover_photo_footballer]').submit();
+        $('#cover_photo_coverPhoto').change(function (){
+            $('form[name=cover_photo]').submit();
         })
         {% if app.user is not null %}
         {% if app.user.user is not null %}
@@ -116,7 +116,6 @@
 
         eventSource.onmessage = e => {
             var result = JSON.parse(e.data);
-            console.log(result);
             var online_button = '{{ asset('socialNetwork/images/online-button.png') }}';
 
             var flag = 0;
@@ -174,7 +173,6 @@
 
             eventSource3.onmessage = e => {
                 var serverResponse3 = JSON.parse(e.data);
-                console.log(serverResponse3);
                 if (serverResponse3 != false) {
                     if(serverResponse3.id != {{ app.user.user.id }}){
                         $('#message-title').html('Mes messages <i class="fa fa-comment"></i>');
@@ -185,8 +183,35 @@
 
             //Fermer l'event source avant de quitter la page
             window.onbeforeunload = function () {
-                if (eventSource != null) {
-                    eventSource.close()
+                if (eventSource3 != null) {
+                    eventSource3.close()
+                }
+            }
+        }
+
+        if(!window.location.href.includes('/footballer-social-network/show-conversations')) {
+            //ON INITIALISE L'URL DE MERCURE
+            const url4 = new URL('{{ mercure_publish_url }}');
+            //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
+            url4.searchParams.append('topic', 'http://skillfoot.fr/users/new-conversation')
+
+            //ECOUTEUR DE LURL DE MERCURE
+            const eventSource4 = new EventSource(url4, {withCredentials: true});
+
+            eventSource4.onmessage = e => {
+                var serverResponse4 = JSON.parse(e.data);
+                if (serverResponse4 != false) {
+                    if(serverResponse4.id != {{ app.user.user.id }}){
+                        $('#message-title').html('Mes messages <i class="fa fa-comment"></i>');
+                    }
+
+                }
+            }
+
+            //Fermer l'event source avant de quitter la page
+            window.onbeforeunload = function () {
+                if (eventSource4 != null) {
+                    eventSource4.close()
                 }
             }
         }
@@ -272,10 +297,6 @@
                 })
             }
 
-        });
-
-        $('#send-message-modal').click(function (){
-            $('#send-message').css({ "display": "flex", "align-items": "center", "justify-content": "center" });
         });
 
         $('#blocked-modal').click(function (){

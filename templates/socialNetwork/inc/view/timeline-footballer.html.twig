@@ -1,5 +1,5 @@
-{% if footballer.coverPhoto is not null %}
-<div class="timeline-cover" style="background: url('{{ asset(footballer_photo_cover_directory~'/'~footballer.user.account.id~'/'~footballer.coverPhoto) }}') no-repeat;background-position: center;background-size: cover;">
+{% if footballer.user.coverPhoto is not null %}
+<div class="timeline-cover" style="background: url('{{ asset(footballer_photo_cover_directory~'/'~footballer.user.account.id~'/'~footballer.user.coverPhoto) }}') no-repeat;background-position: center;background-size: cover;">
     {% else %}
     <div class="timeline-cover" style="background: url('{{ asset('img/default/cover-footballer.png') }}') no-repeat;background-position: center;background-size: cover;">
         {% endif %}

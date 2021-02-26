@@ -31,14 +31,14 @@
                           {{ form_row(form.title, {'label': 'Titre','attr': {'placeholder': 'Titre de la vidéo'}}) }}
                           {{ form_row(form.description, {'label': 'Description','attr': {'placeholder': 'Petite description'}}) }}
                           <div id="block-internallink">
-                            {{ form_row(form.internalLink, {'label': 'Fichier','attr': {'accept': 'video/mp4','novalidate': 'novalidate','required' : false}}) }}
+                            {{ form_row(form.internalLink, {'label': 'Fichier', 'id' : 'file', 'attr': {'accept': 'video/mp4','novalidate': 'novalidate','required' : false}}) }}
                           </div>
                           <div id="block-youtube">
                             {{ form_row(form.externalLink, {'label': 'Lien YouTube','attr': {'novalidate': 'novalidate'}}) }}
                           </div>
 
                           <button class="btn" data-dismiss="modal">Annuler</button>
-                          <button class="btn btn-primary">Enregistrer</button>
+                          <button id="submit-video" class="btn btn-primary">Enregistrer</button>
                         </div>
                         {{ form_end(form) }}
                       </div>
@@ -153,5 +153,14 @@
       }
 
     })
+    $(function(){
+      var uploadField = document.getElementById("file");
+      uploadField.onchange = function() {
+        if(this.files[0].size > 20000000){
+          alert("La taille du fichier ne doit pas dépasser les 20 Mo.");
+          this.value = "";
+        };
+      };
+    });
   </script>
 {% endblock %}

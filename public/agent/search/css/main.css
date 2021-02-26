@@ -1512,15 +1512,6 @@ span.flatpickr-weekday {
   box-sizing: border-box;
 }
 
-[type="checkbox"]:checked,
-[type="checkbox"]:not(:checked) {
-  position: absolute;
-  left: -9999px;
-  visibility: hidden;
-  transform: scale(0);
-  opacity: 0;
-}
-
 [type="checkbox"]:checked + label,
 [type="checkbox"]:not(:checked) + label {
   position: relative;

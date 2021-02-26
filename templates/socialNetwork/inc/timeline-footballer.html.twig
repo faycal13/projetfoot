@@ -2,65 +2,65 @@
 <div class="timeline-cover" style="background: url('{{ asset(footballer_photo_cover_directory~'/'~app.user.id~'/'~app.session.get('footballer_cover_photo')) }}') no-repeat;background-position: center;background-size: cover;">
     {% else %}
     <div class="timeline-cover" style="background: url('{{ asset('img/default/cover-footballer.png') }}') no-repeat;background-position: center;background-size: cover;">
-    {% endif %}
-        <i class="fa fa-camera btn cover-photo-button" aria-hidden="true" style="position: absolute;right: 20px;top: 20px;background-color: white;box-shadow: 2px 2px 3px 0px grey;"></i>
+        {% endif %}
+            <i class="fa fa-camera btn cover-photo-button" aria-hidden="true" style="position: absolute;right: 20px;top: 20px;background-color: white;box-shadow: 2px 2px 3px 0px grey;"></i>
 
-    <!--Timeline Menu for Large Screens-->
-    <div class="timeline-nav-bar hidden-sm hidden-xs">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="profile-info">
-                    <div class="img-wrapper-profil">
-                        {% if app.session.get('footballer_profil_photo') is not null %}
-                            <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
-                        {% else %}
-                            <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="img-responsive profile-photo" />
+        <!--Timeline Menu for Large Screens-->
+        <div class="timeline-nav-bar hidden-sm hidden-xs">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="profile-info">
+                        <div class="img-wrapper-profil">
+                            {% if app.session.get('footballer_profil_photo') is not null %}
+                                <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+                            {% else %}
+                                <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="img-responsive profile-photo" />
+                            {% endif %}
+                            <i class="fa fa-camera btn" aria-hidden="true" style="position: absolute;right: 150px;top: -10px;background-color: white;box-shadow: 2px 2px 3px 0px grey;"></i>
+                        </div>
+                        {{ render(controller(
+                            'App\\Controller\\FootballerController::footballerProfilPhoto'
+                        )) }}
+                        {% if app.user.user is not null %}
+                            <h3>{{ app.user.user.name }} {{ app.user.user.firstName }}</h3>
                         {% endif %}
-                        <i class="fa fa-camera btn" aria-hidden="true" style="position: absolute;right: 150px;top: -10px;background-color: white;box-shadow: 2px 2px 3px 0px grey;"></i>
                     </div>
-                    {{ render(controller(
-                        'App\\Controller\\FootballerController::footballerProfilPhoto'
-                    )) }}
-                    {% if app.user.user is not null %}
-                        <h3>{{ app.user.user.name }} {{ app.user.user.firstName }}</h3>
-                    {% endif %}
+                </div>
+
+                <div class="col-md-9">
+                    <ul class="list-inline profile-menu">
+                        <li><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></li>
+                        <li><a class="photo-link" href="{{ path('footballer_picture') }}">Mes photos</a></li>
+                        <li><a class="video-link" href="{{ path('footballer_video') }}">Mes vidéos</a></li>
+                        <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>
+                        {#                    <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom')}}" target="_blank" class="btn-primary">Chatroom</a></li>#}
+                    </ul>
                 </div>
             </div>
+        </div><!--Timeline Menu for Large Screens End-->
 
-            <div class="col-md-9">
-                <ul class="list-inline profile-menu">
-                    <li><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></li>
+        <!--Timeline Menu for Small Screens-->
+        <div class="navbar-mobile hidden-lg hidden-md">
+            <div class="profile-info img-wrapper-profil-responsive">
+                {% if app.session.get('footballer_profil_photo') is not null %}
+                    <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
+                {% else %}
+                    <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="img-responsive profile-photo" />
+                {% endif %}
+                <i class="fa fa-camera btn" aria-hidden="true" style="position: absolute;right: 150px;top: -10px;background-color: white;box-shadow: 2px 2px 3px 0px grey;"></i>
+                {% if app.user.user is not null %}
+                    <h4>{{ app.user.user.name }} {{ app.user.user.firstName }}</h4>
+                {% endif %}
+            </div>
+            <div class="mobile-menu">
+                <ul class="list-inline">
+                    <li><a id="message-title" href="{{ path('social_network_show_conversations') }}">Mes messages {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}<i class="fa fa-comment"></i>{% endif %}{% endif %}</a></li>
                     <li><a class="photo-link" href="{{ path('footballer_picture') }}">Mes photos</a></li>
                     <li><a class="video-link" href="{{ path('footballer_video') }}">Mes vidéos</a></li>
-                    <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>
-{#                    <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom')}}" target="_blank" class="btn-primary">Chatroom</a></li>#}
+                    <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{% if app.session.get('number_friend') is not null %}{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}{% else %}0 ami{% endif %}</a></li>
+                    {#                <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom') }}" class="btn-primary">Chatroom</a></li>#}
                 </ul>
             </div>
-        </div>
-    </div><!--Timeline Menu for Large Screens End-->
+        </div><!--Timeline Menu for Small Screens End-->
 
-    <!--Timeline Menu for Small Screens-->
-    <div class="navbar-mobile hidden-lg hidden-md">
-        <div class="profile-info img-wrapper-profil-responsive">
-            {% if app.session.get('footballer_profil_photo') is not null %}
-                <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
-            {% else %}
-                <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="img-responsive profile-photo" />
-            {% endif %}
-            <i class="fa fa-camera btn" aria-hidden="true" style="position: absolute;right: 150px;top: -10px;background-color: white;box-shadow: 2px 2px 3px 0px grey;"></i>
-            {% if app.user.user is not null %}
-                <h4>{{ app.user.user.name }} {{ app.user.user.firstName }}</h4>
-            {% endif %}
-        </div>
-        <div class="mobile-menu">
-            <ul class="list-inline">
-                <li><a id="message-title" href="{{ path('social_network_show_conversations') }}">Mes messages {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}<i class="fa fa-comment"></i>{% endif %}{% endif %}</a></li>
-                <li><a class="photo-link" href="{{ path('footballer_picture') }}">Mes photos</a></li>
-                <li><a class="video-link" href="{{ path('footballer_video') }}">Mes vidéos</a></li>
-                <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>
-{#                <li><a style="margin-left: 15px;" href="{{ path('footballer_chatroom') }}" class="btn-primary">Chatroom</a></li>#}
-            </ul>
-        </div>
-    </div><!--Timeline Menu for Small Screens End-->
-
-</div>
+    </div>

@@ -11,7 +11,7 @@ use App\Entity\FootballerPhoto;
 use App\Entity\FootballerVideo;
 use App\Entity\FriendsList;
 use App\Entity\User;
-use App\Form\CoverPhotoFootballerType;
+use App\Form\CoverPhotoType;
 use App\Form\FootballerCareerType;
 use App\Form\FootballerPhotoType;
 use App\Form\FootballerType;
@@ -90,11 +90,9 @@ class FootballerController extends AbstractController
      */
     public function footballerProfilPhoto(EntityManagerInterface $manager)
     {
-        $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
-        $footballer = $footballer_repo->findOneByUser($user);
         $form = $this->createForm(UserPhotoType::Class, $user);
-        $form_cover = $this->createForm(CoverPhotoFootballerType::Class, $footballer);
+        $form_cover = $this->createForm(CoverPhotoType::Class, $user);
 
         return $this->render('socialNetwork/profil/profil-photo.html.twig',[
             'form_profil_photo' => $form->createView(),
@@ -115,7 +113,7 @@ class FootballerController extends AbstractController
             $footballer->setUser($user);
         }
         $form = $this->createForm(UserPhotoType::Class, $user);
-        $form_cover = $this->createForm(CoverPhotoFootballerType::Class, $footballer);
+        $form_cover = $this->createForm(CoverPhotoType::Class, $user);
         $form->handleRequest($request);
         $session = $this->get('session');
         if ($form->isSubmitted() && $form->isValid()) {
@@ -148,10 +146,8 @@ class FootballerController extends AbstractController
      */
     public function footballerCoverPhotoSubmission(Request $request, EntityManagerInterface $manager)
     {
-        $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
-        $footballer = $footballer_repo->findOneByUser($user);
-        $form = $this->createForm(CoverPhotoFootballerType::Class, $footballer);
+        $form = $this->createForm(CoverPhotoType::Class, $user);
         $form->handleRequest($request);
         $session = $this->get('session');
         if ($form->isSubmitted() && $form->isValid()) {
@@ -163,10 +159,10 @@ class FootballerController extends AbstractController
                 $newFilename = $this->uploadFile($photo, 'footballer_photo_cover_directory', 1030
                 );
 
-                $footballer->setCoverPhoto($newFilename);
-                $manager->persist($footballer);
+                $user->setCoverPhoto($newFilename);
+                $manager->persist($user);
                 $manager->flush();
-                $session->set('footballer_cover_photo',$footballer->getCoverPhoto());
+                $session->set('footballer_cover_photo',$user->getCoverPhoto());
                 $this->addFlash('success', 'La photo de couverture a été mise à jour');
                 return $this->redirectToRoute('footballer_edit_profil');
             }
@@ -239,7 +235,7 @@ class FootballerController extends AbstractController
             $manager->persist($footballer);
             $manager->flush();
             $this->addFlash('success', 'Modification effectuée !');
-
+            return $this->redirectToRoute('footballer_editFootballerProfil');
         }
         return $this->render('socialNetwork/profil/edit-profil-footballer.html.twig',[
             'form' => $form->createView()
@@ -260,7 +256,7 @@ class FootballerController extends AbstractController
         }
         $footballer = $footballer_repo->findOneByUser($user);
         if(is_null($footballer)){
-            $this->addFlash('error', 'Vous devez compléter remplir cette section avant de poursuivre');
+            $this->addFlash('error', 'Vous devez compléter cette section avant de poursuivre');
             return $this->redirectToRoute('footballer_editFootballerProfil');
         }
 
@@ -1137,12 +1133,12 @@ class FootballerController extends AbstractController
             $manager->remove($chatroom_message);
         }
         $private_message_repo = $manager->getRepository('App:PrivateMessage');
-        foreach ($private_message_repo->findBySender($footballer->getUser()) as $private_message) {
+        foreach ($private_message_repo->findBySender($user) as $private_message) {
             $manager->remove($private_message);
         }
 
         $participant_conversation_repo = $manager->getRepository('App:ParticipantConversation');
-        foreach ($participant_conversation_repo->findByFootballer($footballer) as $participation) {
+        foreach ($participant_conversation_repo->findByUser($user) as $participation) {
             $manager->remove($participation);
         }
 

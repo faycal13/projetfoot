@@ -30,11 +30,6 @@ class Footballer
     private $goal;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $coverPhoto;
-
-    /**
      * @ORM\OneToMany(targetEntity=FootballerVideo::class, mappedBy="footballer", orphanRemoval=true)
      */
     private $footballerVideos;
@@ -145,18 +140,6 @@ class Footballer
     public function setGoal(?string $goal): self
     {
         $this->goal = $goal;
-
-        return $this;
-    }
-
-    public function getCoverPhoto(): ?string
-    {
-        return $this->coverPhoto;
-    }
-
-    public function setCoverPhoto(?string $coverPhoto): self
-    {
-        $this->coverPhoto = $coverPhoto;
 
         return $this;
     }

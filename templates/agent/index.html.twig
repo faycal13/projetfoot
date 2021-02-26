@@ -12,20 +12,30 @@
                 <div class="row">
                     <div class="col-md-12">
                         <h1 class="title-4">
-                            Espace agent de joueur et club
+                            Espace recruteur - Tableau de bord
                         </h1>
+                        <p>Nombres de footballeur inscrits dans la plateforme par poste</p>
                         <hr class="line-seprate">
                     </div>
                 </div>
             </div>
         </section>
         <!-- END WELCOME-->
-
+        {% for message in app.flashes('success') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="alert alert-danger">
+                {{ message }}
+            </div>
+        {% endfor %}
         <!-- STATISTIC-->
         <section class="statistic statistic2">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-6 col-lg-3">
+                    <div class="col-md-6 col-lg-3 col-sm-6">
                         <div class="statistic__item statistic__item--green">
                             <h2 class="number">{{ gardien }}</h2>
                             <span class="desc">Gardien</span>
@@ -34,7 +44,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
+                    <div class="col-md-6 col-lg-3 col-sm-6">
                         <div class="statistic__item statistic__item--orange">
                             <h2 class="number">{{ defenseur }}</h2>
                             <span class="desc">Défenseur</span>
@@ -43,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
+                    <div class="col-md-6 col-lg-3 col-sm-6">
                         <div class="statistic__item statistic__item--blue">
                             <h2 class="number">{{ milieu }}</h2>
                             <span class="desc">Milieu</span>
@@ -52,7 +62,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6 col-lg-3">
+                    <div class="col-md-6 col-lg-3 col-sm-6">
                         <div class="statistic__item statistic__item--red">
                             <h2 class="number">{{ attaquant }}</h2>
                             <span class="desc">Attaquant</span>
@@ -66,8 +76,8 @@
         </section>
 
         <section>
-            <div class="s012">
-                <form method="post" action="{{ path('recherche_footballer') }}" novalidate>
+            <div class="s012" id="search-form">
+                <form method="post" action="{{ path('recherche_footballer') }}">
                     <fieldset>
                         <legend>Trouver des joueurs</legend>
                     </fieldset>
@@ -79,28 +89,28 @@
                                         <img width="30px" src="{{ asset('agent/search/images/goalkeeper.svg') }}" alt="">
                                     </div>
                                     <span>Gardien de but</span>
-                                    <input type="checkbox" name="position[]" required value="Gardien">
+                                    <input type="checkbox" name="position[]" value="Gardien">
                                 </div>
                                 <div class="item">
                                     <div class="group-icon">
                                         <img width="30px" src="{{ asset('agent/search/images/defender.svg') }}" alt="">
                                     </div>
                                     <span>Défenseur</span>
-                                    <input type="checkbox" name="position[]" required value="Défenseur">
+                                    <input type="checkbox" name="position[]" value="Défenseur">
                                 </div>
                                 <div class="item">
                                     <div class="group-icon">
                                         <img width="30px" src="{{ asset('agent/search/images/midfielder.svg') }}" alt="">
                                     </div>
                                     <span>Milieu de terrain</span>
-                                    <input type="checkbox" name="position[]" required value="Milieu">
+                                    <input type="checkbox" name="position[]" value="Milieu">
                                 </div>
                                 <div class="item">
                                     <div class="group-icon">
                                         <img width="30px" src="{{ asset('agent/search/images/forward.svg') }}" alt="">
                                     </div>
                                     <span>Attaquant</span>
-                                    <input type="checkbox" name="position[]" required value="Attaquant">
+                                    <input type="checkbox" name="position[]" value="Attaquant">
                                 </div>
                             </div>
                         </header>
@@ -225,22 +235,40 @@
         $(function (){
             $('#autocomplete').val("");
             $('select[name="age"] option:first').prop('checked', true);
-        })
 
-        flatpickr(".datepicker",
-            {
-                dateFormat: "m/d/y"
+            flatpickr(".datepicker",
+                {
+                    dateFormat: "m/d/y"
+                });
+
+            $('.travel-type-wrap .item').each(function (key, value){
+                $(this).find('input[type=checkbox]').prop('checked',false);
             });
-        $('.travel-type-wrap .item').click(function (){
-            // $('.travel-type-wrap .item').removeClass('active');
-            if($(this).hasClass('active')){
-                $(this).removeClass('active');
-                $(this).find('input[type=checkbox]').prop('checked', false);
-            }else{
-                $(this).addClass('active');
-                $(this).find('input[type=checkbox]').prop('checked', true);
-            }
 
+            $('.travel-type-wrap .item').click(function (){
+                // $('.travel-type-wrap .item').removeClass('active');
+                if($(this).hasClass('active')){
+                    $(this).removeClass('active');
+                    $(this).css('background','white');
+                    $(this).css('color','#555');
+                    $(this).find('input[type=checkbox]').prop('checked', false);
+                }else{
+                    $(this).addClass('active');
+                    $(this).css('background','#555');
+                    $(this).css('color','white');
+                    $(this).find('input[type=checkbox]').prop('checked', true);
+                }
+            })
+
+            $('.btn-search').click(function() {
+                checked = $("input[type=checkbox]:checked").length;
+
+                if(!checked) {
+                    alert("Au moins 1 poste doit être sélectionné");
+                    return false;
+                }
+
+            });
         })
 
     </script>

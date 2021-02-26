@@ -112,6 +112,7 @@ class AgentController extends AbstractController
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Modification effectuée !');
+            return $this->redirectToRoute('agent_home');
         }
         return $this->render('agent/setting.html.twig',[
             'form' => $form->createView()
@@ -149,10 +150,7 @@ class AgentController extends AbstractController
                 $manager->flush();
                 $session->set('footballer_profil_photo',$user->getProfilPhoto());
                 $this->addFlash('success', 'La photo de profil a été mise à jour');
-
-                return $this->render('agent/setting-photo.html.twig',[
-                    'form' => $form->createView()
-                ]);
+                return $this->redirectToRoute('agent_home');
             }
         }
 

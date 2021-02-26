@@ -31,6 +31,8 @@
                 <p>{{ footballer.user.dateOfBirth | date('d/m/Y') }}</p>
                 <h3>Sexe</h3>
                 <p>{% if footballer.user.sexe == 'H' %}Homme{% else %}Femme{% endif %}</p>
+                <h3>Code postal et ville</h3>
+                <p>{{ footballer.user.city }}</p>
               </div>
             </div>
           </div>

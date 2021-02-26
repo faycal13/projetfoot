@@ -11,6 +11,11 @@
                 <div class="header__navbar">
                     <ul class="list-unstyled">
                         <li>
+                            <a href="{{ path('agent_home') }}#search-form">
+                                <i class="fas fa-search"></i>
+                                <span class="bot-line"></span>Trouver un footballeur</a>
+                        </li>
+                        <li>
                             <a href="{{ path('agent_messages') }}">
                                 <i class="fas fa-envelope"></i>
                                 <span class="bot-line"></span>Mes messages</a>
@@ -157,11 +162,16 @@
                         <img src="{{ asset('agent/images/icon/logo-white.png') }}" alt="Logo skillfoot" />
                     </a>
                 {% endif %}
-                        <div class="header-button-item {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}has-noti{% else %}has-not-noti{% endif %}{% endif %}">
-                            <a href="{{ path('agent_messages') }}">
-                                <i class="zmdi zmdi-email"></i>
-                            </a>
-                        </div>
+                <div class="header-button-item ">
+                    <a href="{{ path('agent_home') }}#search-form">
+                        <i style="color: white" class="zmdi zmdi-search"></i>
+                    </a>
+                </div>
+                <div class="header-button-item {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}has-noti{% else %}has-not-noti{% endif %}{% endif %}">
+                    <a href="{{ path('agent_messages') }}">
+                        <i class="zmdi zmdi-email"></i>
+                    </a>
+                </div>
                 <button class="hamburger hamburger--slider" type="button">
                             <span class="hamburger-box">
                                 <span class="hamburger-inner"></span>
@@ -175,7 +185,7 @@
             <ul class="navbar-mobile__list list-unstyled">
                 {% if is_granted('ROLE_AGENT') %}
                     <li style="margin-top: 3px;font-size: 12px;">
-                        {% if app.user.user is not null %}
+                        {% if app.user.user is not null and app.user.user.profilPhoto is not null %}
                             <img style="width: 50px;border-radius: 50px" src="{{ asset(agent_photo_profil_directory~'/'~app.user.id~'/'~app.user.user.profilPhoto) }}" alt="{% if app.user.user is not null %}{{ app.user.user.name }} {{ app.user.user.firstName }}{% endif %}" />
                         {% else %}
                             <img style="width: 50px;border-radius: 50px" src="{{ asset('img/default/profil-agent.png') }}"/>

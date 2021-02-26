@@ -66,6 +66,11 @@ class User
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    private $coverPhoto;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
     private $longitude;
 
     /**
@@ -197,6 +202,18 @@ class User
     public function setProfilPhoto(?string $profilPhoto): self
     {
         $this->profilPhoto = $profilPhoto;
+
+        return $this;
+    }
+
+    public function getCoverPhoto(): ?string
+    {
+        return $this->coverPhoto;
+    }
+
+    public function setCoverPhoto(?string $coverPhoto): self
+    {
+        $this->coverPhoto = $coverPhoto;
 
         return $this;
     }

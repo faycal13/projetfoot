@@ -23,26 +23,46 @@
                 <h4 class="grey">Ma carrière</h4>
               </div>
               <div class="edit-block">
-                <table style="width: 100%;">
-                  <tr>
-                    <th>Années</th>
-                    <th>Club</th>
-                    <th>Catégorie</th>
-                    <th>Poste</th>
-                    <th>Ville</th>
-                  </tr>
-                  <tbody>
-                  {% for career in careers %}
-                    <tr>
-                      <td>{{ career.startDate }}-{{ career.endDate }}</td>
-                      <td>{{ career.club }}</td>
-                      <td>{{ career.categorie }}</td>
-                      <td>{{ career.position }}</td>
-                      <td>{% if career.city is not null %}{{ career.city.name }}{% endif %}</td>
-                    </tr>
-                  {% endfor %}
-                  </tbody>
-                </table>
+                {% for career in careers %}
+                  <div>
+                    <div>
+                      <button style="width: 100%;" class="btn btn-danger">{{ career.club }} ({{ career.saisonDate }})</button>
+                      <div style="display: flex; justify-content: space-around">
+                        <div style="width: 50%">
+                          <h5>Niveau</h5>
+                          <p>{{ career.categorie }}</p>
+                        </div>
+                        <div style="width: 50%">
+                          <h5>Lieu</h5>
+                          <p>{{ career.city }}</p>
+                        </div>
+                      </div>
+                      <div style="display: flex; justify-content: space-around">
+                        {% if career.matchNumber is not null %}
+                          <div style="width: 50%">
+                            <h5>Nombre de match</h5>
+                            <p>{{ career.matchNumber }}</p>
+                          </div>
+                        {% endif %}
+                        {% if career.goalNumber is not null %}
+                          <div style="width: 50%">
+                            <h5>Nombre de but</h5>
+                            <p>{{ career.goalNumber }}</p>
+                          </div>
+                        {% endif %}
+                      </div>
+                      <div style="display: flex; justify-content: space-around">
+                        <div style="width: 50%">
+                          <h5>Poste</h5>
+                          <p>{{ career.position }}</p>
+                        </div>
+                        <div style="width: 50%">
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
               </div>
             </div>
           </div>

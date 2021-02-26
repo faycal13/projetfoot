@@ -7,7 +7,7 @@ parameters:
     footballer_photo_directory: '%kernel.project_dir%/public/img/footballer/photo'
     footballer_photo_compressed_directory: '%kernel.project_dir%/public/img/footballer/photo-compressed'
     footballer_photo_profil_directory: '%kernel.project_dir%/public/img/user/photo-profil'
-    footballer_photo_cover_directory: '%kernel.project_dir%/public/img/footballer/photo-cover'
+    footballer_photo_cover_directory: '%kernel.project_dir%/public/img/user/photo-cover'
     footballer_chatroom_directory: '%kernel.project_dir%/public/img/footballer/chatroom'
     footballer_video_directory: '%kernel.project_dir%/public/video/footballer'
     agent_photo_profil_directory: '%kernel.project_dir%/public/img/agent/photo'

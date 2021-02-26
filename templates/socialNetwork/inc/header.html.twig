@@ -6,13 +6,19 @@
 
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
+                {% if is_granted('ROLE_USER') %}
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                {% endif %}
+                {% if is_granted('ROLE_USER') %}
                 <a class="navbar-brand" href="{{ path('footballer_edit_profil') }}"><img class="logo" src="{{ asset('footballer/img/logo.png') }}" alt="logo" /></a>
+                {% else %}
+                    <a class="navbar-brand" href="{{ path('agent_home') }}"><i class="fa fa-arrow-circle-left"></i> Retour</a>
+                {% endif %}
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -35,9 +41,9 @@
                             </ul>
                         </li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_edit_profil') }}">Mes informations personnelles</a></li>
-                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editFootballerProfil')}}">Mon profil de footballeur {% if app.user.user.footballer is null %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</a>
+                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editFootballerProfil')}}">Mon profil de footballeur {% if app.user.user is not null and app.user.user.footballer is null %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</a>
                         </li>
-                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editCareer')}}">Ma carrière {% if app.user.user.footballer is null or app.user.user.footballer.footballerCarrers.values is empty %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</a></li>
+                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editCareer')}}">Ma carrière {% if app.user.user is not null and app.user.user.footballer is not null and app.user.user.footballer.footballerCarrers is not empty %}{% else %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editPassword') }}">Paramètres</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('before_logout') }}">Déconnexion</a></li>
 

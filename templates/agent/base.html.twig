@@ -35,7 +35,7 @@
     {% block stylesheets %}{% endblock %}
 </head>
 
-<body class="animsition">
+<body>
 {% if is_granted('ROLE_USER') %}
     {{ render(controller(
         'App\\Controller\\AgentController::formUser'

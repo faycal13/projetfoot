@@ -126,7 +126,8 @@ section h2.sub-title{
   ==================================================*/
 
 .container{
-    max-width: 1050px;
+    max-width: 1300px;
+    width: 1300px;
 }
 
 section .wrapper{
@@ -223,7 +224,6 @@ img.profile-photo-xs{
 .img-wrapper{
     position: relative;
     width: 320px;
-    height: 200px;
 }
 
 .img-wrapper::after{
@@ -314,7 +314,7 @@ input#user_photo_photoProfil {
     display: none;
 }
 
-input#cover_photo_footballer_coverPhoto {
+input#cover_photo_coverPhoto {
     display: none;
 }
 
@@ -1464,7 +1464,7 @@ ul.online-users li span.online-dot{
 /*Chat Messages*/
 
 .chat-room .chat-body{
-    height: 400px;
+    height: 600px;
     overflow-y: auto;
 }
 
@@ -2878,6 +2878,27 @@ ul[id^=ui-id-]{
     50% { opacity: 0; }
 }
 
+.show-conversation #notif-new-message{
+    border-radius: 12px;
+    background-color: #2ac325;
+    padding: 10px;
+    position: absolute;
+    top: 7px;
+    right: 22px;
+    display: none;
+}
+
+.show-conversation #notif-new-message span{
+    color: #ffffff;
+    animation: blinker-new-message 2s linear infinite;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#send-message.modal{
+    top: 35%;
+}
+
 @media (max-width: 767px) {
     header .logo{
         width: 50px;
@@ -2891,6 +2912,10 @@ ul[id^=ui-id-]{
     }
     #page-contents {
         padding: 0;
+    }
+
+    .container {
+        width: initial;
     }
 
     .edit-profile-container-modal .edit-block {
@@ -2907,6 +2932,7 @@ ul[id^=ui-id-]{
     .main-container{
         margin-top: 55px;
     }
+
     .edit-career-container table tr th {
         padding: 5px;
     }

@@ -17,13 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 /** @Route("/footballer-social-network", name="social_network_") */
 class SocialNetworkController extends AbstractController
 {
-    private $mailer;
-
-    public function __construct(\Swift_Mailer $mailer)
-    {
-        $this->mailer = $mailer;
-    }
-
     /**
      * @Route("/show-conversations/{id}", name="show_conversations", defaults={"id"=0})
      */
@@ -97,7 +90,14 @@ class SocialNetworkController extends AbstractController
                 $final_message[$key]['nom'] = $message->getSender()->getName().' '.$message->getSender()->getFirstName();
                 $final_message[$key]['position'] = ($message->getSender()->getId() == $user->getId() ? 'right' : 'left');
                 $path = $this->getProfilPhoto($assetsManager, $message->getSender());
-                $final_message[$key]['photo'] = '<img src="'.$path.'" alt="" class="profile-photo-sm pull-'.$final_message[$key]['position'].'"/>';
+                $path_profil = '';
+                if($message->getSender()->getFootballer() != null) {
+                    $path_profil .= $assetsManager->getUrl('footballer-profil/footballer-profil/' .$message->getSender()->getFootballer()->getId());
+                }
+                else {
+                    $path_profil = '#';
+                }
+                $final_message[$key]['photo'] = '<a href="'.$path_profil.'" class="pull-'.$final_message[$key]['position'].'"><img src="'.$path.'" alt="" class="profile-photo-sm pull-'.$final_message[$key]['position'].'"/></a>';
             }
 
             return new JsonResponse(['result' => $final_message]);
@@ -130,15 +130,15 @@ class SocialNetworkController extends AbstractController
                     $participation_item->getUser()->setNotifyMessage(1);
                     $manager->persist($participation_item);
 
-                    $this->mail(
-                        $participation_item->getUser()->getAccount()->getUsername(),
-                        'Nouveau message de '.$user->getFirstName(),
-                        'Nouveau message',
-                        '
-                <p style="font-size: 18px">Vous avez reçu un nouveau message de '.$user->getFirstName().'</p>
-                <p style="font-size: 18px"><a style="color: white" href="https://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
-                '
-                    );
+//                    $this->mail(
+//                        $participation_item->getUser()->getAccount()->getUsername(),
+//                        'Nouveau message de '.$user->getFirstName(),
+//                        'Nouveau message',
+//                        '
+//                <p style="font-size: 18px">Vous avez reçu un nouveau message de '.$user->getFirstName().'</p>
+//                <p style="font-size: 18px"><a style="color: white" href="https://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
+//                '
+//                    );
 
                 }
             }
@@ -274,6 +274,9 @@ class SocialNetworkController extends AbstractController
         $conversation = $participation->getConversation();
         $all_participation = $participant_conversations_repo->findByConversation($conversation);
 
+        $user->setNotifyMessage(0);
+        $manager->persist($user);
+
         foreach ($all_participation as $item) {
             if($item->getUser()->getId() == $user->getId()){
                 $participation->setNotify(0);
@@ -283,8 +286,7 @@ class SocialNetworkController extends AbstractController
             }
         }
 
-        $user->setNotifyMessage(0);
-        $manager->persist($user);
+
         $manager->flush();
 
         return new JsonResponse(['result' => false]);
@@ -314,29 +316,29 @@ class SocialNetworkController extends AbstractController
         return $path;
     }
 
-    function mail($mail, $objet, $titre, $contain)
-    {
-        $message = (new \Swift_Message())
-            ->setFrom('noreply@hskillfoot.fr')
-            ->setTo($mail)
-            ->setSubject($objet);
-
-        $img = $message->embed(\Swift_Image::fromPath('img/logo/logo.png'));
-        $message->setBody(
-            $this->renderView(
-            // templates/emails/registration.html.twig
-                'mail.html.twig',
-                [
-                    'img' => $img,
-                    'titre' => $titre,
-                    'message' => $contain,
-                ]
-            ),
-            'text/html'
-        );
-
-        $this->mailer->send($message);
-    }
+//    function mail($mail, $objet, $titre, $contain, $mailer)
+//    {
+//        $message = (new \Swift_Message())
+//            ->setFrom('noreply@hskillfoot.fr')
+//            ->setTo($mail)
+//            ->setSubject($objet);
+//
+//        $img = $message->embed(\Swift_Image::fromPath('img/logo/logo.png'));
+//        $message->setBody(
+//            $this->renderView(
+//            // templates/emails/registration.html.twig
+//                'mail.html.twig',
+//                [
+//                    'img' => $img,
+//                    'titre' => $titre,
+//                    'message' => $contain
+//                ]
+//            ),
+//            'text/html'
+//        );
+//
+//        $mailer->send($message);
+//    }
 
     public function t($test){
         dump($test);

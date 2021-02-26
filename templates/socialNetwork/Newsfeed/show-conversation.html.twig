@@ -8,6 +8,9 @@
             display: none;
         }
         @media (max-width: 767px) {
+            body{
+                overflow-y: hidden;
+            }
             #page-contents {
                 padding: 0;
                 padding-bottom: 0;
@@ -36,8 +39,15 @@
                 margin: 0;
             }
             .chat-room .chat-body {
-                height: 100vh;
+                height: 600px;
                 overflow-y: auto;
+            }
+            .chat-room .chat-body .chat-message li:nth-of-type(1) {
+                margin-top: 100px;
+            }
+
+            .chat-room .chat-body .chat-message li:nth-of-type(1).removemt {
+                margin-top: 0;
             }
 
         }
@@ -48,7 +58,7 @@
                 <div class="col-md-12">
                     {% if conversations is empty %}
                         <h3>Vous n'avez aucun résultat</h3>
-                        <p>Trouver un ami pour démarrer une conversation</p>
+                        <p>Trouver un footballeur pour démarrer une conversation</p>
                         <form action="{{ path('footballer_search_global_footballer') }}" method="POST" id="form-search-footballer" class="navbar-form">
                             <div class="form-group block-search">
                                 <i class="icon ion-android-search"></i>
@@ -57,12 +67,14 @@
                             </div>
                         </form>
                     {% endif %}
-                    <div class="show-conversation"><i class="fa fa-arrow-circle-left"></i> Afficher les conversations</div>
+                    <p class="show-conversation" data-conf="" style="display: none;position: fixed;z-index: 10;background-color: rgb(247 247 247);width: 100%;top: 0;left: 0;height: 50px;text-align: center;line-height: 47px;box-shadow: 2px 2px 6px 0px;">
+                        <i class="fa fa-arrow-circle-left"></i> Afficher les conversations <span id="notif-new-message"><span></span></span></p>
 
                     <div class="chat-room" style="display:none;">
                         <div  class="row">
                             <div class="col-md-4 conversations">
                                 <ul class="nav nav-tabs contact-list scrollbar-wrapper scrollbar-outer">
+                                    <h3>Mes conversations</h3>
                                     {% for conversation in conversations %}
                                         <li {% if id > 0 and conversation['conversation'].id == id %}class="active"{% endif %}>
                                             <a href="#contact-{{ conversation['conversation'].id }}" data-toggle="tab" data-conf="{{ conversation['conversation'].id }}" data-participant="{{ conversation['participant'].id }}">
@@ -82,7 +94,7 @@
                             <div class="col-md-8">
                                 {% if conversations is not empty %}
 
-                                <div class="tab-content chat-message scrollbar-wrapper wrapper scrollbar-outer">
+                                    <div class="tab-content chat-message scrollbar-wrapper wrapper scrollbar-outer">
                                         {% for conversation in conversations %}
                                             <div class="tab-pane" id="contact-{{ conversation['conversation'].id }}"></div>
                                         {% endfor %}
@@ -96,7 +108,7 @@
                                                 </form>
                                             </div>
                                         </div>
-                                </div><!--Chat Messages in Right End-->
+                                    </div><!--Chat Messages in Right End-->
                                 {% endif %}
 
                             </div>
@@ -119,7 +131,7 @@
             {% else %}
             $($('.contact-list li.active a').attr('href')).addClass('active');
             {% endif %}
-            $('input[name=conversation]').val($('.contact-list li.active a').attr('data-conf'))
+            $('input[name=conversation]').val($('.contact-list li.active a').attr('data-conf'));
             $('.contact-list li a').each(function (){
                 var id_conf = $(this).attr('data-conf');
                 var a_this = $(this);
@@ -137,6 +149,10 @@
                             );
                             a_this.find('.msg-preview').find('p.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .private-message').last().text());
                             a_this.find('.msg-preview').find('small.text-muted').text($('#contact-'+id_conf+' .chat-body .chat-message .message-date').last().text());
+                            $('#contact-'+id_conf+' .chat-body').scrollTop($('#contact-'+id_conf+' .chat-body .chat-message').height()+200);
+                            if($(window).height() >= 740){
+                                $('#contact-'+id_conf+' .chat-body .chat-message li:nth-of-type(1)').addClass('removemt');
+                            }
                         }
                     },
                     error : function (error){
@@ -158,10 +174,13 @@
                     $('#header').hide();
                     $('.chat-message').show();
                     $('.show-conversation').show();
+                    $('.show-conversation').attr('data-conf',$(this).attr('data-conf'));
                     $("html, body").scrollTop($("html, body").height()+200);
                 }
+
                 $($(this).attr('href')+' .chat-body').scrollTop($($(this).attr('href')+' .chat-body .chat-message').height()+200);
 
+                $('#notif-new-message').hide();
                 $.ajax({
                     'url' : "{{ path('social_network_remove_notify') }}",
                     'type' : 'POST',
@@ -218,7 +237,6 @@
                 })
             })
 
-
             $('input[name=message]').click(function (){
                 $.ajax({
                     'url' : "{{ path('social_network_remove_notify') }}",
@@ -254,21 +272,48 @@
                         '<div class="chat-item"> <div class="chat-item-header"> <h5>'+serverResponse.nom+'</h5> ' +
                         '<small class="text-muted message-date">'+serverResponse.date+'</small> ' +
                         '</div> <p class="private-message">'+serverResponse.message+'</p> </div></li>')
-                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
-                    $('.contact-list li.active a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
+                    $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
+                    $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
                     if(serverResponse.id != {{ app.user.user.id }}) {
-                        $('.contact-list li.active a[data-conf=' + serverResponse.conversation + ']').find('.msg-preview').find('p.text-muted').css({
+                        $('.contact-list li a[data-conf=' + serverResponse.conversation + ']').find('.msg-preview').find('p.text-muted').css({
                             'color': 'black',
                             'font-weight': 'bold'
                         });
-                        $('.contact-list li.active a[data-conf=' + serverResponse.conversation + ']').find('.msg-preview').find('small.text-muted').css({
+                        $('.contact-list li a[data-conf=' + serverResponse.conversation + ']').find('.msg-preview').find('small.text-muted').css({
                             'color': 'black',
                             'font-weight': 'bold'
                         });
                     }
-                    // $('#contact-'+serverResponse.conversation+' .chat-body').scrollTop($('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height()+200);
-                    $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
-                    $("html, body").scrollTop($("html, body").height()+200);
+
+                    if($(window).width() <= 765){
+                        if($('.show-conversation').attr('data-conf') != serverResponse.conversation){
+                            $('.show-conversation #notif-new-message span').text('Nouveau message de '+serverResponse.nom);
+                            $('.show-conversation #notif-new-message').show();
+                            setTimeout(function() {
+                                $('.show-conversation #notif-new-message').hide(1000);
+                            }, 5000);
+                        }else{
+                            var heightchatmessage = $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height();
+                            var scrolltopchatbody = $('#contact-'+serverResponse.conversation+' .chat-body').scrollTop();
+
+                            if(heightchatmessage-scrolltopchatbody > 870){
+                                $('.show-conversation #notif-new-message span').text('Nouveau message de '+serverResponse.nom);
+                                $('.show-conversation #notif-new-message').show();
+                                setTimeout(function() {
+                                    $('.show-conversation #notif-new-message').hide(1000);
+                                }, 5000);
+                            }else{
+                                $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
+                            }
+                        }
+                    }else{
+                        var heightchatmessage = $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height();
+                        var scrolltopchatbody = $('#contact-'+serverResponse.conversation+' .chat-body').scrollTop();
+                        if(heightchatmessage-scrolltopchatbody < 735){
+                            $('#contact-'+serverResponse.conversation+' .chat-body').animate({ scrollTop: $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').height() }, 1000);
+                        }
+                    }
+
                 }
             }
 
@@ -293,29 +338,10 @@
                     var position = 'left';
 
                     //MESSAGE SUR LE COTE
-                    $('.contact-list').prepend('<li><a href="#contact-'+serverResponse.conversation+'" data-toggle="tab" data-conf="'+serverResponse.conversation+'">' +
-                        '<div class="contact"><div class="msg-preview">' +
-                        '<h6>'+serverResponse.nom+'</h6><p class="text-muted"></p>' +
-                        '<small class="text-muted"></small></div></div></a></li>');
-
-                    $('.chat-message.scrollbar-wrapper').html('<div class="tab-pane" id="contact-'+serverResponse.conversation+'"><div class="chat-body">' +
-                        '<ul class="chat-message"></ul></div></div>');
-
-                    //CONTENU DU MESSAGE
-                    $('#contact-'+serverResponse.conversation+' .chat-body .chat-message').prepend('<li class="'+position+'">' +
-                        '<img src="'+serverResponse.photo+'" alt="" class="profile-photo-sm pull-'+position+'"/>' +
-                        '<div class="chat-item"> <div class="chat-item-header"> <h5>'+serverResponse.nom+'</h5> ' +
-                        '<small class="text-muted message-date">'+serverResponse.date+'</small> ' +
-                        '</div> <p class="private-message">'+serverResponse.message+'</p> </div></li>');
-
-                    $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('p.text-muted').text(serverResponse.message);
-                    $('.contact-list li a[data-conf='+serverResponse.conversation+']').find('.msg-preview').find('small.text-muted').text(serverResponse.date);
-
-                    if($('div[id^=contact-]').length == 1){
-                        $('div[id^=contact-'+serverResponse.conversation+']').addClass('active');
-                    }
+                    $('.contact-list').prepend('<li style="padding: 8px">' +
+                        '<a href=""><div class="msg-preview"><h6>Nouveau message de : </h6><p class="text-muted">'+serverResponse.nom+'</p>\n' +
+                        'Cliquez-ici pour le voir</div></a></li>');
                     $('.chat-room').show();
-
                 }
             }
 

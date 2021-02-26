@@ -110,6 +110,8 @@
                       {{ form_row(form.city, {'label': 'Code postal et Ville', 'id': 'autocomplete-modify-'~key, 'attr': {'placeholder': 'Code postal et Ville', 'class': ''}}) }}
                       {{ form_row(form.longitude, {'label': false}) }}
                       {{ form_row(form.latitude, {'label': false}) }}
+                      <p><strong>Des recruteurs auront accès à votre carrière ! Soyez précis et honnête.</strong></p>
+
                       <button class="btn" data-dismiss="modal">Annuler</button>
                       <button class="btn btn-primary">Enregistrer</button>
                     </div>
@@ -151,7 +153,6 @@
                   </button>
                 </div>
                 <div class="modal-body">
-                  <p>Des recruteurs auront accès à votre carrière ! Soyez précis et honnête.</p>
                   {{ form_start(new_form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}
                   <div class="row" style="padding: 30px">
                     {{ form_row(new_form.club, {'label': 'Club','attr': {'placeholder': 'Nom du club'}}) }}
@@ -163,6 +164,7 @@
                     {{ form_row(new_form.city, {'label': 'Code postal et Ville', 'id': 'autocomplete-create', 'attr': {'placeholder': 'Code postal et Ville', 'class': ''}}) }}
                     {{ form_row(new_form.longitude, {'label': false, 'id': 'career-longitude'}) }}
                     {{ form_row(new_form.latitude, {'label': false, 'id': 'career-latitude'}) }}
+                    <p><strong>Des recruteurs auront accès à votre carrière ! Soyez précis et honnête.</strong></p>
                     <button class="btn" data-dismiss="modal">Annuler</button>
                     <button class="btn btn-primary">Enregistrer</button>
                   </div>
