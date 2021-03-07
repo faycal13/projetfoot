@@ -132,6 +132,7 @@
             $($('.contact-list li.active a').attr('href')).addClass('active');
             {% endif %}
             $('input[name=conversation]').val($('.contact-list li.active a').attr('data-conf'));
+
             $('.contact-list li a').each(function (){
                 var id_conf = $(this).attr('data-conf');
                 var a_this = $(this);

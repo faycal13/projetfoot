@@ -91,13 +91,13 @@ class SocialNetworkController extends AbstractController
                 $final_message[$key]['position'] = ($message->getSender()->getId() == $user->getId() ? 'right' : 'left');
                 $path = $this->getProfilPhoto($assetsManager, $message->getSender());
                 $path_profil = '';
-                if($message->getSender()->getFootballer() != null) {
-                    $path_profil .= $assetsManager->getUrl('footballer-profil/footballer-profil/' .$message->getSender()->getFootballer()->getId());
+                if($message->getSender()->getFootballer() != null && $message->getSender()->getId() != $user->getId()) {
+                    $path_profil .= 'href="'.$assetsManager->getUrl('footballer-profil/footballer-profil/' .$message->getSender()->getFootballer()->getId()).'"';
                 }
                 else {
-                    $path_profil = '#';
+                    $path_profil = '';
                 }
-                $final_message[$key]['photo'] = '<a href="'.$path_profil.'" class="pull-'.$final_message[$key]['position'].'"><img src="'.$path.'" alt="" class="profile-photo-sm pull-'.$final_message[$key]['position'].'"/></a>';
+                $final_message[$key]['photo'] = '<a '.$path_profil.' class="pull-'.$final_message[$key]['position'].'"><img src="'.$path.'" alt="" class="profile-photo-sm pull-'.$final_message[$key]['position'].'"/></a>';
             }
 
             return new JsonResponse(['result' => $final_message]);

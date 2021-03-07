@@ -2856,7 +2856,11 @@ ul[id^=ui-id-]{
     z-index: 9999 !important;
 }
 
-#message-title i{
+.message-title{
+    position: relative;
+}
+
+.message-title i{
     font-size: 10px;
     position: absolute;
     bottom: 20px;
@@ -2876,6 +2880,60 @@ ul[id^=ui-id-]{
 
 @keyframes blinker2 {
     50% { opacity: 0; }
+}
+
+
+.note-editor.note-frame.panel.panel-default {
+    width: 100% !important;
+}
+
+
+#loading {
+    display: none;
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(142,138,138,0.3);
+    border-radius: 50%;
+    border-top-color: #c30808;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+}
+.post-text img{
+    width: 100% !important;
+}
+
+.post-detail .user-info a{
+    color: initial;
+}
+
+.post-detail .user-info a:hover{
+    text-decoration: none;
+}
+
+.post-comment .a-none{
+    color: initial;
+}
+
+.post-comment .a-none:hover{
+    text-decoration: none;
+}
+
+
+.panel-default>.panel-heading::before{
+    content : '';
+}
+
+.note-placeholder {
+    position: absolute;
+    display: none;
+    color: #d0caca !important;
+}
+
+@keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+    to { -webkit-transform: rotate(360deg); }
 }
 
 .show-conversation #notif-new-message{
@@ -2966,6 +3024,24 @@ ul[id^=ui-id-]{
         color: white;
         padding: 10px;
         text-align: center;
+    }
+    .message-title i {
+        bottom: 12px;
+        right: -8px;
+    }
+
+    .note-editable img{
+        width: 240px;
+    }
+    .create-post{
+        padding: 0;
+    }
+    .create-post .form-group img.profile-photo-md{
+        display: none;
+    }
+
+    .post-content .post-container .post-detail{
+        margin-left: 0;
     }
 }
 

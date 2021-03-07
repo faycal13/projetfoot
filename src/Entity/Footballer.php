@@ -103,6 +103,16 @@ class Footballer
 
     private $friend = false;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Post::class, mappedBy="footballer")
+     */
+    private $posts;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PostLikes::class, mappedBy="footballer", orphanRemoval=true)
+     */
+    private $postLikes;
+
     public function __construct()
     {
         $this->footballerVideos = new ArrayCollection();
@@ -113,6 +123,8 @@ class Footballer
         $this->footballerSkills = new ArrayCollection();
         $this->footballerCarrers = new ArrayCollection();
         $this->privateMessages = new ArrayCollection();
+        $this->posts = new ArrayCollection();
+        $this->postLikes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -441,6 +453,68 @@ class Footballer
     public function setFriend($friend): void
     {
         $this->friend = $friend;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setFootballer($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
+            // set the owning side to null (unless already changed)
+            if ($post->getFootballer() === $this) {
+                $post->setFootballer(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PostLikes[]
+     */
+    public function getPostLikes(): Collection
+    {
+        return $this->postLikes;
+    }
+
+    public function addPostLike(PostLikes $postLike): self
+    {
+        if (!$this->postLikes->contains($postLike)) {
+            $this->postLikes[] = $postLike;
+            $postLike->setFootballer($this);
+        }
+
+        return $this;
+    }
+
+    public function removePostLike(PostLikes $postLike): self
+    {
+        if ($this->postLikes->contains($postLike)) {
+            $this->postLikes->removeElement($postLike);
+            // set the owning side to null (unless already changed)
+            if ($postLike->getFootballer() === $this) {
+                $postLike->setFootballer(null);
+            }
+        }
+
+        return $this;
     }
 
 

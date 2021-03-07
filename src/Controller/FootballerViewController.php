@@ -155,6 +155,19 @@ class FootballerViewController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/my-post/{id}", name="my_post")
+     */
+    public function myPost(Footballer $footballer, Request $request, EntityManagerInterface $manager)
+    {
+        $post_repo = $manager->getRepository('App:Post');
+        $posts = $post_repo->findBy(array('footballer' => $footballer),array('creationDate' => 'DESC'));
+        return $this->render('socialNetwork/view/timeline.html.twig',[
+            'posts' => $posts,
+            'footballer' => $footballer,
+        ]);
+    }
+
     public function getNumberFriends($manager, $footballer){
         $friends_list_repo = $manager->getRepository('App:FriendsList');
         $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');

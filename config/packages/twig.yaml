@@ -4,6 +4,7 @@ twig:
     globals:
         footballer_photo_directory: 'img/footballer/photo/'
         footballer_photo_compressed_directory: 'img/footballer/photo-compressed/'
+        footballer_photo_post_directory: 'img/footballer/post/'
         footballer_photo_profil_directory: 'img/user/photo-profil/'
         footballer_photo_cover_directory: 'img/user/photo-cover/'
         footballer_chatroom_directory: 'img/footballer/chatroom/'

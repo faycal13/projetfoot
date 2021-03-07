@@ -99,16 +99,22 @@ class AgentController extends AbstractController
     public function setting(Request $request, EntityManagerInterface $manager)
     {
         $user_repo = $manager->getRepository('App:User');
+        $account_repo = $manager->getRepository('App:Account');
         $user = $user_repo->findOneByAccount($this->getUser());
         if(is_null($user)){
             $user = new User();
         }
+        $user->setAccount($this->getUser());
         $form = $this->createForm(UserType::Class, $user);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $today = new \DateTime();
-            $user->setAccount($this->getUser());
+            $account = $account_repo->findOneById($this->getUser()->getId());
+            $phone = $form->getData()->getAccount()->getPhone();
+            $account->setPhone($phone);
             $user->setLastModify($today);
+            $user->setAccount($account);
+            $manager->persist($account);
             $manager->persist($user);
             $manager->flush();
             $this->addFlash('success', 'Modification effectuée !');
@@ -248,6 +254,7 @@ class AgentController extends AbstractController
     public function google(){
         return $this->render('agent/google.html.twig');
     }
+
     private function uploadFile($photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){
         $originalFilename = pathinfo($photo->getClientOriginalName(), PATHINFO_FILENAME);
         // this is needed to safely include the file name as part of the URL

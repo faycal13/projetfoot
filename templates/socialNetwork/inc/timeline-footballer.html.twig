@@ -29,7 +29,7 @@
 
                 <div class="col-md-9">
                     <ul class="list-inline profile-menu">
-                        <li><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></li>
+                        <li><a class="message-title" href="{{ path('social_network_show_conversations') }}">Mes messages {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}<i class="fa fa-comment"></i>{% endif %}{% endif %}</a></li>
                         <li><a class="photo-link" href="{{ path('footballer_picture') }}">Mes photos</a></li>
                         <li><a class="video-link" href="{{ path('footballer_video') }}">Mes vidéos</a></li>
                         <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a></li>
@@ -54,7 +54,7 @@
             </div>
             <div class="mobile-menu">
                 <ul class="list-inline">
-                    <li><a id="message-title" href="{{ path('social_network_show_conversations') }}">Mes messages {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}<i class="fa fa-comment"></i>{% endif %}{% endif %}</a></li>
+                    <li><a class="message-title" href="{{ path('social_network_show_conversations') }}">Mes messages {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}<i class="fa fa-comment"></i>{% endif %}{% endif %}</a></li>
                     <li><a class="photo-link" href="{{ path('footballer_picture') }}">Mes photos</a></li>
                     <li><a class="video-link" href="{{ path('footballer_video') }}">Mes vidéos</a></li>
                     <li style="color: white; font-weight: bold;"><a href="{{ path('footballer_myfriends') }}">{% if app.session.get('number_friend') is not null %}{{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}{% else %}0 ami{% endif %}</a></li>

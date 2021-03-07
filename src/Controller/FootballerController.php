@@ -175,14 +175,6 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/show-profil", name="profil")
-     */
-    public function index()
-    {
-        return $this->render('socialNetwork/profil/timeline.html.twig');
-    }
-
-    /**
      * @Route("/edit-profil", name="edit_profil")
      */
     public function editProfil(Request $request, EntityManagerInterface $manager, CookieGenerator $cookie)

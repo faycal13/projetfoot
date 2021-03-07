@@ -175,7 +175,9 @@
                 var serverResponse3 = JSON.parse(e.data);
                 if (serverResponse3 != false) {
                     if(serverResponse3.id != {{ app.user.user.id }}){
-                        $('#message-title').html('Mes messages <i class="fa fa-comment"></i>');
+                        $('.message-title').each(function(){
+                            $(this).html('Mes messages <i class="fa fa-comment"></i>');
+                        });
                     }
 
                 }
@@ -202,7 +204,9 @@
                 var serverResponse4 = JSON.parse(e.data);
                 if (serverResponse4 != false) {
                     if(serverResponse4.id != {{ app.user.user.id }}){
-                        $('#message-title').html('Mes messages <i class="fa fa-comment"></i>');
+                        $('.message-title').each(function(){
+                            $(this).html('Mes messages <i class="fa fa-comment"></i>');
+                        });
                     }
 
                 }
@@ -303,6 +307,9 @@
             $('#blocked').css({ "display": "flex", "align-items": "center", "justify-content": "center" });
         });
 
+        if(window.location.href.includes('footballer-profil/my-post/')){
+            $('.my-post').css({'color': 'red', 'font-weight': 'bold' });
+        }
         if(window.location.href.includes('footballer-profil/profil/')){
             $('.personal-information').css({'color': 'red', 'font-weight': 'bold' });
         }
@@ -317,6 +324,9 @@
         }
         if(window.location.href.includes('footballer-profil/video/')){
             $('.video-link').css({'color': 'red', 'font-weight': 'bold' });
+        }
+        if(window.location.href.includes('footballeur-post/my-post')){
+            $('.my-post').css({'color': 'red', 'font-weight': 'bold' });
         }
         if(window.location.href.includes('footballer/edit-profil')){
             $('.personal-information').css({'color': 'red', 'font-weight': 'bold' });
