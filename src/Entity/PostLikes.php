@@ -24,7 +24,7 @@ class PostLikes
     private $footballer;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="smallint")
      */
     private $love;
 
@@ -56,12 +56,12 @@ class PostLikes
         return $this;
     }
 
-    public function getLove(): ?bool
+    public function getLove(): ?int
     {
         return $this->love;
     }
 
-    public function setLove(bool $love): self
+    public function setLove(int $love): self
     {
         $this->love = $love;
 

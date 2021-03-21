@@ -47,6 +47,7 @@ class Post
 
     /**
      * @ORM\OneToMany(targetEntity=PostComments::class, mappedBy="post", orphanRemoval=true)
+     * @ORM\OrderBy({"creationDate" = "DESC"})
      */
     private $postComments;
 
@@ -54,6 +55,11 @@ class Post
      * @ORM\OneToMany(targetEntity=PostLikes::class, mappedBy="post", orphanRemoval=true)
      */
     private $postLikes;
+
+    /**
+     * @ORM\Column(type="smallint")
+     */
+    private $liked;
 
     public function __construct()
     {
@@ -184,6 +190,18 @@ class Post
                 $postLike->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLiked(): ?int
+    {
+        return $this->liked;
+    }
+
+    public function setLiked(int $liked): self
+    {
+        $this->liked = $liked;
 
         return $this;
     }

@@ -1,0 +1,135 @@
+{% if footballer is not defined %}
+<div class="create-post">
+    <div class="row">
+        <form action="{{ path('footballer_post_add_post') }}" method="post" id="post-form">
+            <div class="col-md-10 col-sm-10">
+                <div class="form-group" style="width: 100%;">
+                    {% if app.session.get('footballer_profil_photo') is not null %}
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="profile-photo-md" />
+                    {% else %}
+                        <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-md"/>
+                    {% endif %}
+                    <textarea required name="post" cols="30" rows="1" class="form-control summernote" placeholder="Alors, quoi de neuf champion ?" contenteditable></textarea>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-2">
+                <button class="btn btn-primary pull-right" id="publish">Publier</button>
+            </div>
+        </form>
+        <div id="loading"></div>
+    </div>
+
+</div>
+{% endif %}
+{% for key, post in posts %}
+    <div class="post-content">
+        <div class="post-container">
+            {% if app.session.get('footballer_profil_photo') is not null %}
+                <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="profile-photo-md pull-left" />
+            {% else %}
+                <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-md pull-left" />
+            {% endif %}
+            <div class="post-detail">
+                <div class="user-info">
+                    <h5><a {% if post.footballer.user.id != app.user.user.id %}href="{{ path('footballer_view_my_post',{'id': post.footballer.id}) }}" class="profile-link text-red"{% endif%} style="text-decoration: none">{{ post.footballer.user.firstName }} {{ post.footballer.user.name }}</a></h5>
+                    <p class="text-muted">{{ post.creationDate | date('d/m/Y H:i:s') }}</p>
+                    {% if post.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#supp-modal-{{ post.id }}" style="color:red; cursor: pointer">Supprimer la publication</i>{% endif %}
+                    {% if post.footballer.user.id == app.user.user.id %}<br><i class="fa fa-edit edit-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#edit-modal-{{ post.id }}" style="color:green; cursor: pointer">Modifier la publication</i>{% endif %}
+                </div>
+                {% set postLike = 0 %}
+                {% set postDislike = 0 %}
+                {% set liked = 0 %}
+                {% for like in post.postLikes %}
+                    {% if like.love == 1 %}
+                        {% set postLike = postLike + 1 %}
+                        {% if like.footballer.user.id == app.user.user.id %}
+                            {% set liked = 1 %}
+                        {% endif %}
+                    {% else %}
+                        {% set postDislike = postDislike + 1 %}
+                        {% if like.footballer.user.id == app.user.user.id %}
+                            {% set liked = 2 %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                <div class="reaction" data-post="{{ post.id }}">
+                    <a class="btn {% if liked == 1 %}text-green{% endif%} like" data-nb="{{ postLike }}"><i class="icon ion-thumbsup"></i> {{ postLike }}</a>
+                    <a class="btn {% if liked == 2 %}text-red{% endif%} dislike" data-nb="{{ postDislike }}"><i class="fa fa-thumbs-down"></i> {{ postDislike }}</a>
+                </div>
+
+                <div class="line-divider"></div>
+                <div class="post-text">
+                    <p>{{ post.text | raw}}</p>
+                </div>
+                <div class="line-divider"></div>
+                <div class="all-comment-{{ post.id }}" style="max-height: 150px; overflow-y: auto">
+                    {% for comment in post.postComments.values %}
+                        <div class="post-comment">
+                            {% if comment.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-comment" data-comment="{{ comment.id }}" style="color:red; cursor: pointer"></i>{% endif %}
+                            {% if comment.footballer.user.profilPhoto is not null %}
+                                <img src="{{ asset(footballer_photo_profil_directory~'/'~comment.footballer.user.id~'/'~comment.footballer.user.profilPhoto) }}" alt="" class="profile-photo-sm" />
+                            {% else %}
+                                <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-sm" />
+                            {% endif %}
+                            <p><a {% if comment.footballer.user.id != app.user.user.id %}href="{{ path('footballer_view_my_post',{'id': comment.footballer.id}) }}" class="profile-link"{% else %}class="profile-link a-none"{% endif %}>{{ comment.footballer.user.firstName }} {{ comment.footballer.user.name }} </a>{{ comment.comment }}</p><span class="comment-date">{{ comment.creationDate | date('d/m/Y H:i:s') }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="post-comment">
+                    {% if app.session.get('footballer_profil_photo') is not null %}
+                        <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="profile-photo-sm" />
+                    {% else %}
+                        <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-sm" />
+                    {% endif %}
+                    <input type="text" class="form-control input-post-comment" data-post="{{ post.id }}" placeholder="Poster un commentaire">
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if post.footballer.id == app.user.user.footballer.id %}
+        <div class="modal fade" id="supp-modal-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Supprimer la publication</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="modal-body">
+                            Attention, la suppression est irréversible !
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                        <a type="button" href="{{ path('footballer_post_remove_post',{'id':post.id}) }}" class="btn btn-primary">Supprimer</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="edit-modal-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modifier la publication</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ path('footballer_post_edit_post') }}" method="post">
+                            <textarea name="post" cols="30" rows="1" class="form-control summernote" placeholder="Alors, quoi de neuf champion ?">{{ post.text | raw}}</textarea>
+                            <input type="hidden" name="postid" value="{{ post.id }}">
+                            <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+                            <input type="submit" class="btn btn-primary" value="Modifier">
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}

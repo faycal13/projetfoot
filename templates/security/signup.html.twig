@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--===============================================================================================-->
-	<link rel="icon" type="image/png" href="{{ asset('security/images/icons/favicon.png') }}"/>
+	<link rel="icon" type="image/png" href="{{ asset('img\favicone.ico') }}"/>
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/vendor/bootstrap/css/bootstrap.min.css') }}">
 	<!--===============================================================================================-->
@@ -24,68 +24,63 @@
 <body>
 
 <div class="limiter">
-	<div class="container-login100">
-		<div class="wrap-login100 d-flex align-items-center">
-			<div class="login100-pic js-tilt" data-tilt>
-				{% if who == 'footballer' %}
-					<img src="{{ asset('security/images/footballer.png') }}" alt="IMG">
-				{% else %}
-					<img src="{{ asset('security/images/agent.png') }}" alt="IMG">
-				{% endif %}
-			</div>
 
-			{{ form_start(form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}
-			<span class="login100-form-title">
+	{% if who == 'footballer' %}
+		<img src="{{ asset('security/images/footballer.png') }}" alt="IMG">
+	{% else %}
+		<img src="{{ asset('security/images/agent.png') }}" alt="IMG">
+	{% endif %}
+
+	{{ form_start(form, {'attr': {'class': 'register-form', 'id':'register-form'}}) }}
+	<span class="login100-form-title">
 						Inscription
 					</span>
 
 
-			<div class="wrap-input100 validate-input">
-				{{ form_row(form.username, {'label': false,'attr': {'placeholder': 'Adresse email ... ', 'class': 'input100'}}) }}
-				<span class="focus-input100"></span>
-				<span class="symbol-input100">
+	<div class="wrap-input100 validate-input">
+		{{ form_row(form.username, {'label': false,'attr': {'placeholder': 'Adresse email ... ', 'class': 'input100'}}) }}
+		<span class="focus-input100"></span>
+		<span class="symbol-input100">
 					<i class="fa fa-envelope" aria-hidden="true"></i>
 				</span>
-			</div>
-			<div class="wrap-input100 validate-input">
-				{{ form_row(form.phone, {'label': false,'attr': {'placeholder': 'Votre numéro de téléphone ...', 'class': 'input100'}}) }}
-				<span class="focus-input100"></span>
-				<span class="symbol-input100">
+	</div>
+	<div class="wrap-input100 validate-input">
+		{{ form_row(form.phone, {'label': false,'attr': {'placeholder': 'Votre numéro de téléphone ...', 'class': 'input100'}}) }}
+		<span class="focus-input100"></span>
+		<span class="symbol-input100">
 					<i class="fa fa-user" aria-hidden="true"></i>
 				</span>
-			</div>
-
-			<div class="wrap-input100 validate-input">
-				{{ form_row(form.password, {'label': false,'attr': {'placeholder': 'Mot de passe !', 'class': 'input100'}}) }}
-				<span class="focus-input100"></span>
-				<span class="symbol-input100">
-					<i class="fa fa-lock" aria-hidden="true"></i>
-				</span>
-			</div>
-			<div class="wrap-input100 validate-input">
-				{{ form_row(form.confirmPassword, {'label': false,'attr': {'placeholder': 'Répétez votre mot de passe', 'class': 'input100'}}) }}
-				<span class="focus-input100"></span>
-				<span class="symbol-input100">
-					<i class="fa fa-lock" aria-hidden="true"></i>
-				</span>
-			</div>
-
-			<div class="container-login100-form-btn">
-				<button class="login100-form-btn">
-					S'inscrire
-				</button>
-			</div>
-
-			<div class="wrap-input100 validate-input">
-				<a href="{{ path('login') }}">Se connecter</a>
-			</div>
-			{#			<div class="form-group">#}
-			{#			<input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />#}
-			{#			<label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>#}
-			{#			</div>#}
-			{{ form_end(form) }}
-		</div>
 	</div>
+
+	<div class="wrap-input100 validate-input">
+		{{ form_row(form.password, {'label': false,'attr': {'placeholder': 'Mot de passe !', 'class': 'input100'}}) }}
+		<span class="focus-input100"></span>
+		<span class="symbol-input100">
+					<i class="fa fa-lock" aria-hidden="true"></i>
+				</span>
+	</div>
+	<div class="wrap-input100 validate-input">
+		{{ form_row(form.confirmPassword, {'label': false,'attr': {'placeholder': 'Répétez votre mot de passe', 'class': 'input100'}}) }}
+		<span class="focus-input100"></span>
+		<span class="symbol-input100">
+					<i class="fa fa-lock" aria-hidden="true"></i>
+				</span>
+	</div>
+
+	<div class="container-login100-form-btn">
+		<button class="login100-form-btn">
+			S'inscrire
+		</button>
+	</div>
+
+	<div class="wrap-input100 validate-input">
+		<a href="{{ path('login') }}">Se connecter</a>
+	</div>
+	{#			<div class="form-group">#}
+	{#			<input type="checkbox" name="agree-term" id="agree-term" class="agree-term" />#}
+	{#			<label for="agree-term" class="label-agree-term"><span><span></span></span>I agree all statements in  <a href="#" class="term-service">Terms of service</a></label>#}
+	{#			</div>#}
+	{{ form_end(form) }}
 </div>
 
 </body>

@@ -599,6 +599,18 @@ class FootballerController extends AbstractController
      */
     public function myFriends(Request $request, EntityManagerInterface $manager)
     {
+        $user = $this->getUser()->getUser();
+        if(is_null($user)){
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
+            return $this->redirectToRoute('footballer_edit_profil');
+        }
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $footballer = $footballer_repo->findOneByUser($user);
+        if(is_null($footballer)){
+            $this->addFlash('error', 'Vous devez compléter cette section avant de poursuivre');
+            return $this->redirectToRoute('footballer_editFootballerProfil');
+        }
+
         $friends_list_repo = $manager->getRepository('App:FriendsList');
         $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
         $footballer_repo = $manager->getRepository('App:Footballer');
@@ -918,6 +930,18 @@ class FootballerController extends AbstractController
      */
     public function myPhotos(Request $request, EntityManagerInterface $manager)
     {
+        $user = $this->getUser()->getUser();
+        if(is_null($user)){
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
+            return $this->redirectToRoute('footballer_edit_profil');
+        }
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $footballer = $footballer_repo->findOneByUser($user);
+        if(is_null($footballer)){
+            $this->addFlash('error', 'Vous devez compléter cette section avant de poursuivre');
+            return $this->redirectToRoute('footballer_editFootballerProfil');
+        }
+
         $photos_repo = $manager->getRepository('App:FootballerPhoto');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
@@ -1003,6 +1027,18 @@ class FootballerController extends AbstractController
      */
     public function myVideos(Request $request, EntityManagerInterface $manager)
     {
+        $user = $this->getUser()->getUser();
+        if(is_null($user)){
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
+            return $this->redirectToRoute('footballer_edit_profil');
+        }
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $footballer = $footballer_repo->findOneByUser($user);
+        if(is_null($footballer)){
+            $this->addFlash('error', 'Vous devez compléter cette section avant de poursuivre');
+            return $this->redirectToRoute('footballer_editFootballerProfil');
+        }
+
         $videos_repo = $manager->getRepository('App:FootballerVideo');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();

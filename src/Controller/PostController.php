@@ -7,6 +7,7 @@ use App\Entity\Post;
 use App\Entity\PostComments;
 use App\Entity\PostLikes;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -19,10 +20,47 @@ use Intervention\Image\ImageManagerStatic as Image;
 class PostController extends AbstractController
 {
     /**
+     * @Route("/feed", name="feed")
+     */
+    public function feed(Request $request, EntityManagerInterface $manager, PaginatorInterface $paginator)
+    {
+        $user = $this->getUser()->getUser();
+        if(is_null($user)){
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
+            return $this->redirectToRoute('footballer_edit_profil');
+        }
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $footballer = $footballer_repo->findOneByUser($user);
+        if(is_null($footballer)){
+            $this->addFlash('error', 'Vous devez compléter cette section avant de poursuivre');
+            return $this->redirectToRoute('footballer_editFootballerProfil');
+        }
+        $post_repo = $manager->getRepository('App:Post');
+        $post_comment_repo = $manager->getRepository('App:PostComments');
+        $posts = $post_repo->findBy(array(), array('creationDate' => 'DESC'), 50);
+
+        return $this->render('socialNetwork/post/newsfeed.html.twig',[
+            'posts' => $posts
+        ]);
+    }
+
+    /**
      * @Route("/my-post", name="my_post")
      */
     public function myPost(Request $request, EntityManagerInterface $manager)
     {
+        $user = $this->getUser()->getUser();
+        if(is_null($user)){
+            $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
+            return $this->redirectToRoute('footballer_edit_profil');
+        }
+        $footballer_repo = $manager->getRepository('App:Footballer');
+        $footballer = $footballer_repo->findOneByUser($user);
+        if(is_null($footballer)){
+            $this->addFlash('error', 'Vous devez compléter cette section avant de poursuivre');
+            return $this->redirectToRoute('footballer_editFootballerProfil');
+        }
+
         $post_repo = $manager->getRepository('App:Post');
         $posts = $post_repo->findBy(array('footballer' => $this->getUser()->getUser()->getFootballer()),array('creationDate' => 'DESC'));
         return $this->render('socialNetwork/post/timeline.html.twig',[
@@ -43,11 +81,42 @@ class PostController extends AbstractController
             $post->setFootballer($footballer);
             $post->setText($post_param);
             $post->setCreationDate((new \DateTime('now')));
+            $post->setLiked(0);
 
             $manager->persist($post);
             $manager->flush();
             $this->addFlash('success', 'Votre publication est en ligne !');
-            return $this->redirectToRoute('footballer_post_my_post');
+        }else{
+            $this->addFlash('error', 'Veuillez saisir un contenu avant de publier');
+        }
+        return $this->redirect($request->headers->get('referer'));
+
+    }
+
+    /**
+     * @Route("/edit-post", name="edit_post")
+     */
+    public function editPost(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager)
+    {
+        $post_param = $request->request->get('post');
+        $postid_param = $request->request->get('postid');
+
+        if(!is_null($this->getUser()) && $post_param != '' && $postid_param != ''){
+            $footballer = $this->getUser()->getUser()->getFootballer();
+            $post_manager = $manager->getRepository('App:Post');
+            $post = $post_manager->findOneBy(['id'=> $postid_param, 'footballer' => $footballer]);
+            if(!is_null($post)){
+                $post->setText($post_param);
+                $post->setLastModify((new \DateTime('now')));
+
+                $manager->persist($post);
+                $manager->flush();
+                $this->addFlash('success', 'Votre publication a été modifié !');
+            }else{
+                $this->addFlash('error', 'Une erreur est intervenue lors de la modification');
+            }
+
+            return $this->redirect($request->headers->get('referer'));
         }
 
     }
@@ -107,6 +176,7 @@ class PostController extends AbstractController
                     'path' => $path,
                     'id' => $postComment->getId(),
                     'footballerid' => $footballer->getId(),
+                    'date' => $postComment->getCreationDate()->format('d/m/Y H:i:s'),
                 ]);
                 exit;
             }else{
@@ -185,32 +255,35 @@ class PostController extends AbstractController
 
             $footballer = $this->getUser()->getUser()->getFootballer();
             $post = $post_manager->findOneBy(['id'=> $postId]);
-
             $oldPostLike = $oldPostLikesRepo->findOneBy(['post' => $post, 'footballer' => $footballer]);
 
-            $idOldPostLike = null;
+            $oldLike = null;
             if(!is_null($oldPostLike)){
-                $idOldPostLike = $oldPostLike->getLove();
+                $oldLike = $oldPostLike->getLove();
                 $manager->remove($oldPostLike);
                 $manager->flush();
             }
-
-            if($idOldPostLike != $like){
+            if($oldLike != $like){
                 $postLikes = new PostLikes();
                 $postLikes->setFootballer($footballer);
                 $postLikes->setLove($like);
                 $postLikes->setPost($post);
                 $postLikes->setCreationDate((new \DateTime('now')));
-
+                $post->setLiked($like);
                 $manager->persist($postLikes);
-                $manager->flush();
+            }else{
+                $post->setLiked(0);
             }
 
+            $manager->persist($post);
+            $manager->flush();
+
             $postlikesFinal = $oldPostLikesRepo->findBy(['post' => $post, 'love' => 1]);
-            $postDislikesFinal = $oldPostLikesRepo->findBy(['post' => $post, 'love' => 0]);
+            $postDislikesFinal = $oldPostLikesRepo->findBy(['post' => $post, 'love' => 2]);
             echo json_encode([
                 'numberlike' => count($postlikesFinal),
                 'numberDislike' => count($postDislikesFinal),
+                'liked' => $post->getLiked()
             ]);
             exit;
         }

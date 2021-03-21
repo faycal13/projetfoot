@@ -5,17 +5,19 @@
         <div class="container">
 
             <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
+            <div class="navbar-header" style="display: flex;justify-content: space-between;align-items: center;flex-direction: row-reverse;margin: 0px -65px;">
                 {% if is_granted('ROLE_USER') %}
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
                 {% endif %}
                 {% if is_granted('ROLE_USER') %}
-                <a class="navbar-brand" href="{{ path('footballer_edit_profil') }}"><img class="logo" src="{{ asset('footballer/img/logo.png') }}" alt="logo" /></a>
+                    <a style="color: white;font-weight: bold;display: none" class="phone-menu" href="{{ path("footballer_post_feed") }} " role="button" aria-haspopup="true" aria-expanded="false">Fil d'actualités <span></span></a>
+
+                    <a class="navbar-brand" href="{% if app.user.user is not null and app.user.user.footballer is null %}{{ path('footballer_edit_profil') }}{% else %}{{ path('footballer_post_feed') }}{% endif %}"><img class="logo" src="{{ asset('footballer/img/logo.png') }}" alt="logo" /></a>
                 {% else %}
                     <a class="navbar-brand" href="{{ path('agent_home') }}"><i class="fa fa-arrow-circle-left"></i> Retour</a>
                 {% endif %}
@@ -23,14 +25,15 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             {% if is_granted('ROLE_USER') %}
-                <form action="{{ path('footballer_search_global_footballer') }}" method="POST" id="form-search-footballer" class="navbar-form navbar-right">
-                    <div class="form-group block-search">
-                        <i class="icon ion-android-search"></i>
-                        <input type="text" class="form-control" name="search" id="search-footballer" placeholder="Chercher un footballeur">
-                        <a href="{{ path("footballer_view_profil", {id: 9999999999}) }}" id="link-search-footballer"></a>
-                    </div>
-                </form>
+
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <form action="{{ path('footballer_search_global_footballer') }}" method="POST" id="form-search-footballer" class="navbar-form navbar-right">
+                        <div class="form-group block-search">
+                            <i class="icon ion-android-search"></i>
+                            <input type="text" class="form-control" name="search" id="search-footballer" placeholder="Chercher un footballeur">
+                            <a href="{{ path("footballer_view_profil", {id: 9999999999}) }}" id="link-search-footballer"></a>
+                        </div>
+                    </form>
                     <ul class="nav navbar-nav navbar-right main-menu">
                         <li class="dropdown phone-hide-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Mon profil <span><img src="images/down-arrow.png" alt="" /></span></a>
@@ -40,15 +43,25 @@
                                 <li><a href="{{ path('before_logout') }}">Déconnexion</a></li>
                             </ul>
                         </li>
+                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_post_my_post') }}">Mon mur</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_edit_profil') }}">Mes informations personnelles</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editFootballerProfil')}}">Mon profil de footballeur {% if app.user.user is not null and app.user.user.footballer is null %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</a>
                         </li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editCareer')}}">Ma carrière {% if app.user.user is not null and app.user.user.footballer is not null and app.user.user.footballer.footballerCarrers is not empty %}{% else %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</a></li>
+                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
+                        <li style="display: none" class="phone-menu"><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
+                        <li style="display: none" class="phone-menu"><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editPassword') }}">Paramètres</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('before_logout') }}">Déconnexion</a></li>
 
                     </ul>
+                    <ul class="nav navbar-nav navbar-right main-menu">
+                        <li class="">
+                            <a style="color: white;font-weight: bold;" href="{{ path("footballer_post_feed") }} " role="button" aria-haspopup="true" aria-expanded="false">Fil d'actualités <span></span></a>
+                        </li>
+                    </ul>
                 </div><!-- /.navbar-collapse -->
+
             {% endif %}
         </div><!-- /.container -->
     </nav>

@@ -115,7 +115,7 @@ class SecurityController extends AbstractController
                 $manager->persist($account);
                 $manager->flush();
                 $footballer = $footballer_repo->findOneByUser($user);
-                $response = $this->redirectToRoute('footballer_edit_profil');
+                $response = $this->redirectToRoute('footballer_post_feed');
                 if(!is_null($footballer)){
 
                     $friends = $friends_list_repo->findBy(array('footballer' => $footballer, 'accept' => 1));
@@ -160,6 +160,8 @@ class SecurityController extends AbstractController
                         $update = new Update('http://skillfoot.fr/users/online/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
                         $publisher($update);
                     }
+                }else{
+                    $response = $this->redirectToRoute('footballer_edit_profil');
                 }
 
                 return $response;

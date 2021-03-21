@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset("socialNetwork/css/ionicons.min.css") }}" />
     <link rel="stylesheet" href= "{{ asset("socialNetwork/css/font-awesome.min.css") }}"/>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     {% block css %}{% endblock %}
 
     <!--Google Font-->
@@ -60,6 +61,8 @@
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBthDcw86Rl-KjMtT47sKZO3ocUeyw03o8&callback=initAutocomplete&libraries=places"
         defer
 ></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="{{ asset('js/translate/summernote.js') }}"></script>
 <script>
     $(function (){
         //PHOTO DE PROFIL
@@ -344,7 +347,15 @@
             $('.video-link').css({'color': 'red', 'font-weight': 'bold' });
         }
 
+        ;
+
     })
+</script>
+<script>
+    var url_post_img = '{{ path('footballer_post_add_post_img') }}';
+    var url_add_comment = '{{ path('footballer_post_add_comment') }}';
+    var url_remove_comment = '{{ path('footballer_post_remove_comment') }}';
+    var url_post_like = '{{ path('footballer_post_like') }}'
 </script>
 {% block javascripts %}{% endblock %}
 </body>

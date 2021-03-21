@@ -4,83 +4,76 @@
 	<title>Skillfoot - Se connecter</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="icon" type="image/png" href="{{ asset('security/images/icons/favicon.png') }}"/>
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/vendor/bootstrap/css/bootstrap.min.css') }}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/vendor/animate/animate.css') }}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/vendor/css-hamburgers/hamburgers.min.css') }}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/vendor/select2/select2.min.css') }}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/css/util.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/css/main.css') }}">
-<!--===============================================================================================-->
+	<!--===============================================================================================-->
 </head>
 <body>
 
-	<div class="limiter">
-		<div class="container-login100">
-			<div class="wrap-login100">
-				<div class="login100-pic js-tilt" data-tilt>
-					<img src="{{ asset('security/images/footballer-agent.png') }}" alt="IMG">
-				</div>
-
-				<form method="post" action="{{ path('login') }}" class="login100-form validate-form">
+<div class="limiter">
+	<img src="{{ asset('security/images/footballer-agent.png') }}" alt="IMG">
+	<form method="post" action="{{ path('login') }}" class="login100-form validate-form">
 					<span class="login100-form-title">
 						Se connecter
 					</span>
-					{% if error is defined and error is not null %}
-						<div class="alert alert-danger" role="alert">
-							Votre identifiant ou mot de passe est incorrect.
-						</div>
-					{% endif %}
-					{% if success_password is defined %}
-						<div class="alert alert-success" role="alert">
-							{{ success_password }}
-						</div>
-					{% endif %}
-					<div class="wrap-input100 validate-input">
-						<input class="input100" type="text" name="_username" placeholder="Email" required>
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+		{% if error is defined and error is not null %}
+			<div class="alert alert-danger" role="alert">
+				Votre identifiant ou mot de passe est incorrect.
+			</div>
+		{% endif %}
+		{% if success_password is defined %}
+			<div class="alert alert-success" role="alert">
+				{{ success_password }}
+			</div>
+		{% endif %}
+		<div class="wrap-input100 validate-input">
+			<input class="input100" type="text" name="_username" placeholder="Email" required>
+			<span class="focus-input100"></span>
+			<span class="symbol-input100">
 							<i class="fa fa-envelope" aria-hidden="true"></i>
 						</span>
-					</div>
+		</div>
 
-					<div class="wrap-input100 validate-input">
-						<input class="input100" type="password" name="_password" placeholder="Mot de passe" required>
-						<span class="focus-input100"></span>
-						<span class="symbol-input100">
+		<div class="wrap-input100 validate-input">
+			<input class="input100" type="password" name="_password" placeholder="Mot de passe" required>
+			<span class="focus-input100"></span>
+			<span class="symbol-input100">
 							<i class="fa fa-lock" aria-hidden="true"></i>
 						</span>
-					</div>
-
-					<div class="container-login100-form-btn">
-						<button class="login100-form-btn">
-							Se connecter
-						</button>
-					</div>
-
-					<div class="text-center p-t-12">
-						<a class="txt2" href="{{ path('forgot_password') }}">
-							Mot de passe oublié ?
-						</a>
-					</div>
-
-					<div class="text-center p-t-136">
-						<a class="txt2" href="{{ path('pre_signup') }}">
-							Créer un compte de footballeur ou de recruteur ?
-						</a>
-					</div>
-				</form>
-			</div>
 		</div>
-	</div>
+
+		<div class="container-login100-form-btn">
+			<button class="login100-form-btn">
+				Se connecter
+			</button>
+		</div>
+
+		<div class="text-center p-t-12">
+			<a class="txt2" href="{{ path('forgot_password') }}">
+				Mot de passe oublié ?
+			</a>
+		</div>
+
+		<div class="text-center">
+			<a class="txt2" href="{{ path('pre_signup') }}">
+				Créer un compte de footballeur ou de recruteur ?
+			</a>
+		</div>
+	</form>
+</div>
 
 </body>
 </html>

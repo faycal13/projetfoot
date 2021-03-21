@@ -10,6 +10,7 @@
                 {{ form_start(form, {'attr': {'action': path('footballer_form_user_submission' )} }) }}
                 <div class="row">
                     <h4 class="grey"><i class="icon ion-android-checkmark-circle"></i>Informations personnelles</h4>
+                    <p><i class="fa fa-bell" style="color: #c30000"></i> Veuillez remplir les informations suivantes pour poursuivre</p>
                     {% for message in app.flashes('success') %}
                         <div class="alert alert-success">
                             {{ message }}
@@ -21,26 +22,21 @@
                         </div>
                     {% endfor %}
 
-                    <label>Nom</label>
                     {{ form_row(form.name, {'label': false,'attr': {'placeholder': 'Nom', 'class': ''}}) }}
 
-                    <label>Prénom</label>
                     {{ form_row(form.firstName, {'label': false,'attr': {'placeholder': 'Prénom', 'class': ''}}) }}
 
-                    <label>Date de naissance</label>
+                    <label for="">Date de naissance</label>
                     {{ form_row(form.dateOfBirth, {'label': false,'attr': {'placeholder': 'Date de naissance', 'class': ''}}) }}
 
-                    <label>Téléphone</label>
                     {{ form_row(form.account, {'label': false,'attr': {'placeholder': 'Téléphone', 'class': ''}}) }}
 
-                    <label>Code postal et Ville</label>
-                    {{ form_row(form.city, {'label': false, 'id': 'autocomplete2', 'attr': {'placeholder': 'Ville', 'class': ''}}) }}
+                    {{ form_row(form.city, {'label': false, 'id': 'autocomplete2', 'attr': {'placeholder': 'Code postal et ville', 'class': ''}}) }}
 
                     {{ form_row(form.longitude, {'label': false, 'id': 'user_longitude2'}) }}
 
                     {{ form_row(form.latitude, {'label': false, 'id': 'user_latitude2'}) }}
 
-                    <label>Sexe</label>
                     {{ form_row(form.sexe, {'label': false,'attr': {'placeholder': 'Sexe', 'class': ''}}) }}
 
                     <button class="btn btn-primary">Enregistrer</button>

@@ -160,7 +160,11 @@ class FootballerViewController extends AbstractController
      */
     public function myPost(Footballer $footballer, Request $request, EntityManagerInterface $manager)
     {
+        if(!$this->checkBlocked($manager, $footballer)){
+            return $this->redirectToRoute('footballer_profil');
+        }
         $post_repo = $manager->getRepository('App:Post');
+        $footballer->setNumberFriends($this->getNumberFriends($manager, $footballer));
         $posts = $post_repo->findBy(array('footballer' => $footballer),array('creationDate' => 'DESC'));
         return $this->render('socialNetwork/view/timeline.html.twig',[
             'posts' => $posts,

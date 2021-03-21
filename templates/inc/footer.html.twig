@@ -8,7 +8,7 @@
                     <div class="col-xl-3 col-lg-2 col-md-4 col-sm-6">
                         <div class="single-footer-caption mb-50">
                             <div class="footer-tittle">
-                                <h4>COMPANY</h4>
+                                <h4>Skillfoot</h4>
                                 <ul>
                                     <li><a href="#">Qui sommes-nous ?</a></li>
                                     <li><a href="#">Mentions légales</a></li>
@@ -22,8 +22,8 @@
                             <div class="footer-tittle">
                                 <h4>Lien utiles</h4>
                                 <ul>
-                                    <li><a href="#">S'inscrire en tant qu'agent</a></li>
-                                    <li><a href="#">S'inscrire en tant que footballeur</a></li>
+                                    <li><a href="{{ path('signup', {who:'agent'}) }}">S'inscrire en tant qu'agent</a></li>
+                                    <li><a href="{{ path('signup', {who:'footballer'}) }}">S'inscrire en tant que footballeur</a></li>
                                 </ul>
                             </div>
                         </div>
@@ -32,11 +32,11 @@
                         <div class="single-footer-caption mb-50">
                             <!-- logo -->
                             <div class="footer-logo">
-                                <a href="index.html"><img src="{{ asset('img/logo/logo2_footer.png') }}" alt=""></a>
+                                <a href="index.html"><img src="{{ asset('img/logo/logo.png') }}" alt=""></a>
                             </div>
                             <div class="footer-tittle">
                                 <div class="footer-pera">
-                                    <p class="info1">GThe trade war currently ensuing between te US anfd several natxions around thdhe globe, most fiercely with.</p>
+                                    <p class="info1">Skillfoot est né de la volonté de proposer une solution utile, efficace et pensée pour tout les acteurs du foot.</p>
                                 </div>
                             </div>
                             <!-- Footer Social -->
@@ -54,7 +54,7 @@
                     <div class="col-lg-12">
                         <div class="footer-copy-right text-center">
                             <p>
-                                Copyright &copy;<script>document.write(new Date().getFullYear());</script> Tous droits réservés</p>
+                                Skillfoot SAS &copy;<script>document.write(new Date().getFullYear());</script> tout droits réservés.</p>
                         </div>
                     </div>
                 </div>

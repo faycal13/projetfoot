@@ -1,6 +1,5 @@
 {% extends 'socialNetwork/base.html.twig' %}
 {% block css %}
-  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 {% endblock %}
 {% block body %}
 <div class="container">
@@ -12,236 +11,65 @@
     <div id="page-contents">
       <div class="row">
         <div class="col-md-3">
-
-          <!--Edit Profile Menu-->
           {% include('socialNetwork/inc/view/menu-profil.html.twig') %}
         </div>
         <div class="col-md-7">
-
           <!-- Post Create Box
           ================================================= -->
-          {% for post in posts %}
-            <div class="post-content">
-              <div class="post-container">
-                {% if app.session.get('footballer_profil_photo') is not null %}
-                  <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="profile-photo-md pull-left" />
-                {% else %}
-                  <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-md pull-left" />
-                {% endif %}
-                <div class="post-detail">
-                  <div class="user-info">
-                    <h5><a class="" style="text-decoration: none">{{ post.footballer.user.firstName }} {{ post.footballer.user.name }}</a></h5>
-                    <p class="text-muted">{{ post.creationDate | date('d/m/Y H:i:s') }}</p>
-                    {% if post.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#supp-modal-{{ post.id }}" style="color:red; cursor: pointer">Supprimer la publication</i>{% endif %}
-                  </div>
-                  {% set postLike = 0 %}
-                  {% set postDislike = 0 %}
-                  {% for like in post.postLikes %}
-                    {% if like.love == 1 %}
-                      {% set postLike = postLike + 1 %}
-                    {% else %}
-                      {% set postDislike = postDislike + 1 %}
-                    {% endif %}
-                  {% endfor %}
-                  <div class="reaction" data-post="{{ post.id }}">
-                    <a class="btn text-green like" data-nb="{{ postLike }}"><i class="icon ion-thumbsup"></i> {{ postLike }}</a>
-                    <a class="btn text-red dislike" data-nb="{{ postDislike }}"><i class="fa fa-thumbs-down"></i> {{ postDislike }}</a>
-                  </div>
-                  <div class="line-divider"></div>
-                  <div class="post-text">
-                    <p>{{ post.text | raw}}</p>
-                  </div>
-                  <div class="line-divider"></div>
-                  <div class="all-comment-{{ post.id }}">
-                    {% for comment in post.postComments.values %}
-                      <div class="post-comment">
-                        {% if comment.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-comment" data-comment="{{ comment.id }}" style="color:red; cursor: pointer"></i>{% endif %}
-                        {% if comment.footballer.user.profilPhoto is not null %}
-                          <img src="{{ asset(footballer_photo_profil_directory~'/'~comment.footballer.user.id~'/'~comment.footballer.user.profilPhoto) }}" alt="" class="profile-photo-sm" />
-                        {% else %}
-                          <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-sm" />
-                        {% endif %}
-                        <p><a {% if comment.footballer.user.id != app.user.user.id %}href="{{ path('footballer_view_my_post',{'id': comment.footballer.id}) }}" class="profile-link"{% else %}class="profile-link a-none"{% endif %}>{{ comment.footballer.user.firstName }} {{ comment.footballer.user.name }} </a>{{ comment.comment }}</p>
-                      </div>
-                    {% endfor %}
-                  </div>
-
-                  <div class="post-comment">
-                    {% if app.session.get('footballer_profil_photo') is not null %}
-                      <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="profile-photo-sm" />
-                    {% else %}
-                      <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-sm" />
-                    {% endif %}
-                    <input type="text" class="form-control input-post-comment" data-post="{{ post.id }}" placeholder="Poster un commentaire">
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal fade" id="supp-modal-{{ post.id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Supprimer la publication</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="modal-body">
-                      Attention, la suppression est irréversible !
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn" data-dismiss="modal">Annuler</button>
-                    <a type="button" href="{{ path('footballer_post_remove_post',{'id':post.id}) }}" class="btn btn-primary">Supprimer</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          {% endfor %}
-
+          {% include 'socialNetwork/inc/post/post.html.twig' %}
         </div>
       </div>
     </div>
   </div>
+  <div class="modal fade" id="send-message" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Envoyer un message <i class="close fa fa-times" data-dismiss="modal" aria-label="Close"></i></h5>
 
+        </div>
+        <div class="modal-body">
+          <form action="{{ path('social_network_send_message',{id:footballer.id}) }}" method="post" style="display: flex;flex-direction: column;">
+            <input type="text" name="message" required placeholder="Saisir un message">
+            <button class="btn btn-primary" style="border-radius: 5px;width: 250px;margin-top: 10px;">Envoyer le message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="blocked" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Bloquer {{ footballer.user.name }} {{ footballer.user.firstName }} <i class="close fa fa-times" data-dismiss="modal" aria-label="Close"></i></h5>
+        </div>
+        <div class="modal-body">
+          Êtes-vous sur de vouloir bloquer {{ footballer.user.name }} {{ footballer.user.firstName }} ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn" data-dismiss="modal">Annuler</button>
+          <a type="button" href="{{ path('footballer_blocked_friend',{'id':footballer.id}) }}" class="btn btn-primary">Bloquer</a>
+        </div>
+      </div>
+    </div>
+  </div>
   {% endblock %}
   {% block javascripts %}
-    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-    <script src="{{ asset('js/translate/summernote.js') }}"></script>
+    <script src="{{ asset('socialNetwork/js/post.js') }}"></script>
     <script>
-      $(function (){
-        $('#summernote').summernote({
-          codeviewFilter: false,
-          codeviewIframeFilter: true,
-          lang: 'fr-FR',
-          disableResizeImage: true,
-          placeholder: 'Alors champion, quoi de neuf ?',
-          toolbar: [
-            ['style', ['bold', 'italic']],
-            ['insert', ['picture']]
-          ],
-          callbacks: {
-            onImageUpload: function(files) {
-              sendFile(files[0]);
-            }
-          },
-          popover: {
-            image: [],
-            link: [],
-            air: []
+
+      $.ajax({
+        url : "{{ path('footballer_check_friend',{id:footballer.id}) }}",
+        type : 'POST',
+        success : function (serverResponse) {
+          if(serverResponse.result == 0){
+            $('.add-footballer').show();
           }
-        });
-        function sendFile(file) {
-          data = new FormData();
-          data.append("file", file);
-          $('#loading').css('display','inline-block');
-          $.ajax({
-            data: data,
-            type: "POST",
-            url: "{{ path('footballer_post_add_post_img') }}",
-            cache: false,
-            contentType: false,
-            processData: false,
-            success: function(url) {
-              var image = $('<img>').attr('src', url);
-              $('#summernote').summernote("insertNode", image[0]);
-              $('#loading').hide();
-            }
-          });
+          if(serverResponse.result == 1){
+            $('.add-footballer').show();
+            $('.add-footballer i').css('color','green');
+          }
         }
-
-        $('.input-post-comment').on('keypress',function(e) {
-          var input_post_comment = $(this);
-          var comment = $(this).val();
-          var post = $(this).attr('data-post');
-          if(e.which == 13) {
-            if(comment.length > 0){
-              $.ajax({
-                url : "{{ path('footballer_post_add_comment') }}",
-                type : "POST",
-                data: {
-                  "comment":comment,
-                  "post_id": post
-                },
-                success : function (serverResponse){
-                  var response = JSON.parse(serverResponse);
-                  if(response.result == true){
-                    $('.all-comment-'+post).append('<div class="post-comment">' +
-                            '<i class="fa fa-close remove-comment" data-comment="'+response.id+'" style="color:red; cursor: pointer"></i>' +
-                            '<img src="'+response.path+'" alt="" class="profile-photo-sm">' +
-                            '<p><a class="profile-link a-none">'+response.name+' </a>'+comment+'</p>'+
-                            '</div>');
-                    input_post_comment.val('');
-                  }
-                },
-                error : function (){
-                  alert('Une erreur est survenue')
-                }
-              })
-            }else{
-              alert('Veuillez renseigner le commentaire')
-            }
-
-          }
-        });
-
-        $('body').on('click', '.remove-comment', function(e) {
-          var comment = $(this);
-          var comment_id = $(this).attr('data-comment');
-          $.ajax({
-            url : "{{ path('footballer_post_remove_comment') }}",
-            type : "POST",
-            data: {
-              "comment_id":comment_id
-            },
-            success : function (serverResponse){
-              var response = JSON.parse(serverResponse);
-              if(response.result == true){
-                comment.parent().remove();
-              }
-            },
-            error : function (){
-              alert('Une erreur est survenue')
-            }
-          })
-        });
-
-        $('body').on('click','.reaction a',function (){
-          var parent = $(this).parent('.reaction');
-          var postid = parent.attr('data-post');
-          var reactionlink = $(this);
-          var like = null;
-          if($(this).hasClass('like')){
-            like = 1;
-          }else if($(this).hasClass('dislike')){
-            like = 0;
-          }
-          $.ajax({
-            url : "{{ path('footballer_post_like') }}",
-            type : "POST",
-            data: {
-              "like":like,
-              "post_id": postid
-            },
-            success : function (serverResponse){
-              var response = JSON.parse(serverResponse);
-              parent.html('' +
-                      '<a class="btn text-green like" data-nb="'+response.numberlike+'"><i class="icon ion-thumbsup"></i> '+response.numberlike+'</a>'+
-                      '<a class="btn text-red dislike" data-nb="'+response.numberDislike+'"><i class="fa fa-thumbs-down"></i> '+response.numberDislike+'</a>'
-              );
-            },
-            error : function (){
-              alert('Une erreur est survenue')
-            }
-          })
-        });
-
-        $('#publish').click(function (e){
-          e.preventDefault();
-          $('input[name=post]').html($('input[name=post]').text().replace(/\n\r?/g, '<br />'));
-          $('#post-form').submit();
-        })
       })
     </script>
   {% endblock %}

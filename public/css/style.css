@@ -2250,7 +2250,7 @@ hr {
     }
 }
 .slider-area .hero__caption span {
-    font-size: 24px;
+    font-size: 18px;
     font-family: "Teko", sans-serif;
     font-weight: 300;
     margin-bottom: 35px;
@@ -3393,7 +3393,6 @@ hr {
 .footer-area .footer-top .single-footer-caption .footer-tittle ul li {
     color: #c4c4c4;
     margin-bottom: 15px;
-    text-transform: capitalize;
 }
 .footer-area .footer-top .single-footer-caption .footer-tittle ul li a {
     color: #c4c4c4;

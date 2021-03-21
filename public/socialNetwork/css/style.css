@@ -81,11 +81,11 @@ h1.grey, h2.grey, h3.grey, h4.grey, h5.grey, h6.grey{
 
 .text-white:hover{color: #fff;}
 
-.text-green{color: #212529;}
+.text-green{color: #32e718 !important;}
 
 .text-green:hover{color: #39b54a;}
 
-.text-red{color: #ef4136;}
+.text-red{color: #ef4136 !important;}
 
 .text-red:hover{color: #d6100b;}
 
@@ -317,6 +317,12 @@ input#user_photo_photoProfil {
 input#cover_photo_coverPhoto {
     display: none;
 }
+
+.dis-none{
+    display: none;
+}
+
+
 
 .profile-info form{
     height: 0;
@@ -1117,11 +1123,9 @@ textarea{
 }
 
 .profile-card img.profile-photo{
-    border: 7px solid #fff;
     float: left;
     margin-right: 20px;
     position: relative;
-    top: -30px;
     height: 70px;
     width: 70px;
     border-radius: 50%;
@@ -1342,6 +1346,10 @@ ul.online-users li span.online-dot{
     position: absolute;
     right: 0;
     top: 0;
+}
+
+.post-content .post-container .post-detail .reaction a{
+    color: #2f2e2e;
 }
 
 .post-content .post-container .post-detail .post-comment{
@@ -2957,9 +2965,23 @@ ul[id^=ui-id-]{
     top: 35%;
 }
 
+.post-comment{
+    position: relative;
+}
+
+.comment-date{
+    position: absolute;
+    top: -15px;
+    right: 15px;
+    font-size: 10px;
+}
+
 @media (max-width: 767px) {
+    .dis-none-mobile{
+        display: none;
+    }
     header .logo{
-        width: 50px;
+        width: 30px;
     }
     #form-search-footballer{
         width: 300px;

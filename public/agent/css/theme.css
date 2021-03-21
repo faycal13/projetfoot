@@ -1417,6 +1417,7 @@ section {
 
 .account-item .image > img {
     width: 100%;
+    height: auto !important;
 }
 
 .account-item > .content {
