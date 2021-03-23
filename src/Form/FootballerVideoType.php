@@ -20,7 +20,7 @@ class FootballerVideoType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '10000k',
+                        'maxSize' => '100000k',
                         'mimeTypes' => [
                             'video/mp4'
                         ],

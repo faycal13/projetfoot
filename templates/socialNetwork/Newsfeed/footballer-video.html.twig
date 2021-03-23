@@ -87,7 +87,7 @@
                     <div class="media-grid">
                       <div>
                         {% if video.internalLink is not null %}
-                        <video controls width="320" height="200">
+                        <video controls controlsList="nodownload" width="320" height="200">
                           <source src="{{ asset(footballer_video_directory~'/'~app.user.id~'/'~video.internalLink) }}" type="video/mp4">
                         </video>
                           {% else %}
@@ -156,8 +156,8 @@
     $(function(){
       var uploadField = document.getElementById("file");
       uploadField.onchange = function() {
-        if(this.files[0].size > 20000000){
-          alert("La taille du fichier ne doit pas dépasser les 20 Mo.");
+        if(this.files[0].size > 100000000){
+          alert("La taille du fichier ne doit pas dépasser les 100 Mo.");
           this.value = "";
         };
       };
