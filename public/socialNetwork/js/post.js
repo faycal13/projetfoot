@@ -11,7 +11,7 @@ $(function (){
         ],
         callbacks: {
             onImageUpload: function(files) {
-                sendFile(files[0]);
+                sendFile(files[0], $(this));
             }
         },
         popover: {
@@ -20,7 +20,7 @@ $(function (){
             air: []
         }
     });
-    function sendFile(file) {
+    function sendFile(file, summernote) {
         data = new FormData();
         data.append("file", file);
         $('#loading').css('display','inline-block');
@@ -32,8 +32,21 @@ $(function (){
             contentType: false,
             processData: false,
             success: function(url) {
-                var image = $('<img>').attr('src', url);
-                $('.summernote').summernote("insertNode", image[0]);
+                var radom = Math.floor(Math.random() * 99999999) + 9999;
+                var image = $('<img style="cursor: pointer" data-toggle="modal" data-target="#img'+radom+'">').attr('src', url);
+                var modalImage = $('<div class="modal fade" id="img'+radom+'" role="dialog" aria-hidden="true">\n' +
+                    '                        <div class="modal-dialog modal-lg">\n' +
+                    '                          <div class="modal-content">\n' +
+                    '                            <div class="post-content">\n' +
+                    '                              <div class="post-container">\n' +
+                    '                                <img src="'+url+'" alt="post-image" class="img-responsive post-image" />\n' +
+                    '                              </div>\n' +
+                    '                            </div>\n' +
+                    '                          </div>\n' +
+                    '                        </div>\n' +
+                    '                      </div>');
+                summernote.summernote("insertNode", image[0]);
+                summernote.summernote("insertNode", modalImage[0]);
                 $('#loading').hide();
             }
         });
@@ -58,7 +71,7 @@ $(function (){
                             $('.all-comment-'+post).prepend('<div class="post-comment">' +
                                 '<i class="fa fa-close remove-comment" data-comment="'+response.id+'" style="color:red; cursor: pointer"></i>' +
                                 '<img src="'+response.path+'" alt="" class="profile-photo-sm">' +
-                                '<p><a class="profile-link a-none">'+response.name+' </a>'+comment+'</p>'+
+                                '<a class="profile-link a-none">'+response.name+' </a><p>'+comment+'</p>'+
                                 '<span class="comment-date">'+response.date+'</span>'+
                                 '</div>');
                             input_post_comment.val('');
@@ -99,8 +112,8 @@ $(function (){
 
     $('#publish').click(function (e){
         e.preventDefault();
-        if($('input[name=post]').length > 0){
-            $('input[name=post]').html($('input[name=post]').text().replace(/\n\r?/g, '<br />'));
+        if($('textarea[name=post]').length > 0){
+            $('textarea[name=post]').html($('textarea[name=post]').text().replace(/\n\r?/g, '<br />'));
             $('#post-form').submit();
         }else{
             alert('Veuillez saisir un contenu avant de publier');
@@ -147,4 +160,10 @@ $(function (){
             }
         })
     });
+
+    $('.post-text').each(function (){
+        if($(this).find('img').length == 0){
+            $(this).css('overflow-y','scroll');
+        }
+    })
 })

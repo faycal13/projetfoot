@@ -140,8 +140,8 @@ class SecurityController extends AbstractController
                         $friend_tab['photo'] = $path;
                         $friend_tab['id'] = $friend->getFootballer()->getUser()->getAccount()->getId();
 
-                        $update = new Update('http://skillfoot.fr/users/online/'.$friend->getFriend()->getId(), json_encode($friend_tab));
-                        $publisher($update);
+//                        $update = new Update('https://skillfoot.fr/users/online/'.$friend->getFriend()->getId(), json_encode($friend_tab));
+//                        $publisher($update);
                     }
 
                     //Mise en ligne du compte et affichage pour ceux qui l'ont comme ami
@@ -157,8 +157,8 @@ class SecurityController extends AbstractController
                         $friend_tab['nom-prenom'] = $friend_2->getFriend()->getUser()->getName().' '.$friend_2->getFriend()->getUser()->getFirstName();
                         $friend_tab['photo'] = $path;
                         $friend_tab['id'] = $friend_2->getFriend()->getUser()->getAccount()->getId();
-                        $update = new Update('http://skillfoot.fr/users/online/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
-                        $publisher($update);
+//                        $update = new Update('https://skillfoot.fr/users/online/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
+//                        $publisher($update);
                     }
                 }else{
                     $response = $this->redirectToRoute('footballer_edit_profil');
@@ -194,15 +194,15 @@ class SecurityController extends AbstractController
         //Mise en ligne du compte et affichage pour les ami qui possède
         foreach ($friends as $friend) {
             $friend_tab['id'] = $friend->getFootballer()->getUser()->getAccount()->getId();
-            $update = new Update('http://skillfoot.fr/users/logout/'.$friend->getFriend()->getId(), json_encode($friend_tab));
-            $publisher($update);
+//            $update = new Update('https://skillfoot.fr/users/logout/'.$friend->getFriend()->getId(), json_encode($friend_tab));
+//            $publisher($update);
         }
 
         //Mise en ligne du compte et affichage pour ceux qui l'ont comme ami
         foreach ($friends_2 as $friend_2) {
             $friend_tab['id'] = $friend_2->getFriend()->getUser()->getAccount()->getId();
-            $update = new Update('http://skillfoot.fr/users/logout/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
-            $publisher($update);
+//            $update = new Update('https://skillfoot.fr/users/logout/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
+//            $publisher($update);
         }
 
         return $this->redirectToRoute('logout');

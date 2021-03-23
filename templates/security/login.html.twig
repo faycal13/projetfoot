@@ -19,10 +19,11 @@
 	<!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/css/util.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('security/css/main.css') }}">
+	<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 	<!--===============================================================================================-->
 </head>
 <body>
-
+{% include 'inc/header.html.twig' %}
 <div class="limiter">
 	<img src="{{ asset('security/images/footballer-agent.png') }}" alt="IMG">
 	<form method="post" action="{{ path('login') }}" class="login100-form validate-form">

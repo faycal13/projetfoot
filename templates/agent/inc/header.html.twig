@@ -5,7 +5,7 @@
             {% if is_granted('ROLE_AGENT') %}
                 <div class="header__logo">
                     <a href="{{ path('agent_home') }}">
-                        <img src="{{ asset('agent/images/icon/logo-white.png') }}" alt="Logo skillfoot" />
+                        <img src="{{ asset('footballer/img/logo.png') }}" alt="Logo skillfoot" />
                     </a>
                 </div>
                 <div class="header__navbar">
@@ -26,7 +26,7 @@
 
                 <div class="header__logo">
                     <a href="#">
-                        <img src="{{ asset('agent/images/icon/logo-white.png') }}" alt="Logo skillfoot" />
+                        <img src="{{ asset('footballer/img/logo.png') }}" alt="Logo skillfoot" />
                     </a>
                 </div>
                 <div class="header__navbar">
@@ -155,11 +155,11 @@
             <div class="header-mobile-inner">
                 {% if is_granted('ROLE_AGENT') %}
                     <a class="logo" href="{{ path('agent_home') }}">
-                        <img src="{{ asset('agent/images/icon/logo-white.png') }}" alt="Logo skillfoot" />
+                        <img src="{{ asset('footballer/img/logo.png') }}" alt="Logo skillfoot" />
                     </a>
                 {% else %}
                     <a class="logo" href="{{ path('admin_home') }}">
-                        <img src="{{ asset('agent/images/icon/logo-white.png') }}" alt="Logo skillfoot" />
+                        <img src="{{ asset('footballer/img/logo.png') }}" alt="Logo skillfoot" />
                     </a>
                 {% endif %}
                 <div class="header-button-item ">

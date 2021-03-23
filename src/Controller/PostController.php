@@ -304,14 +304,14 @@ class PostController extends AbstractController
             if(!is_null($user->getProfilPhoto())){
                 $path .= $assetsManager->getUrl('/img/agent/photo/' .$user->getAccount()->getId(). '/'.$user->getProfilPhoto());
             }else{
-                $path .= $assetsManager->getUrl('/img/default/profil-footballer.png');
+                $path .= $assetsManager->getUrl('/img/default/profil-agent.png');
             }
         }else{
             if(!is_null($user->getProfilPhoto())) {
                 $path .= $assetsManager->getUrl('/img/user/photo-profil/' . $user->getAccount()->getId() . '/' . $user->getProfilPhoto());
             }
             else{
-                $path .= $assetsManager->getUrl('/img/default/profil-agent.png');
+                $path .= $assetsManager->getUrl('/img/default/profil-footballer.png');
             }
         }
         return $path;

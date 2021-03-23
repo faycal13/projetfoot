@@ -258,7 +258,7 @@
             //ON INITIALISE L'URL DE MERCURE
             const url = new URL('{{ mercure_publish_url }}');
             //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
-            url.searchParams.append('topic', 'http://skillfoot.fr/users/private-message')
+            url.searchParams.append('topic', 'https://skillfoot.fr/users/private-message')
 
             //ECOUTEUR DE LURL DE MERCURE
             const eventSource = new EventSource(url, { withCredentials: true });
@@ -328,7 +328,7 @@
             //ON INITIALISE L'URL DE MERCURE
             const url2 = new URL('{{ mercure_publish_url }}');
             //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
-            url2.searchParams.append('topic', 'http://skillfoot.fr/users/new-conversation')
+            url2.searchParams.append('topic', 'https://skillfoot.fr/users/new-conversation')
 
             //ECOUTEUR DE LURL DE MERCURE
             const eventSource2 = new EventSource(url2, { withCredentials: true });

@@ -22,8 +22,8 @@ class CookieGenerator
     {
         $token = (new Builder())
             ->withClaim('mercure', ['subscribe' => [
-                'http://skillfoot.fr/users/chat',
-                'http://skillfoot.fr/users']
+                'https://skillfoot.fr/users/chat',
+                'https://skillfoot.fr/users']
             ])
             ->getToken(new Sha256(), new Key($this->secret));
 

@@ -165,7 +165,7 @@ class SocialNetworkController extends AbstractController
                 $final_message['conversation'] = $conversation_id;
                 $path = $this->getProfilPhoto($assetsManager, $user);
                 $final_message['photo'] = $path;
-                $update = new Update('http://skillfoot.fr/users/private-message',
+                $update = new Update('https://skillfoot.fr/users/private-message',
                     json_encode($final_message)
                 );
                 $publisher($update);
@@ -229,7 +229,7 @@ class SocialNetworkController extends AbstractController
                     'date' => $date->format('d/m/Y H:i:s'),
                     'photo' => $this->getProfilPhoto($assetsManager, $user)
                 ];
-                $update = new Update('http://skillfoot.fr/users/new-conversation',
+                $update = new Update('https://skillfoot.fr/users/new-conversation',
                     json_encode($new_conversation)
                 );
                 $publisher($update);
@@ -303,14 +303,14 @@ class SocialNetworkController extends AbstractController
             if(!is_null($user->getProfilPhoto())){
                 $path .= $assetsManager->getUrl('/img/agent/photo/' .$user->getAccount()->getId(). '/'.$user->getProfilPhoto());
             }else{
-                $path .= $assetsManager->getUrl('/img/default/profil-footballer.png');
+                $path .= $assetsManager->getUrl('/img/default/profil-agent.png');
             }
         }else{
             if(!is_null($user->getProfilPhoto())) {
                 $path .= $assetsManager->getUrl('/img/user/photo-profil/' . $user->getAccount()->getId() . '/' . $user->getProfilPhoto());
             }
             else{
-                $path .= $assetsManager->getUrl('/img/default/profil-agent.png');
+                $path .= $assetsManager->getUrl('/img/default/profil-footballer.png');
             }
         }
         return $path;

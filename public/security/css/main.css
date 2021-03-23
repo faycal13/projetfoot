@@ -198,8 +198,12 @@ iframe {
   width: 316px;
 }
 
-img {
+.limiter img {
   width: 500px;
+}
+
+.logo{
+  display: none;
 }
 
 
@@ -386,8 +390,16 @@ img {
   .login100-form {
     width: 100%;
   }
-  img {
+  .limiter img {
     width: 200px;
+  }
+  .header-area .main-header .main-menu ul li a{
+    padding: 8px !important;
+    font-size: 15px !important;
+  }
+
+  .main-menu.f-right.d-none{
+    display: block!important;
   }
 }
 
@@ -482,4 +494,8 @@ img {
 
 span.form-error-icon.badge.badge-danger.text-uppercase {
   display: none;
+}
+
+.header-area .main-header .main-menu ul li a{
+  color: black !important;
 }

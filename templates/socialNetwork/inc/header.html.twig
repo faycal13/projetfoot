@@ -18,8 +18,10 @@
                     <a style="color: white;font-weight: bold;display: none" class="phone-menu" href="{{ path("footballer_post_feed") }} " role="button" aria-haspopup="true" aria-expanded="false">Fil d'actualités <span></span></a>
 
                     <a class="navbar-brand" href="{% if app.user.user is not null and app.user.user.footballer is null %}{{ path('footballer_edit_profil') }}{% else %}{{ path('footballer_post_feed') }}{% endif %}"><img class="logo" src="{{ asset('footballer/img/logo.png') }}" alt="logo" /></a>
-                {% else %}
+                {% elseif is_granted('ROLE_AGENT') %}
                     <a class="navbar-brand" href="{{ path('agent_home') }}"><i class="fa fa-arrow-circle-left"></i> Retour</a>
+                {% else %}
+                    <a class="navbar-brand" href="{{ path('login') }}"><i class="fa fa-arrow-circle-left"></i> Se connecter</a>
                 {% endif %}
             </div>
 
@@ -50,16 +52,20 @@
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editCareer')}}">Ma carrière {% if app.user.user is not null and app.user.user.footballer is not null and app.user.user.footballer.footballerCarrers is not empty %}{% else %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_picture') }}">Mes photos</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_video') }}">Mes vidéos</a></li>
-                        <li style="display: none" class="phone-menu"><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></li>
+                        <li style="display: none" class="phone-menu"><a href="{{ path('social_network_show_conversations') }}">Mes messages {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}<i class="fa fa-comment" style="color: #c30000"></i>{% endif %}{% endif %}</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('footballer_editPassword') }}">Paramètres</a></li>
                         <li style="display: none" class="phone-menu"><a href="{{ path('before_logout') }}">Déconnexion</a></li>
 
                     </ul>
                     <ul class="nav navbar-nav navbar-right main-menu">
-                        <li class="">
+                        <li class="phone-hide-menu">
                             <a style="color: white;font-weight: bold;" href="{{ path("footballer_post_feed") }} " role="button" aria-haspopup="true" aria-expanded="false">Fil d'actualités <span></span></a>
                         </li>
+                        <li class="phone-hide-menu">
+                            <a style="color: white;font-weight: bold;" href="{{ path("social_network_show_conversations") }} " role="button" aria-haspopup="true" aria-expanded="false">Mes messages <span></span></a>
+                        </li>
                     </ul>
+
                 </div><!-- /.navbar-collapse -->
 
             {% endif %}

@@ -41,7 +41,7 @@
                         {{ form_start(form) }}
                             <div class="row flex-column">
                                 <label>Photo de profil</label>
-                                {{ form_row(form.photoProfil, {'label': false,'attr': {'class': 'test'}}) }}
+                                {{ form_row(form.photoProfil, {'label': false,'attr': {'class': 'test', 'accept':'image/*'}}) }}
                                 <button class="btn btn-primary">Enregistrer</button>
                             </div>
                         {{ form_end(form) }}

@@ -22,7 +22,7 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,400i,700,700i" rel="stylesheet">
 
     <!--Favicon-->
-    <link rel="shortcut icon" type="image/png" href="images/fav.png"/>
+    <link rel="shortcut icon" type="image/png" href="{{ asset('img/favicone.ico') }}"/>
 </head>
 <body>
 {% if is_granted('ROLE_USER') %}
@@ -113,7 +113,7 @@
         //ON INITIALISE L'URL DE MERCURE
         const url = new URL('{{ mercure_publish_url }}');
         //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
-        url.searchParams.append('topic', 'http://skillfoot.fr/users/online/{{ app.user.user.footballer.id }}')
+        url.searchParams.append('topic', 'https://skillfoot.fr/users/online/{{ app.user.user.footballer.id }}')
         //ECOUTEUR DE LURL DE MERCURE
         const eventSource = new EventSource(url, { withCredentials: true });
 
@@ -141,7 +141,7 @@
             }
         })
 
-        url.searchParams.append('topic', 'http://skillfoot.fr/users/logout/{{ app.user.user.footballer.id }}')
+        url.searchParams.append('topic', 'https://skillfoot.fr/users/logout/{{ app.user.user.footballer.id }}')
         //ECOUTEUR DE LURL DE MERCURE
         const eventSource2 = new EventSource(url, { withCredentials: true });
 
@@ -169,7 +169,7 @@
             //ON INITIALISE L'URL DE MERCURE
             const url3 = new URL('{{ mercure_publish_url }}');
             //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
-            url3.searchParams.append('topic', 'http://skillfoot.fr/users/private-message')
+            url3.searchParams.append('topic', 'https://skillfoot.fr/users/private-message')
 
             //ECOUTEUR DE LURL DE MERCURE
             const eventSource3 = new EventSource(url3, {withCredentials: true});
@@ -198,7 +198,7 @@
             //ON INITIALISE L'URL DE MERCURE
             const url4 = new URL('{{ mercure_publish_url }}');
             //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
-            url4.searchParams.append('topic', 'http://skillfoot.fr/users/new-conversation')
+            url4.searchParams.append('topic', 'https://skillfoot.fr/users/new-conversation')
 
             //ECOUTEUR DE LURL DE MERCURE
             const eventSource4 = new EventSource(url4, {withCredentials: true});

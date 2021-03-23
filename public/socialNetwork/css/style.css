@@ -1330,6 +1330,9 @@ ul.online-users li span.online-dot{
 
 .post-content .post-container{
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .post-content .post-container .post-detail{
@@ -1340,6 +1343,8 @@ ul.online-users li span.online-dot{
 .post-content .post-container .post-detail .post-text{
     line-height: 24px;
     margin: 0;
+    max-height: 400px;
+    overflow-y: hidden;
 }
 
 .post-content .post-container .post-detail .reaction{
@@ -2877,6 +2882,13 @@ ul[id^=ui-id-]{
     animation: blinker 1s linear infinite;
 }
 
+.note-editable{
+    max-height: 300px;
+}
+.note-editable img{
+    width: 200px;
+}
+
 @keyframes blinker {
     50% { opacity: 0; }
 }
@@ -2969,11 +2981,15 @@ ul[id^=ui-id-]{
     position: relative;
 }
 
+.post-comment p{
+    margin-left: 40px;
+}
+
 .comment-date{
     position: absolute;
-    top: -15px;
-    right: 15px;
-    font-size: 10px;
+    left: 55px;
+    top: 18px;
+    font-size: 9px;
 }
 
 @media (max-width: 767px) {
