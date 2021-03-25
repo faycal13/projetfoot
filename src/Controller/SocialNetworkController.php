@@ -22,6 +22,7 @@ class SocialNetworkController extends AbstractController
      */
     public function showConversation($id, Request $request, EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $participant_conversations_repo = $manager->getRepository('App:ParticipantConversation');
         $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');

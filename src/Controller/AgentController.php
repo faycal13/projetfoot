@@ -21,6 +21,7 @@ class AgentController extends AbstractController
      */
     public function index(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $gardien = $footballer_repo->findBy(['position' => 'Gardien']);
         $defenseur = $footballer_repo->findBy(['position' => 'Defenseur']);
@@ -45,6 +46,7 @@ class AgentController extends AbstractController
      */
     public function recherche(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         if(is_null($this->getUser()->getUser())) {
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles pour poursuivre.');
             return $this->redirectToRoute('agent_setting');
@@ -98,6 +100,7 @@ class AgentController extends AbstractController
      */
     public function setting(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user_repo = $manager->getRepository('App:User');
         $account_repo = $manager->getRepository('App:Account');
         $user = $user_repo->findOneByAccount($this->getUser());
@@ -130,6 +133,7 @@ class AgentController extends AbstractController
      */
     public function settingPhoto(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         if(is_null($this->getUser()->getUser())) {
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles pour poursuivre.');
             return $this->redirectToRoute('agent_setting');
@@ -170,6 +174,7 @@ class AgentController extends AbstractController
      */
     public function motdepasse(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         if(is_null($this->getUser()->getUser())) {
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles pour poursuivre.');
             return $this->redirectToRoute('agent_setting');
@@ -204,6 +209,7 @@ class AgentController extends AbstractController
      */
     public function messages($id, Request $request, EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         if(is_null($this->getUser()->getUser())) {
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles pour poursuivre.');
             return $this->redirectToRoute('agent_setting');
@@ -246,13 +252,6 @@ class AgentController extends AbstractController
             'conversations' => $conversations,
             'id' => $id
         ]);
-    }
-
-    /**
-     * @Route("/agent/google", name="agent_google")
-     */
-    public function google(){
-        return $this->render('agent/google.html.twig');
     }
 
     private function uploadFile($photo, $photo_directory, $width, $photo_compress_directory = null, $width_compressed = 0){

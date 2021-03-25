@@ -24,6 +24,7 @@ class PostController extends AbstractController
      */
     public function feed(Request $request, EntityManagerInterface $manager, PaginatorInterface $paginator)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user = $this->getUser()->getUser();
         if(is_null($user)){
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');

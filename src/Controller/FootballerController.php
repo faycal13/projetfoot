@@ -43,6 +43,7 @@ class FootballerController extends AbstractController
      */
     public function footballerHome()
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         return $this->render('footballer/index.html.twig', [
             'controller_name' => 'FootballerController',
         ]);
@@ -53,6 +54,7 @@ class FootballerController extends AbstractController
      */
     public function formUser(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user = new User();
         $user->setAccount($this->getUser());
         $form = $this->createForm(UserType::Class, $user);
@@ -66,6 +68,7 @@ class FootballerController extends AbstractController
      */
     public function formUserSubmission(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $account_repo = $manager->getRepository('App:Account');
         $user = new User();
         $form = $this->createForm(UserType::Class, $user);
@@ -90,6 +93,7 @@ class FootballerController extends AbstractController
      */
     public function footballerProfilPhoto(EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user = $this->getUser()->getUser();
         $form = $this->createForm(UserPhotoType::Class, $user);
         $form_cover = $this->createForm(CoverPhotoType::Class, $user);
@@ -105,6 +109,7 @@ class FootballerController extends AbstractController
      */
     public function footballerProfilPhotoSubmission(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
@@ -146,6 +151,7 @@ class FootballerController extends AbstractController
      */
     public function footballerCoverPhotoSubmission(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user = $this->getUser()->getUser();
         $form = $this->createForm(CoverPhotoType::Class, $user);
         $form->handleRequest($request);
@@ -179,6 +185,7 @@ class FootballerController extends AbstractController
      */
     public function editProfil(Request $request, EntityManagerInterface $manager, CookieGenerator $cookie)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user_repo = $manager->getRepository('App:User');
         $user = $user_repo->findOneByAccount($this->getUser());
         if(is_null($user)){
@@ -210,6 +217,7 @@ class FootballerController extends AbstractController
      */
     public function editFootballerProfil(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         if(is_null($user)){
@@ -239,6 +247,7 @@ class FootballerController extends AbstractController
      */
     public function editCareer(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_career_repo = $manager->getRepository('App:FootballerCarrer');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
@@ -282,6 +291,7 @@ class FootballerController extends AbstractController
      */
     public function editCareerSubmission(FootballerCarrer $footballer_career, Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
@@ -303,6 +313,7 @@ class FootballerController extends AbstractController
      */
     public function editCareerDelete(FootballerCarrer $footballer_career, Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
@@ -324,6 +335,7 @@ class FootballerController extends AbstractController
      */
     public function changePassword(Request $request, EntityManagerInterface $manager, UserPasswordEncoderInterface $encoder)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $params = $request->request->all();
         if(isset($params['button-password'])){
             $account_repo = $manager->getRepository('App:Account');
@@ -350,35 +362,13 @@ class FootballerController extends AbstractController
         return $this->render('socialNetwork/profil/edit-profile-password.html.twig');
     }
 
-    /**
-     * @Route("/about-profil", name="aboutProfil")
-     */
-    public function aboutProfil()
-    {
-        return $this->render('socialNetwork/profil/timeline-about.html.twig');
-    }
-
-    /**
-     * @Route("/newsfeed", name="newsfeed")
-     */
-    public function newsfeed()
-    {
-        return $this->render('socialNetwork/newsfeed/newsfeed.html.twig');
-    }
-
-    /**
-     * @Route("/message", name="message")
-     */
-    public function mymessage()
-    {
-        return $this->render('socialNetwork/newsfeed/newsfeed-messages.html.twig');
-    }
 
     /**
      * @Route("/chatroom", name="chatroom")
      */
     public function chatroom(Request $request, EntityManagerInterface $manager, PublisherInterface $publisher, \Symfony\Component\Asset\Packages $assetsManager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $chatroom_repo = $manager->getRepository('App:ChatroomList');
         $user = $this->getUser()->getUser();
@@ -426,6 +416,7 @@ class FootballerController extends AbstractController
      */
     public function mymessagechatroom(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $chatroom_repo = $manager->getRepository('App:ChatroomMessage');
         $chatroom_list_repo = $manager->getRepository('App:ChatroomList');
         $footballer_repo = $manager->getRepository('App:Footballer');
@@ -502,7 +493,8 @@ class FootballerController extends AbstractController
      * @Route("/chatroom-message-add", name="chatroom_message_add", methods={"POST"})
      */
     public function chatroomMessageAdd(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager, PublisherInterface $publisher){
-        $user = $this->getUser()->getUser();
+
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');   $user = $this->getUser()->getUser();
         $footballer_repo = $manager->getRepository('App:Footballer');
         $chatroom_repo = $manager->getRepository('App:ChatroomList');
         $footballer = $footballer_repo->findOneByUser($user);
@@ -580,6 +572,7 @@ class FootballerController extends AbstractController
      */
     public function quitChatroom(Request $request, EntityManagerInterface $manager, PublisherInterface $publisher)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user = $this->getUser()->getUser();
         $footballer_repo = $manager->getRepository('App:Footballer');
         $chatroom_repo = $manager->getRepository('App:ChatroomList');
@@ -599,6 +592,7 @@ class FootballerController extends AbstractController
      */
     public function myFriends(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user = $this->getUser()->getUser();
         if(is_null($user)){
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
@@ -647,6 +641,7 @@ class FootballerController extends AbstractController
      */
     public function searchGlobalFootballer(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballeur_repo = $manager->getRepository('App:Footballer');
         $friends_list_repo = $manager->getRepository('App:FriendsList');
         $search = $request->request->get('search');
@@ -675,6 +670,7 @@ class FootballerController extends AbstractController
      */
     public function removeFriend(FriendsList $friend, Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $session = $this->get('session');
         $friends_list_repo = $manager->getRepository('App:FriendsList');
         $footballeur_repo = $manager->getRepository('App:Footballer');
@@ -691,6 +687,7 @@ class FootballerController extends AbstractController
      */
     public function blockedFriend(Footballer $footballer_target, Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
 
         $footballeur_repo = $manager->getRepository('App:Footballer');
         $blocked_friend_repo = $manager->getRepository('App:BlockFriendsList');
@@ -712,6 +709,7 @@ class FootballerController extends AbstractController
      */
     public function unblockedFriend(Footballer $footballer_target, Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballeur_repo = $manager->getRepository('App:Footballer');
         $blocked_friend_repo = $manager->getRepository('App:BlockFriendsList');
         $user = $this->getUser()->getUser();
@@ -728,6 +726,7 @@ class FootballerController extends AbstractController
      */
     public function blockedFriendList(EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
 
         $footballeur_repo = $manager->getRepository('App:Footballer');
         $blocked_friend_repo = $manager->getRepository('App:BlockFriendsList');
@@ -746,6 +745,7 @@ class FootballerController extends AbstractController
      */
     public function checkFriend(Footballer $footballer_friend, Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user = $this->getUser()->getUser();
         $friends_list_repo = $manager->getRepository('App:FriendsList');
         $footballer_repo = $manager->getRepository('App:Footballer');
@@ -772,6 +772,7 @@ class FootballerController extends AbstractController
      */
     public function addFriendSubmission(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $id = $request->request->get('id');
         $user = $this->getUser()->getUser();
         $footballer_repo = $manager->getRepository('App:Footballer');
@@ -798,6 +799,7 @@ class FootballerController extends AbstractController
      */
     public function addFriendAfterWaitingSubmission(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $id = $request->request->get('id');
         $friends_list_repo = $manager->getRepository('App:FriendsList');
         $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
@@ -837,6 +839,7 @@ class FootballerController extends AbstractController
      */
     public function removeFriendAfterWaitingSubmission(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $id = $request->request->get('id');
         $friends_list_repo = $manager->getRepository('App:FriendsList');
         $friend = $friends_list_repo->findOneById($id);
@@ -852,6 +855,7 @@ class FootballerController extends AbstractController
      */
     public function peopleNearbyWaiting(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $friends_list_repo = $manager->getRepository('App:FriendsList');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
@@ -868,6 +872,7 @@ class FootballerController extends AbstractController
      */
     public function friendsOnline(Request $request, EntityManagerInterface $manager,\Symfony\Component\Asset\Packages $assetsManager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $friends_list_repo = $manager->getRepository('App:FriendsList');
         $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
         $footballer_repo = $manager->getRepository('App:Footballer');
@@ -930,6 +935,7 @@ class FootballerController extends AbstractController
      */
     public function myPhotos(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user = $this->getUser()->getUser();
         if(is_null($user)){
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
@@ -982,6 +988,7 @@ class FootballerController extends AbstractController
      */
     public function photoDelete(FootballerPhoto $footballer_photo, Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
@@ -1005,6 +1012,7 @@ class FootballerController extends AbstractController
      */
     public function videoDelete(FootballerVideo $footballer_video, Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user = $this->getUser()->getUser();
         $footballer = $footballer_repo->findOneByUser($user);
@@ -1027,6 +1035,7 @@ class FootballerController extends AbstractController
      */
     public function myVideos(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $user = $this->getUser()->getUser();
         if(is_null($user)){
             $this->addFlash('error', 'Veuillez renseigner vos informations personnelles');
@@ -1085,18 +1094,11 @@ class FootballerController extends AbstractController
     }
 
     /**
-     * @Route("/abonnements", name="abonnements")
-     */
-    public function abonnement()
-    {
-        return $this->render('socialNetwork/newsfeed/pricing.html.twig');
-    }
-
-    /**
      * @Route("/search-footballer", name="search_footballer")
      */
     public function searchFootballer(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $blocked_list_repo = $manager->getRepository('App:BlockFriendsList');
         $search = $request->request->get('term');
@@ -1128,6 +1130,7 @@ class FootballerController extends AbstractController
      */
     public function deleteAccount(Request $request, EntityManagerInterface $manager)
     {
+        if(is_null($this->getUser())) return $this->redirectToRoute('logout');
         $footballer_repo = $manager->getRepository('App:Footballer');
         $user_repo = $manager->getRepository('App:User');
 
