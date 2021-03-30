@@ -1,8 +1,11 @@
 $(function (){
+    $('.create-post textarea').text('');
     $('.summernote').summernote({
         codeviewFilter: false,
         codeviewIframeFilter: true,
         lang: 'fr-FR',
+        height: 200,
+        disableResizeEditor: true,
         disableResizeImage: true,
         placeholder: 'Alors champion, quoi de neuf ?',
         toolbar: [
@@ -33,7 +36,8 @@ $(function (){
             processData: false,
             success: function(url) {
                 var radom = Math.floor(Math.random() * 99999999) + 9999;
-                var image = $('<img style="cursor: pointer" data-toggle="modal" data-target="#img'+radom+'">').attr('src', url);
+                var image = $('<img style="cursor: pointer" data-toggle="modal" data-target="#img'+radom+'">');
+                image.attr('src', url);
                 var modalImage = $('<div class="modal fade" id="img'+radom+'" role="dialog" aria-hidden="true">\n' +
                     '                        <div class="modal-dialog modal-lg">\n' +
                     '                          <div class="modal-content">\n' +
@@ -45,7 +49,27 @@ $(function (){
                     '                          </div>\n' +
                     '                        </div>\n' +
                     '                      </div>');
-                summernote.summernote("insertNode", image[0]);
+
+                var modalImage = $('<div class="modal fade" id="img'+radom+'" role="dialog" aria-hidden="true">\n' +
+                    '                        <div class="modal-dialog modal-lg">\n' +
+                    '                          <div class="modal-content">\n' +
+                    '                            <div class="modal-header">\n' +
+                    '                                <h5 class="modal-title"></h5>\n' +
+                    '                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">\n' +
+                    '                                    <span aria-hidden="true">&times;</span>\n' +
+                    '                                </button>\n' +
+                    '                           </div>\n' +
+                    '                            <div class="modal-body">\n' +
+                    '                                <img src="'+url+'" alt="post-image" class="img-responsive post-image" />\n' +
+                    '                            </div>\n' +
+                    '                          </div>\n' +
+                    '                        </div>\n' +
+                    '                      </div>');
+                // summernote.summernote("insertNode", image[0]);
+                $('#img-note-editable').html(image);
+                $('#img-note-editable').show();
+                $('#img-note-editable-input').val(url);
+                $('#img-note-editable-random').val(radom);
                 summernote.summernote("insertNode", modalImage[0]);
                 $('#loading').hide();
             }
@@ -71,8 +95,7 @@ $(function (){
                             $('.all-comment-'+post).prepend('<div class="post-comment">' +
                                 '<i class="fa fa-close remove-comment" data-comment="'+response.id+'" style="color:red; cursor: pointer"></i>' +
                                 '<img src="'+response.path+'" alt="" class="profile-photo-sm">' +
-                                '<a class="profile-link a-none">'+response.name+' </a><p>'+comment+'</p>'+
-                                '<span class="comment-date">'+response.date+'</span>'+
+                                '<a class="profile-link a-none">'+response.name+' <span class="comment-date">'+response.date+'</span></a><p>'+comment+'</p>'+
                                 '</div>');
                             input_post_comment.val('');
                             $('.all-comment-'+post).animate({ scrollTop: 0 }, "fast");
@@ -142,14 +165,16 @@ $(function (){
                 var response = JSON.parse(serverResponse);
                 var class_like = '';
                 if(response.liked == 1){
-                    class_like = '<a class="btn text-green like" data-nb="'+response.numberlike+'"><i class="icon ion-thumbsup"></i> '+response.numberlike+'</a>'+
-                        '<a class="btn dislike" data-nb="'+response.numberDislike+'"><i class="fa fa-thumbs-down"></i> '+response.numberDislike+'</a>';
+                    class_like = '<a class="btn text-green like" data-nb="'+response.numberlike+'"><i class="icon ion-thumbsup"></i> '+response.numberlike+'</a>'
+                        // '<a class="btn dislike" data-nb="'+response.numberDislike+'"><i class="fa fa-thumbs-down"></i> '+response.numberDislike+'</a>'
+                    ;
                 }else if(response.liked == 2){
                     class_like = '<a class="btn like" data-nb="'+response.numberlike+'"><i class="icon ion-thumbsup"></i> '+response.numberlike+'</a>'+
                     '<a class="btn text-red dislike" data-nb="'+response.numberDislike+'"><i class="fa fa-thumbs-down"></i> '+response.numberDislike+'</a>';
                 }else{
-                    class_like = '<a class="btn like" data-nb="'+response.numberlike+'"><i class="icon ion-thumbsup"></i> '+response.numberlike+'</a>'+
-                        '<a class="btn dislike" data-nb="'+response.numberDislike+'"><i class="fa fa-thumbs-down"></i> '+response.numberDislike+'</a>';
+                    class_like = '<a class="btn like" data-nb="'+response.numberlike+'"><i class="icon ion-thumbsup"></i> '+response.numberlike+'</a>'
+                        // '<a class="btn dislike" data-nb="'+response.numberDislike+'"><i class="fa fa-thumbs-down"></i> '+response.numberDislike+'</a>'
+                    ;
                 }
                 parent.html('' + class_like
 
@@ -163,7 +188,7 @@ $(function (){
 
     $('.post-text').each(function (){
         if($(this).find('img').length == 0){
-            $(this).css('overflow-y','scroll');
+            $(this).css('overflow-y','auto');
         }
     })
 })

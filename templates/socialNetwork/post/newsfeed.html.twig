@@ -1,13 +1,21 @@
 {% extends 'socialNetwork/base.html.twig' %}
+{% block css %}
+  <style>
+    body{
+      overflow-y: hidden;
+    }
+  </style>
+
+{% endblock %}
 {% block body %}
 
   <div id="page-contents">
-    <div class="container">
-      <div class="row">
+    <div>
+      <div style="display: flex; justify-content: space-between">
 
         <!-- Newsfeed Common Side Bar Left
         ================================================= -->
-        <div class="col-md-3 static dis-none-mobile">
+        <div id="menu-feed" class="col-md-3 static dis-none-mobile">
           <div class="profile-card">
             {% if app.session.get('footballer_profil_photo') is not null %}
               <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
@@ -42,20 +50,23 @@
           {#          </div><!--chat block ends-->#}
         </div>
 
-        <div class="col-md-7">
-          <h1>Fil d'actualités</h1>
-          <p>N'hésitez pas à publier vos photos et expériences dans le monde du foot !</p>
-          <p>De nombreux recruteurs sont présents sur SkillFoot ! Mettez vous en avant au MAXIMUM ! </p>
-          {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-              {{ message }}
-            </div>
-          {% endfor %}
-          {% for message in app.flashes('error') %}
-            <div class="alert alert-danger">
-              {{ message }}
-            </div>
-          {% endfor %}
+        <div class="col-md-9 feed-actuality" style="overflow-y: scroll;height: 100vh;">
+          <div class="post-content publication welcome-feed">
+            <h1>Fil d'actualités</h1>
+            <p>N'hésitez pas à publier vos photos et expériences dans le monde du foot !</p>
+            <p>De nombreux recruteurs sont présents sur SkillFoot ! Mettez vous en avant au MAXIMUM ! </p>
+            {% for message in app.flashes('success') %}
+              <div class="alert alert-success">
+                {{ message }}
+              </div>
+            {% endfor %}
+            {% for message in app.flashes('error') %}
+              <div class="alert alert-danger">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+
           {% include 'socialNetwork/inc/post/post.html.twig' %}
         </div>
       </div>

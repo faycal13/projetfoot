@@ -46,6 +46,12 @@
 {% endblock %}
 
 {% block footer %}
+    <div style="display:none;" class="phone-menu mobile-menu-social-network">
+        <div><i class="fa fa-home"></i><a href="{{ path("footballer_post_feed") }}">Accueil</a></div>
+        <div><i class="fa fa-envelope"></i><a class="message-title" href="{{ path('social_network_show_conversations') }}">Mes messages {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}<i class="fa fa-comment"></i>{% endif %}{% endif %}</a></div>
+        <div><i class="fa fa-user"></i><a href="{{ path('footballer_post_my_post') }}">Mon mur</a></div>
+        <div><i class="fa fa-address-card"></i><a href="{{ path('footballer_editCareer')}}">Ma carrière</a></div>
+    </div>
     {% include ('socialNetwork/inc/footer.html.twig') %}
 {% endblock %}
 

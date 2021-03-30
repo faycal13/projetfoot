@@ -54,6 +54,7 @@ body{
     line-height: 26px;
     color: #6d6e71;
     font-size: 13px;
+    background-color: #fef9f9;
 }
 
 
@@ -126,8 +127,8 @@ section h2.sub-title{
   ==================================================*/
 
 .container{
-    max-width: 1300px;
-    width: 1300px;
+    max-width: 1600px;
+    width: 1600px;
 }
 
 section .wrapper{
@@ -1111,6 +1112,12 @@ textarea{
 
 /*Profile Card CSS*/
 
+#menu-feed{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 .profile-card{
     background: linear-gradient(to bottom, #ff1313, #ff6054), url("http://placehold.it/1030x430") no-repeat;
     background-size: cover;
@@ -1119,7 +1126,7 @@ textarea{
     border-radius: 4px;
     padding: 10px 20px;
     color: #fff;
-    margin-bottom: 40px;
+    height: 10%;
 }
 
 .profile-card img.profile-photo{
@@ -1137,6 +1144,12 @@ ul.nav-news-feed{
     padding-left: 20px;
     padding-right: 20px;
     margin: 0 0 40px 0;
+    font-size: 25px;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    background-color: white;
 }
 
 ul.nav-news-feed li{
@@ -1309,14 +1322,20 @@ ul.online-users li span.online-dot{
   Post Contents CSS
   ==================================================*/
 
-.post-content{
-    background: #f8f8f8;
+.post-content.publication{
+    background: white;
     border-radius: 4px;
     width: 100%;
     border: 1px solid #f1f2f2;
     margin-bottom: 20px;
     overflow: hidden;
     position: relative;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.post-content.welcome-feed{
+    padding: 0 40px;
 }
 
 .post-content img.post-image, video.post-video, .google-maps{
@@ -1333,6 +1352,7 @@ ul.online-users li span.online-dot{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background-color: white;
 }
 
 .post-content .post-container .post-detail{
@@ -1343,8 +1363,19 @@ ul.online-users li span.online-dot{
 .post-content .post-container .post-detail .post-text{
     line-height: 24px;
     margin: 0;
-    max-height: 400px;
+    max-height: 200px;
+    overflow-y: auto;
+    margin-bottom: 40px;
+}
+
+.post-content .post-container .post-detail div.post-image{
+    text-align: center;
+    max-height: 500px;
     overflow-y: hidden;
+}
+
+.post-content .post-container .post-detail div.post-image img{
+    width: 70%;
 }
 
 .post-content .post-container .post-detail .reaction{
@@ -1358,7 +1389,6 @@ ul.online-users li span.online-dot{
 }
 
 .post-content .post-container .post-detail .post-comment{
-    display: inline-flex;
     margin: 10px auto;
     width: 100%;
 }
@@ -1373,6 +1403,18 @@ ul.online-users li span.online-dot{
     box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
     margin: 7px 0;
     min-width: 0;
+}
+
+div[class*=all-comment]{
+    overflow-y: auto;
+    padding: 0 100px;
+    margin-top: 30px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.note-group-image-url{
+    display: none !important;
 }
 
 
@@ -1437,6 +1479,7 @@ ul.online-users li span.online-dot{
 .chat-room ul.contact-list li a{
     border: none;
     padding: 10px 0;
+    background-color: white;
 }
 
 .chat-room ul.contact-list li a:hover, .chat-room ul.contact-list li a:active, .chat-room ul.contact-list li a:focus{
@@ -1619,7 +1662,7 @@ ul.online-users li span.online-dot{
 }
 
 .modal-content .post-content{
-    margin: 0;
+    margin: 0 auto;
 }
 
 
@@ -2421,6 +2464,18 @@ ul.contact li i{
     padding: 12px 0 4px;
 }
 
+#img-note-editable{
+    text-align: center;
+    border: 1px solid #d5d5d5;
+    width: 50%;
+    margin: 0 auto;
+}
+
+#img-note-editable img{
+    cursor: pointer;
+    height: 300px;
+}
+
 
 /*==================================================
   CSS for width 992px
@@ -2982,19 +3037,24 @@ ul[id^=ui-id-]{
 }
 
 .post-comment p{
-    margin-left: 40px;
+    margin-left: 60px;
 }
 
 .comment-date{
     position: absolute;
-    left: 55px;
-    top: 18px;
+    left: 0px;
+    top: 10px;
+    color: gray;
     font-size: 9px;
+}
+
+.post-comment .profile-link{
+    position: relative;
 }
 
 @media (max-width: 767px) {
     .dis-none-mobile{
-        display: none;
+        display: none !important;
     }
     header .logo{
         width: 30px;
@@ -3025,9 +3085,9 @@ ul[id^=ui-id-]{
         margin-bottom: 70px;
     }
 
-    .main-container{
-        margin-top: 55px;
-    }
+    /*.main-container{*/
+    /*    margin-top: 55px;*/
+    /*}*/
 
     .edit-career-container table tr th {
         padding: 5px;
@@ -3078,8 +3138,77 @@ ul[id^=ui-id-]{
         display: none;
     }
 
+    .feed-actuality > .post-content{
+        width: 100%;
+    }
+
     .post-content .post-container .post-detail{
         margin-left: 0;
+    }
+
+    .post-content .post-container .post-detail div.post-image img {
+        width: 100%;
+    }
+    div[class*=all-comment]{
+        padding: 0;
+    }
+
+    #img-note-editable img{
+        width: 100%;
+        height: auto;
+    }
+
+    #img-note-editable{
+        width: initial;
+    }
+
+    #loading{
+        margin-left: 30px;
+    }
+
+    .create-post{
+        padding: 20px;
+    }
+
+    .mobile-menu-social-network{
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        display: flex !important;
+        justify-content: space-around;
+        width: 100%;
+        background-color: white;
+        box-shadow: 2px 2px 4px 1px;
+        height: 55px;
+        align-items: center;
+        z-index: 9;
+    }
+
+    .mobile-menu-social-network div{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .mobile-menu-social-network div > i{
+        font-size: 26px;
+        margin-top: 6px;
+    }
+
+    .mobile-menu-social-network .message-title i{
+        font-size: 10px;
+        position: absolute;
+        top: -25px;
+        right: 6px;
+        color: red;
+        animation: blinker 1s linear infinite;
+    }
+
+    .mobile-menu-social-network div > a{
+        font-size: 10px;
+        text-decoration: none;
+        color: #6d6e71;
     }
 }
 

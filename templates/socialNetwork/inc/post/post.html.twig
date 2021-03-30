@@ -1,5 +1,5 @@
 {% if is_granted('ROLE_USER') and footballer is not defined %}
-    <div class="create-post">
+    <div class="create-post post-content publication">
         <div class="row">
             <form action="{{ path('footballer_post_add_post') }}" method="post" id="post-form">
                 <div class="col-md-10 col-sm-10">
@@ -9,29 +9,31 @@
                         {% else %}
                             <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-md"/>
                         {% endif %}
-                        <textarea required name="post" cols="30" rows="1" class="form-control summernote" placeholder="Alors, quoi de neuf champion ?" contenteditable></textarea>
+                        <textarea required name="post" cols="30" rows="1" class="form-control summernote" placeholder="Alors, quoi de neuf champion ?"></textarea>
+                        <input type="hidden" id="img-note-editable-input" name="img" value="">
+                        <input type="hidden" id="img-note-editable-random" name="random" value="">
                     </div>
-                </div>
-                <div class="col-md-2 col-sm-2">
                     <button class="btn btn-primary pull-right" id="publish">Publier</button>
                 </div>
             </form>
             <div id="loading"></div>
         </div>
-
+        <div style="display: none" id="img-note-editable"></div>
     </div>
 {% endif %}
 {% for key, post in posts %}
-    <div class="post-content">
+    <div class="post-content publication">
         <div class="post-container">
-            {% if app.session.get('footballer_profil_photo') is not null %}
-                <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="profile-photo-md pull-left" />
-            {% else %}
-                <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-md pull-left" />
-            {% endif %}
             <div class="post-detail">
                 <div class="user-info">
-                    <h5><a {% if is_granted('ROLE_USER') and post.footballer.user.id != app.user.user.id %}href="{{ path('footballer_view_my_post',{'id': post.footballer.id}) }}" class="profile-link text-red"{% endif%} style="text-decoration: none">{{ post.footballer.user.firstName }} {{ post.footballer.user.name }}</a></h5>
+                    <div>
+                        {% if app.session.get('footballer_profil_photo') is not null %}
+                            <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="profile-photo-md pull-left" />
+                        {% else %}
+                            <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-md pull-left" />
+                        {% endif %}
+                        <h5><a {% if is_granted('ROLE_USER') and post.footballer.user.id != app.user.user.id %}href="{{ path('footballer_view_my_post',{'id': post.footballer.id}) }}" class="profile-link text-red"{% endif%} style="text-decoration: none">{{ post.footballer.user.firstName }} {{ post.footballer.user.name }}</a></h5>
+                    </div>
                     <p class="text-muted">{{ post.creationDate | date('d/m/Y H:i:s') }}</p>
                     {% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#supp-modal-{{ post.id }}" style="color:red; cursor: pointer">Supprimer la publication</i>{% endif %}
                     {% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<br><i class="fa fa-edit edit-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#edit-modal-{{ post.id }}" style="color:green; cursor: pointer">Modifier la publication</i>{% endif %}
@@ -55,31 +57,22 @@
                 {% if is_granted('ROLE_USER') %}
                     <div class="reaction" data-post="{{ post.id }}">
                         <a class="btn {% if liked == 1 %}text-green{% endif%} like" data-nb="{{ postLike }}"><i class="icon ion-thumbsup"></i> {{ postLike }}</a>
-                        <a class="btn {% if liked == 2 %}text-red{% endif%} dislike" data-nb="{{ postDislike }}"><i class="fa fa-thumbs-down"></i> {{ postDislike }}</a>
+                        {#                        <a class="btn {% if liked == 2 %}text-red{% endif%} dislike" data-nb="{{ postDislike }}"><i class="fa fa-thumbs-down"></i> {{ postDislike }}</a>#}
                     </div>
                 {% endif %}
                 <div class="line-divider"></div>
-                <div class="post-text">
-                    <p>{{ post.text | raw}}</p>
+                {% if post.text != '' %}
+                    <div class="post-text">
+                        <p>{{ post.text | raw}}</p>
+                    </div>
+                {% endif %}
+                <div class="post-image">
+                    {{ post.img | raw }}
                 </div>
                 <div class="line-divider"></div>
             </div>
-            <div class="all-comment-{{ post.id }}" style="max-height: 200px; overflow-y: auto;margin-top: 30px;">
-                {% for comment in post.postComments.values %}
-                    <div class="post-comment">
-                        {% if is_granted('ROLE_USER') and comment.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-comment" data-comment="{{ comment.id }}" style="color:red; cursor: pointer"></i>{% endif %}
-                        {% if is_granted('ROLE_USER') and comment.footballer.user.profilPhoto is not null %}
-                            <img src="{{ asset(footballer_photo_profil_directory~'/'~comment.footballer.user.id~'/'~comment.footballer.user.profilPhoto) }}" alt="" class="profile-photo-sm" />
-                        {% else %}
-                            <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-sm" />
-                        {% endif %}
-                            <a {% if is_granted('ROLE_USER') and comment.footballer.user.id != app.user.user.id %}href="{{ path('footballer_view_my_post',{'id': comment.footballer.id}) }}" class="profile-link"{% else %}class="profile-link a-none"{% endif %}>{{ comment.footballer.user.firstName }} {{ comment.footballer.user.name }} </a>
-                        <p>{{ comment.comment }}</p><span class="comment-date">{{ comment.creationDate | date('d/m/Y H:i:s') }}</span>
-                    </div>
-                {% endfor %}
-            </div>
             {% if is_granted('ROLE_USER') %}
-                <div class="post-comment" style="display: flex;margin-top: 20px;">
+                <div class="post-detail post-comment" style="display: flex;margin-top: 20px;">
                     {% if app.session.get('footballer_profil_photo') is not null %}
                         <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="profile-photo-sm" />
                     {% else %}
@@ -88,6 +81,21 @@
                     <input type="text" class="form-control input-post-comment" data-post="{{ post.id }}" placeholder="Poster un commentaire">
                 </div>
             {% endif %}
+            <div class="all-comment-{{ post.id }}">
+                {% for comment in post.postComments.values %}
+                    <div class="post-comment">
+                        {% if is_granted('ROLE_USER') and comment.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-comment" data-comment="{{ comment.id }}" style="color:red; cursor: pointer"></i>{% endif %}
+                        {% if is_granted('ROLE_USER') and comment.footballer.user.profilPhoto is not null %}
+                            <img src="{{ asset(footballer_photo_profil_directory~'/'~comment.footballer.user.id~'/'~comment.footballer.user.profilPhoto) }}" alt="" class="profile-photo-sm" />
+                        {% else %}
+                            <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo-sm" />
+                        {% endif %}
+                        <a {% if is_granted('ROLE_USER') and comment.footballer.user.id != app.user.user.id %}href="{{ path('footballer_view_my_post',{'id': comment.footballer.id}) }}" class="profile-link"{% else %}class="profile-link a-none"{% endif %}>{{ comment.footballer.user.firstName }} {{ comment.footballer.user.name }} <span class="comment-date">{{ comment.creationDate | date('d/m/Y H:i:s') }}</span></a>
+                        <p>{{ comment.comment }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
         </div>
     </div>
     {% if is_granted('ROLE_USER') and post.footballer.id == app.user.user.footballer.id %}
@@ -123,7 +131,7 @@
                     </div>
                     <div class="modal-body">
                         <form action="{{ path('footballer_post_edit_post') }}" method="post">
-                            <textarea name="post" cols="30" rows="1" class="form-control summernote" placeholder="Alors, quoi de neuf champion ?">{{ post.text | raw}}</textarea>
+                            <textarea name="post-edit" cols="30" rows="1" class="form-control summernote" placeholder="Alors, quoi de neuf champion ?">{{ post.text | raw}}</textarea>
                             <input type="hidden" name="postid" value="{{ post.id }}">
                             <button type="button" class="btn" data-dismiss="modal">Annuler</button>
                             <input type="submit" class="btn btn-primary" value="Modifier">

@@ -75,12 +75,16 @@ class PostController extends AbstractController
     public function addPost(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager)
     {
         $post_param = $request->request->get('post');
-
+        $url_img = $request->request->get('img');
+        $random_img = $request->request->get('random');
         if(!is_null($this->getUser()) && $post_param != ''){
             $footballer = $this->getUser()->getUser()->getFootballer();
             $post = new Post();
             $post->setFootballer($footballer);
             $post->setText($post_param);
+            if($url_img != ''){
+                $post->setImg('<img style="cursor: pointer" data-toggle="modal" data-target="#img'.$random_img.'" src="'.$url_img.'">');
+            }
             $post->setCreationDate((new \DateTime('now')));
             $post->setLiked(0);
 
@@ -88,7 +92,7 @@ class PostController extends AbstractController
             $manager->flush();
             $this->addFlash('success', 'Votre publication est en ligne !');
         }else{
-            $this->addFlash('error', 'Veuillez saisir un contenu avant de publier');
+            $this->addFlash('error', 'Veuillez saisir un contenu');
         }
         return $this->redirect($request->headers->get('referer'));
 
@@ -99,7 +103,7 @@ class PostController extends AbstractController
      */
     public function editPost(Request $request, EntityManagerInterface $manager, \Symfony\Component\Asset\Packages $assetsManager)
     {
-        $post_param = $request->request->get('post');
+        $post_param = $request->request->get('post-edit');
         $postid_param = $request->request->get('postid');
 
         if(!is_null($this->getUser()) && $post_param != '' && $postid_param != ''){

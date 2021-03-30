@@ -61,6 +61,11 @@ class Post
      */
     private $liked;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $img;
+
     public function __construct()
     {
         $this->postComments = new ArrayCollection();
@@ -202,6 +207,18 @@ class Post
     public function setLiked(int $liked): self
     {
         $this->liked = $liked;
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(?string $img): self
+    {
+        $this->img = $img;
 
         return $this;
     }
