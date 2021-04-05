@@ -1586,16 +1586,17 @@ span.flatpickr-weekday {
   font-family: 'Poppins', sans-serif;
 }
 
-.s012 form .inner-form header {
+.s012 form {
   margin-bottom: 28px;
 }
 
-.s012 form .inner-form header .travel-type-wrap {
+.s012 form .travel-type-wrap {
   display: -ms-flexbox;
   display: flex;
+  justify-content: space-between;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item {
+.s012 form .travel-type-wrap .item {
   color: #555;
   border-radius: 3px;
   background: #fff;
@@ -1605,9 +1606,10 @@ span.flatpickr-weekday {
   cursor: pointer;
   position: relative;
   text-align: center;
+  width: 25%;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item:after {
+.s012 form .travel-type-wrap .item:after {
   content: '';
   width: 0;
   height: 0;
@@ -1622,7 +1624,7 @@ span.flatpickr-weekday {
   transition: all .3s;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item .group-icon {
+.s012 form .travel-type-wrap .item .group-icon {
   display: -ms-flexbox;
   display: flex;
   width: 100%;
@@ -1631,56 +1633,56 @@ span.flatpickr-weekday {
   margin-bottom: 10px;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item .group-icon svg {
+.s012 form .travel-type-wrap .item .group-icon svg {
   width: 20px;
   height: 20px;
   fill: #555;
   margin: 0 4px;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item span {
+.s012 form .travel-type-wrap .item span {
   font-size: 12px;
   font-weight: bold;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item.active {
+.s012 form .travel-type-wrap .item.active {
   color: #fff;
   background: #596153;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item.active:after {
+.s012 form .travel-type-wrap .item.active:after {
   opacity: 1;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item.active svg {
+.s012 form .travel-type-wrap .item.active svg {
   fill: #fff;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item:hover, .s012 form .inner-form header .travel-type-wrap .item:focus {
+.s012 form .travel-type-wrap .item:hover, .s012 form .travel-type-wrap .item:focus {
   background: #596153;
   color: #fff;
 }
 
-.s012 form .inner-form header .travel-type-wrap .item:hover .group-icon svg, .s012 form .inner-form header .travel-type-wrap .item:focus .group-icon svg {
+.s012 form .travel-type-wrap .item:hover .group-icon svg, .s012 form .travel-type-wrap .item:focus .group-icon svg {
   fill: #fff;
 }
 
-.s012 form .inner-form .main-form {
+.s012 form .main-form {
   position: relative;
 }
 
-.s012 form .inner-form .main-form .row {
+.s012 form .main-form .row {
   margin-bottom: 15px;
 }
 
-.s012 form .inner-form .main-form .row .input-wrap {
+.s012 form .main-form .row .input-wrap {
   background: #fff;
   border-radius: 3px;
   position: relative;
   padding: 10px 15px 10px 48px;
 }
 
-.s012 form .inner-form .main-form .row .input-wrap .icon-wrap {
+.s012 form .main-form .row .input-wrap .icon-wrap {
   width: 48px;
   position: absolute;
   top: 0;
@@ -1692,7 +1694,7 @@ span.flatpickr-weekday {
       justify-content: center;
 }
 
-.s012 form .inner-form .main-form .row .input-wrap .icon-wrap svg {
+.s012 form .main-form .row .input-wrap .icon-wrap svg {
   fill: #ccc;
   width: 20px;
   height: 20px;
@@ -1701,14 +1703,24 @@ span.flatpickr-weekday {
   margin-bottom: 10px;
 }
 
-.s012 form .inner-form .main-form .row .input-wrap .input-field label {
+.s012 form .travel-type-wrap .input-field {
+  background-color: white;
+  padding: 20px;
+  border-radius: 3px;
+}
+
+.s012 form .travel-type-wrap .input-wrap {
+  width: 30%;
+}
+
+.s012 form .main-form .row .input-wrap .input-field label {
   font-size: 11px;
   font-weight: 900;
   display: block;
   color: #555;
 }
 
-.s012 form .inner-form .main-form .row .input-wrap .input-field input {
+.s012 form .main-form .row .input-wrap .input-field input {
   font-size: 16px;
   color: #333;
   background: transparent;
@@ -1718,36 +1730,36 @@ span.flatpickr-weekday {
   font-family: 'Lato', sans-serif;
 }
 
-.s012 form .inner-form .main-form .row .input-wrap .input-field input.placeholder {
+.s012 form .main-form .row .input-wrap .input-field input.placeholder {
   color: #808080;
 }
 
-.s012 form .inner-form .main-form .row .input-wrap .input-field input:-moz-placeholder {
+.s012 form .main-form .row .input-wrap .input-field input:-moz-placeholder {
   color: #808080;
 }
 
-.s012 form .inner-form .main-form .row .input-wrap .input-field input::-webkit-input-placeholder {
+.s012 form .main-form .row .input-wrap .input-field input::-webkit-input-placeholder {
   color: #808080;
 }
 
-.s012 form .inner-form .main-form .row .input-wrap .input-field input.hover, .s012 form .inner-form .main-form .row .input-wrap .input-field input:focus {
+.s012 form .main-form .row .input-wrap .input-field input.hover, .s012 form .main-form .row .input-wrap .input-field input:focus {
   box-shadow: none;
   outline: 0;
 }
 
-.s012 form .inner-form .main-form .row .input-checkbox-group .input-checkbox {
+.s012 form .main-form .row .input-checkbox-group .input-checkbox {
   display: inline-block;
   margin-right: 44px;
 }
 
-.s012 form .inner-form .main-form .row .input-checkbox-group .input-checkbox label {
+.s012 form .main-form .row .input-checkbox-group .input-checkbox label {
   font-weight: 900;
   font-size: 11px;
   color: #fff;
   padding-top: 3px;
 }
 
-.s012 form .inner-form .main-form .row.second {
+.s012 form .main-form .row.second {
   display: -ms-flexbox;
   display: flex;
   -ms-flex-pack: justify;
@@ -1755,11 +1767,11 @@ span.flatpickr-weekday {
   margin-bottom: 24px;
 }
 
-.s012 form .inner-form .main-form .row.second .input-wrap {
+.s012 form .main-form .row.second .input-wrap {
   width: calc((100% - 30px)/3);
 }
 
-.s012 form .inner-form .main-form .row.third {
+.s012 form .main-form .row.third {
   margin-bottom: 30px;
 }
 
@@ -1885,37 +1897,41 @@ span.flatpickr-weekday {
     text-align: center;
     font-size: 26px;
   }
-  .s012 form .inner-form header {
+  .s012 form {
     overflow: hidden;
   }
-  .s012 form .inner-form header .travel-type-wrap {
+  .s012 form .travel-type-wrap {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: space-between;
   }
-  .s012 form .inner-form header .travel-type-wrap .item {
+  .s012 form .travel-type-wrap .item {
     width: 115px;
     margin: 10px;
   }
-  .s012 form .inner-form .main-form .row.second {
+  .s012 form .main-form .row.second {
     display: block;
     width: 100%;
   }
-  .s012 form .inner-form .main-form .row.second .input-wrap {
+  .s012 form .main-form .row.second .input-wrap {
     width: 100%;
     margin: 20px;
   }
   .s012 form .btn-search{
     margin: 20px;
   }
-  .s012 form .inner-form .main-form .row.third {
+  .s012 form .main-form .row.third {
     margin-bottom: 0;
   }
-  .s012 form .inner-form .main-form .row.third .input-checkbox-group .input-checkbox {
+  .s012 form .main-form .row.third .input-checkbox-group .input-checkbox {
     margin-bottom: 20px;
   }
-  .s012 form .inner-form .main-form:after {
+  .s012 form .main-form:after {
     display: none;
+  }
+  .s012 form .travel-type-wrap .input-wrap{
+    width: 100%;
+    margin: 10px 0;
   }
 }
 

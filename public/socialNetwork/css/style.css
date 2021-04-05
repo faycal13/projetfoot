@@ -54,7 +54,7 @@ body{
     line-height: 26px;
     color: #6d6e71;
     font-size: 13px;
-    background-color: #fef9f9;
+    background-color: #fff5f5;
 }
 
 
@@ -126,9 +126,18 @@ section h2.sub-title{
   Common
   ==================================================*/
 
-.container{
+.container.feed-container{
     max-width: 1600px;
     width: 1600px;
+}
+
+.container{
+    max-width: 1300px;
+    width: 1300px;
+}
+
+.main-container{
+    margin-top: 25px;
 }
 
 section .wrapper{
@@ -151,6 +160,12 @@ section .wrapper{
 #page-contents{
     padding: 30px 0 50px;
     padding-bottom: 0;
+}
+
+#page-contents-child{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .btn-primary{
@@ -224,7 +239,7 @@ img.profile-photo-xs{
 
 .img-wrapper{
     position: relative;
-    width: 320px;
+    width: 120px;
 }
 
 .img-wrapper::after{
@@ -323,7 +338,19 @@ input#cover_photo_coverPhoto {
     display: none;
 }
 
+.menu-profil-info{
+    background-color: white;
+    border-radius: 20px;
+    height: 500px;
+}
 
+.block-profil{
+    padding-top: 0;
+    padding: 30px;
+    background-color: white;
+    border-radius: 20px;
+    width: 71.666667%;
+}
 
 .profile-info form{
     height: 0;
@@ -462,6 +489,8 @@ textarea{
     border: none;
     border-radius: 0;
     margin-bottom: 0;
+    display: flex;
+    align-items: center;
 }
 
 .menu form{
@@ -1614,7 +1643,7 @@ div[class*=all-comment]{
 
 .scrollbar-wrapper.contact-list{
     overflow-y: auto;
-    height: 400px;
+    max-height: 600px;
     border: none;
     margin-bottom: 20px;
 }
@@ -1940,6 +1969,11 @@ ul.album-photos li img{
 ul.edit-menu{
     margin-top: 100px;
     padding: 0 20px;
+    height: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: 20px;
 }
 
 ul.edit-menu li{
@@ -1947,6 +1981,8 @@ ul.edit-menu li{
     border-bottom: 1px solid #f1f2f2;
     padding: 15px 0;
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 ul.edit-menu li.active::before{
@@ -2491,7 +2527,7 @@ ul.contact li i{
 
     .timeline #page-contents{margin-top: 185px !important;}
 
-    ul.edit-menu{margin-top: 0; margin-bottom: 30px;}
+    ul.edit-menu{margin-top: 0;}
 
     .faq-cat-list.nav-tabs>li>a{min-width: 150px; padding: 30px 15px;}
 
@@ -3068,6 +3104,7 @@ ul[id^=ui-id-]{
     }
     #page-contents {
         padding: 0;
+        margin-top: 25px;
     }
 
     .container {
@@ -3084,10 +3121,6 @@ ul[id^=ui-id-]{
         width: 200px;
         margin-bottom: 70px;
     }
-
-    /*.main-container{*/
-    /*    margin-top: 55px;*/
-    /*}*/
 
     .edit-career-container table tr th {
         padding: 5px;
@@ -3110,9 +3143,12 @@ ul[id^=ui-id-]{
     }
     ul.edit-menu{
         padding: 0;
+        height: 180px;
+        justify-content: space-around;
     }
     ul.edit-menu li{
         padding: 0;
+        font-size: initial;
     }
     ul.edit-menu li a{
         margin: 0;
@@ -3210,6 +3246,31 @@ ul[id^=ui-id-]{
         text-decoration: none;
         color: #6d6e71;
     }
+
+    .menu-profil-info{
+        height: initial;
+        border-radius: 0;
+        padding: 15px;
+    }
+
+    #page-contents-child{
+        display: block;
+    }
+
+    .block-profil{
+        width: initial;
+        border-radius: 0;
+        padding: 20px;
+    }
+
+    .img-wrapper{
+        width: 100% !important;
+    }
+
+    .navbar-default .container{
+        width: 100%;;
+    }
+
 }
 
 

@@ -1,6 +1,8 @@
-<ul class="edit-menu">
-    <li><a class="my-post" href="{{ path('footballer_view_my_post',{'id':footballer.id}) }}"><i class="fa fa-sticky-note"></i> Mur</a></li>
-    <li><a class="personal-information" href="{{ path('footballer_view_profil',{'id':footballer.id}) }}"><i class="fa fa-user"></i>  Informations personnelles</a></li>
-    <li><a class="profil-footballer" href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}"><i class="fa fa-futbol-o"></i>   Profil de footballeur</a></li>
-    <li><a class="career-footballer" href="{{ path('footballer_view_career',{'id':footballer.id}) }}"><i class="fa fa-address-card"></i>  Carrière</a></li>
-</ul>
+<div class="col-md-3 col-sm-12 menu-profil-info">
+    <ul class="edit-menu">
+        <li><i class="fa fa-sticky-note"></i><a class="my-post" href="{{ path('footballer_view_my_post',{'id':footballer.id}) }}"> Mur</a></li>
+        <li><i class="fa fa-user"></i><a class="personal-information" href="{{ path('footballer_view_profil',{'id':footballer.id}) }}"> Informations personnelles</a></li>
+        <li><i class="fa fa-futbol-o"></i><a class="profil-footballer" href="{{ path('footballer_view_footballer_profil',{'id':footballer.id}) }}"> Profil de footballeur</a></li>
+        <li><i class="fa fa-address-card"></i><a class="career-footballer" href="{{ path('footballer_view_career',{'id':footballer.id}) }}"> Carrière</a></li>
+    </ul>
+</div>

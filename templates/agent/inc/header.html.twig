@@ -5,7 +5,7 @@
             {% if is_granted('ROLE_AGENT') %}
                 <div class="header__logo">
                     <a href="{{ path('agent_home') }}">
-                        <img src="{{ asset('footballer/img/logo.png') }}" alt="Logo skillfoot" />
+                        <img style="width: 50px;" src="{{ asset('footballer/img/logo.png') }}" alt="Logo skillfoot" />
                     </a>
                 </div>
                 <div class="header__navbar">
@@ -154,11 +154,11 @@
         <div class="container-fluid">
             <div class="header-mobile-inner">
                 {% if is_granted('ROLE_AGENT') %}
-                    <a class="logo" href="{{ path('agent_home') }}">
+                    <a class="logo" style="width: 50px;" href="{{ path('agent_home') }}">
                         <img src="{{ asset('footballer/img/logo.png') }}" alt="Logo skillfoot" />
                     </a>
                 {% else %}
-                    <a class="logo" href="{{ path('admin_home') }}">
+                    <a class="logo" style="width: 50px;" href="{{ path('admin_home') }}">
                         <img src="{{ asset('footballer/img/logo.png') }}" alt="Logo skillfoot" />
                     </a>
                 {% endif %}

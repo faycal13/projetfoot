@@ -40,6 +40,11 @@
 				{{ success_password }}
 			</div>
 		{% endif %}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
 		<div class="wrap-input100 validate-input">
 			<input class="input100" type="text" name="_username" placeholder="Email" required>
 			<span class="focus-input100"></span>

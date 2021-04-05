@@ -5,11 +5,10 @@
     <div class="timeline">
       {% include('socialNetwork/inc/view/timeline-footballer.html.twig') %}
       <div id="page-contents">
-        <div class="row">
-          <div class="col-md-3">
-            {% include('socialNetwork/inc/view/menu-profil.html.twig') %}
-          </div>
-          <div class="col-md-9">
+        <div class="row" id="page-contents-child">
+          <!--Edit Profile Menu-->
+          {% include('socialNetwork/inc/view/menu-profil.html.twig') %}
+          <div class="block-profil col-sm-12">
             <div class="edit-career-container">
               <div class="block-title">
                 <h4 class="grey">Photos</h4>

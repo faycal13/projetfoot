@@ -2,7 +2,7 @@
     <div class="create-post post-content publication">
         <div class="row">
             <form action="{{ path('footballer_post_add_post') }}" method="post" id="post-form">
-                <div class="col-md-10 col-sm-10">
+                <div class="col-md-12 col-sm-12">
                     <div class="form-group" style="width: 100%;">
                         {% if app.session.get('footballer_profil_photo') is not null %}
                             <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="profile-photo-md" />
@@ -35,8 +35,10 @@
                         <h5><a {% if is_granted('ROLE_USER') and post.footballer.user.id != app.user.user.id %}href="{{ path('footballer_view_my_post',{'id': post.footballer.id}) }}" class="profile-link text-red"{% endif%} style="text-decoration: none">{{ post.footballer.user.firstName }} {{ post.footballer.user.name }}</a></h5>
                     </div>
                     <p class="text-muted">{{ post.creationDate | date('d/m/Y H:i:s') }}</p>
-                    {% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#supp-modal-{{ post.id }}" style="color:red; cursor: pointer">Supprimer la publication</i>{% endif %}
-                    {% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<br><i class="fa fa-edit edit-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#edit-modal-{{ post.id }}" style="color:green; cursor: pointer">Modifier la publication</i>{% endif %}
+                    <div style="display: flex;justify-content: space-between;flex-direction: row-reverse;">
+                        {% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#supp-modal-{{ post.id }}" style="color:red; cursor: pointer">Supprimer la publication</i>{% endif %}
+                        {% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<br><i class="fa fa-edit edit-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#edit-modal-{{ post.id }}" style="color:green; cursor: pointer">Modifier la publication</i>{% endif %}
+                    </div>
                 </div>
                 {% set postLike = 0 %}
                 {% set postDislike = 0 %}

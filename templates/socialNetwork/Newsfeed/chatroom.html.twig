@@ -55,9 +55,9 @@
         //ON INITIALISE L'URL DE MERCURE
         const url = new URL('{{ mercure_publish_url }}');
         //ON AJOUTE LE TOPIC CORRESPONDANT A NOS NOTIFICATION DE CHAT
-        url.searchParams.append('topic', 'https://skillfoot.fr/users/chat')
-        url.searchParams.append('topic', 'https://skillfoot.fr/users')
-        url.searchParams.append('topic', 'https://skillfoot.fr/users/quit')
+        url.searchParams.append('topic', 'http://skillfoot.fr/users/chat')
+        url.searchParams.append('topic', 'http://skillfoot.fr/users')
+        url.searchParams.append('topic', 'http://skillfoot.fr/users/quit')
 
         //ECOUTEUR DE LURL DE MERCURE
         const eventSource = new EventSource(url, { withCredentials: true });

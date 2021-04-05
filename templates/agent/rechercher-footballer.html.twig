@@ -11,6 +11,14 @@
     <link rel="stylesheet" href="{{ asset('footballer/css/main.css')}}">
 
     <link rel="shortcut icon" href="footballer/{{ asset('footballer/img/fav.png') }}">
+    <style>
+        .single-portfolio{
+            text-align: center;
+            background-color: white;
+            border-radius: 20px;
+            margin: 10px;
+        }
+    </style>
 {% endblock %}
 {% block body %}
     <!-- PAGE CONTENT-->
@@ -36,7 +44,7 @@
                 <div class="filters-content">
                     <div class="row grid">
                         {% for footballer in footballers %}
-                            <div class="single-portfolio col-sm-3 all corporate" style="text-align: center">
+                            <div class="single-portfolio col-sm-2 all corporate" style="text-align: center">
                                 <a href="{{ path('footballer_view_footballer_profil',{'id':footballer['footballer'].id}) }}">
                                     <div class="item">
                                         {% if footballer['footballer'].user.profilPhoto is not null %}

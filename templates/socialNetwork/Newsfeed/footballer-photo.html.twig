@@ -5,11 +5,10 @@
     <div class="timeline">
       {% include('socialNetwork/inc/timeline-footballer.html.twig') %}
       <div id="page-contents">
-        <div class="row">
-          <div class="col-md-3">
-            {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
-          </div>
-          <div class="col-md-9">
+        <div class="row" id="page-contents-child">
+          <!--Edit Profile Menu-->
+          {% include('socialNetwork/inc/edit-menu-profil.html.twig') %}
+          <div class="block-profil col-sm-12">
             <div class="edit-career-container">
               <div class="block-title">
                 <h4 class="grey">Mes photos</h4>
@@ -51,7 +50,7 @@
               </div>
               <div class="edit-block">
                 {% for photo in photos %}
-                  <div class="grid-item col-md-5 col-sm-5" style="margin: 10px">
+                  <div class="grid-item col-md-3 col-sm-3">
                     <div class="media-grid">
                       <p><strong>{{ photo.title }}</strong>
                         <i class="fa fa-close" style="color: red; cursor: pointer; font-size: 20px" data-toggle="modal" data-target="#supp-modal-{{ photo.id }}"></i>

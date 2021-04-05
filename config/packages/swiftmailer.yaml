@@ -1,3 +1,10 @@
 swiftmailer:
+    transport: smtp
+    username: contact@hellomycake.com
+    password: SD02122018
+    auth_mode: login
+    disable_delivery: false
     url: '%env(MAILER_URL)%'
     spool: { type: 'memory' }
+    port: 465
+    encryption: ssl
