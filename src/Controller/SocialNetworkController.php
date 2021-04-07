@@ -137,7 +137,7 @@ class SocialNetworkController extends AbstractController
 //                        'Nouveau message',
 //                        '
 //                <p style="font-size: 18px">Vous avez reçu un nouveau message de '.$user->getFirstName().'</p>
-//                <p style="font-size: 18px"><a style="color: white" href="https://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
+//                <p style="font-size: 18px"><a style="color: white" href="http://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
 //                '
 //                    );
 
@@ -166,7 +166,7 @@ class SocialNetworkController extends AbstractController
                 $final_message['conversation'] = $conversation_id;
                 $path = $this->getProfilPhoto($assetsManager, $user);
                 $final_message['photo'] = $path;
-                $update = new Update('https://skillfoot.fr/users/private-message',
+                $update = new Update('http://skillfoot.fr/users/private-message',
                     json_encode($final_message)
                 );
                 $publisher($update);
@@ -230,7 +230,7 @@ class SocialNetworkController extends AbstractController
                     'date' => $date->format('d/m/Y H:i:s'),
                     'photo' => $this->getProfilPhoto($assetsManager, $user)
                 ];
-                $update = new Update('https://skillfoot.fr/users/new-conversation',
+                $update = new Update('http://skillfoot.fr/users/new-conversation',
                     json_encode($new_conversation)
                 );
                 $publisher($update);

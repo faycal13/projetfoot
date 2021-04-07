@@ -86,7 +86,7 @@ class SecurityController extends AbstractController
                 <p style="font-size: 18px">Bienvenue chez SkillFoot,</p>
                 <p style="font-size: 18px">Vous venez d\'effectuer votre inscription sur la plateforme skillfoot.fr.</p>
                 <p style="font-size: 18px">Connectez-vous dès maintenant et profitez de l\'expérience skillfoot !</p>
-                <p style="font-size: 18px"><a style="color: white" href="https://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
+                <p style="font-size: 18px"><a style="color: white" href="http://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
                 '
             );
 
@@ -149,7 +149,7 @@ class SecurityController extends AbstractController
                         $friend_tab['photo'] = $path;
                         $friend_tab['id'] = $friend->getFootballer()->getUser()->getAccount()->getId();
 
-//                        $update = new Update('https://skillfoot.fr/users/online/'.$friend->getFriend()->getId(), json_encode($friend_tab));
+//                        $update = new Update('http://skillfoot.fr/users/online/'.$friend->getFriend()->getId(), json_encode($friend_tab));
 //                        $publisher($update);
                     }
 
@@ -166,7 +166,7 @@ class SecurityController extends AbstractController
                         $friend_tab['nom-prenom'] = $friend_2->getFriend()->getUser()->getName().' '.$friend_2->getFriend()->getUser()->getFirstName();
                         $friend_tab['photo'] = $path;
                         $friend_tab['id'] = $friend_2->getFriend()->getUser()->getAccount()->getId();
-//                        $update = new Update('https://skillfoot.fr/users/online/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
+//                        $update = new Update('http://skillfoot.fr/users/online/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
 //                        $publisher($update);
                     }
                 }else{
@@ -203,14 +203,14 @@ class SecurityController extends AbstractController
         //Mise en ligne du compte et affichage pour les ami qui possède
         foreach ($friends as $friend) {
             $friend_tab['id'] = $friend->getFootballer()->getUser()->getAccount()->getId();
-//            $update = new Update('https://skillfoot.fr/users/logout/'.$friend->getFriend()->getId(), json_encode($friend_tab));
+//            $update = new Update('http://skillfoot.fr/users/logout/'.$friend->getFriend()->getId(), json_encode($friend_tab));
 //            $publisher($update);
         }
 
         //Mise en ligne du compte et affichage pour ceux qui l'ont comme ami
         foreach ($friends_2 as $friend_2) {
             $friend_tab['id'] = $friend_2->getFriend()->getUser()->getAccount()->getId();
-//            $update = new Update('https://skillfoot.fr/users/logout/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
+//            $update = new Update('http://skillfoot.fr/users/logout/'.$friend_2->getFootballer()->getId(), json_encode($friend_tab));
 //            $publisher($update);
         }
 

@@ -46,7 +46,7 @@ class HomeController extends AbstractController
                         <p style="font-size: 18px">Mail : '.$request->request->get('email').'</p>
                         <p style="font-size: 18px">Téléphone : '.$request->request->get('phone').'</p>
                         <p style="font-size: 18px">Message : '.$request->request->get('message').'</p>
-                        <p style="font-size: 18px"><a style="color: white" href="https://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
+                        <p style="font-size: 18px"><a style="color: white" href="http://skillfoot.fr/login">Cliquez-ici pour vous connecter.</a></p>
                         '
                     ]
                 ),
