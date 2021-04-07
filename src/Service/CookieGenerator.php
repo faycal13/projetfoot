@@ -22,12 +22,12 @@ class CookieGenerator
     {
         $token = (new Builder())
             ->withClaim('mercure', ['subscribe' => [
-                'http://skillfoot.fr/users/chat',
-                'http://skillfoot.fr/users']
+                'https://skillfoot.fr/users/chat',
+                'https://skillfoot.fr/users']
             ])
             ->getToken(new Sha256(), new Key($this->secret));
 
         return "mercureAuthorization={$token}; Path=/.well-known/mercure; secure; HttpOnly;";
-//        return Cookie::create('mercureAuthorization', $token, 0, 'http://skillfoot.fr:3000/.well-known/mercure');
+//        return Cookie::create('mercureAuthorization', $token, 0, 'https://skillfoot.fr:3000/.well-known/mercure');
     }
 }

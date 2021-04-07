@@ -399,7 +399,7 @@ class FootballerController extends AbstractController
                     </li>';
 
             //Un troisième paramètre permettra de choisir la cible
-            $update = new Update('http://skillfoot.fr/users', json_encode([
+            $update = new Update('https://skillfoot.fr/users', json_encode([
                 'user' => $message_final
             ]));
             $publisher($update);
@@ -526,7 +526,7 @@ class FootballerController extends AbstractController
                             </li>';
 
             //Un troisième paramètre permettra de choisir la cible
-            $update = new Update('http://skillfoot.fr/users/chat',
+            $update = new Update('https://skillfoot.fr/users/chat',
                 json_encode(['message' => $string])
             );
             $publisher($update);
@@ -557,7 +557,7 @@ class FootballerController extends AbstractController
                                     <img src="'.$path_chatroom.'" width="300px" alt="" class="" />
                                 </div>
                             </li>';
-            $update = new Update('http://skillfoot.fr/users/chat',
+            $update = new Update('https://skillfoot.fr/users/chat',
                 json_encode(['message' => $string])
             );
             $publisher($update);
@@ -580,7 +580,7 @@ class FootballerController extends AbstractController
         $chatroom_list = $chatroom_repo->findOneByFootballer($footballer);
         $manager->remove($chatroom_list);
         $manager->flush();
-        $update = new Update('http://skillfoot.fr/users/quit', json_encode([
+        $update = new Update('https://skillfoot.fr/users/quit', json_encode([
             'user_quit' => $footballer->getId()
         ]));
         $publisher($update);
