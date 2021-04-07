@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 /** @Route("/admin", name="admin_") */
-class AdminController extends AbstractController
+class AdminController extends AbstractController 
 {
     /**
      * @Route("/home", name="home")
