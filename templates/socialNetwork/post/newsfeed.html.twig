@@ -26,13 +26,13 @@
             <a href="{{ path('footballer_myfriends') }}" class="text-white"><i class="ion ion-android-person-add"></i> {{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a>
           </div><!--profile card ends-->
           <ul class="nav-news-feed">
-            <li><i class="fa fa-file"></i><div><a href="{{ path('footballer_post_my_post') }}">Mon mur</a></div></li>
-            <li><i class="fa fa-user-circle"></i><div><a href="{{ path('footballer_editFootballerProfil')}}">Mon profil de footballeur</a></div></li>
-            <li><i class="fa fa-users"></i><div><a href="{{ path('footballer_myfriends') }}">Mes amis</a></div></li>
-            <li><i class="fa fa-envelope"></i><div><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></div></li>
-            <li><i class="fa fa-picture-o"></i><div><a href="{{ path('footballer_picture') }}">Mes photos</a></div></li>
-            <li><i class="fa fa-video-camera"></i><div><a href="{{ path('footballer_video') }}">Mes videos</a></div></li>
-            <li><i class="fa fa-futbol-o"></i><div><a href="{{ path('footballer_editCareer')}}">Ma carrière</a></div></li>
+            <li><img src="{{ asset('img/wall.gif') }}" alt="Mon Mur Icone" class="menu-pics"><div><a href="{{ path('footballer_post_my_post') }}">Mon mur</a></div></li>
+            <li><img src="{{ asset('img/footballer-profil.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('footballer_editFootballerProfil')}}">Mon profil de footballeur</a></div></li>
+            <li><img src="{{ asset('img/amis.gif') }}" alt="Mes Amis Icone" class="menu-pics"/><div><a href="{{ path('footballer_myfriends') }}">Mes amis</a></div></li>
+            <li><img src="{{ asset('img/messages.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></div></li>
+            <li><img src="{{ asset('img/photos.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('footballer_picture') }}">Mes photos</a></div></li>
+            <li><img src="{{ asset('img/videos.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('footballer_video') }}">Mes videos</a></div></li>
+            <li><img src="{{ asset('img/carriere.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('footballer_editCareer')}}">Ma carrière</a></div></li>
           </ul><!--news-feed links ends-->
           {#          <div id="chat-block">#}
           {#            <div class="title">Chat online</div>#}
