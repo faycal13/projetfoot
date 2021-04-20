@@ -29,10 +29,10 @@
             <li><img src="{{ asset('img/wall.gif') }}" alt="Mon Mur Icone" class="menu-pics"><div><a href="{{ path('footballer_post_my_post') }}">Mon mur</a></div></li>
             <li><img src="{{ asset('img/footballer-profil.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('footballer_editFootballerProfil')}}">Mon profil de footballeur</a></div></li>
             <li><img src="{{ asset('img/amis.gif') }}" alt="Mes Amis Icone" class="menu-pics"/><div><a href="{{ path('footballer_myfriends') }}">Mes amis</a></div></li>
-            <li><img src="{{ asset('img/messages.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></div></li>
-            <li><img src="{{ asset('img/photos.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('footballer_picture') }}">Mes photos</a></div></li>
-            <li><img src="{{ asset('img/videos.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('footballer_video') }}">Mes videos</a></div></li>
-            <li><img src="{{ asset('img/carriere.gif') }}" alt="Mon Profil Icone" class="menu-pics"/><div><a href="{{ path('footballer_editCareer')}}">Ma carrière</a></div></li>
+            <li><img src="{{ asset('img/messages.gif') }}" alt="Mes Message Icone" class="menu-pics"/><div><a href="{{ path('social_network_show_conversations') }}">Mes messages</a></div></li>
+            <li><img src="{{ asset('img/photos.gif') }}" alt="Mes Photos Icone" class="menu-pics"/><div><a href="{{ path('footballer_picture') }}">Mes photos</a></div></li>
+            <li><img src="{{ asset('img/videos.gif') }}" alt="Mes Videos Icone" class="menu-pics"/><div><a href="{{ path('footballer_video') }}">Mes videos</a></div></li>
+            <li><img src="{{ asset('img/carriere.gif') }}" alt="Ma carriere Icone" class="menu-pics"/><div><a href="{{ path('footballer_editCareer')}}">Ma carrière</a></div></li>
           </ul><!--news-feed links ends-->
           {#          <div id="chat-block">#}
           {#            <div class="title">Chat online</div>#}
@@ -52,9 +52,14 @@
 
         <div class="col-md-9 feed-actuality" style="overflow-y: scroll;height: 100vh;">
           <div class="post-content publication welcome-feed">
-            <h1>Fil d'actualités</h1>
+          
+            <div class="post-content publication image">
+            <img src="{{ asset('img/terrain.gif') }}" alt="Icone Terrain" class="header-newsfeed-pics"/>
+            </div>
+            <div class="post-content publication content">
+            <h1>Le terrain d'actualité</h1>
             <p>N'hésitez pas à publier vos photos et expériences dans le monde du foot !</p>
-            <p>De nombreux recruteurs sont présents sur SkillFoot ! Mettez vous en avant au MAXIMUM ! </p>
+            <p>De nombreux recruteurs sont présents sur SkillFoot ! Mettez vous en avant au MAXIMUM et faites vivre la communauté ! </p>
             {% for message in app.flashes('success') %}
               <div class="alert alert-success">
                 {{ message }}
@@ -66,8 +71,9 @@
               </div>
             {% endfor %}
           </div>
-
+          </div>
           {% include 'socialNetwork/inc/post/post.html.twig' %}
+          
         </div>
       </div>
     </div>
