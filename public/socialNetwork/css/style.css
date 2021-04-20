@@ -316,6 +316,10 @@ img.profile-photo-xs{
     vertical-align: middle;
     width:50px;
 }
+.likedislike
+{
+    width:35px;
+}
 
 .img-wrapper-cover::after{
     content: "";

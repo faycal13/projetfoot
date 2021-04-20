@@ -165,15 +165,15 @@ $(function (){
                 var response = JSON.parse(serverResponse);
                 var class_like = '';
                 if(response.liked == 1){
-                    class_like = '<a class="btn text-green like" data-nb="'+response.numberlike+'"><i class="icon ion-thumbsup"></i> '+response.numberlike+'</a>'
-                    '<a class="btn dislike" data-nb="'+response.numberDislike+'"><i class="fa fa-thumbs-down"></i> '+response.numberDislike+'</a>'
+                    class_like = '<a class="btn text-green like" data-nb="'+response.numberlike+'"><img src="{{ asset('img/like.gif') }}" alt="like" class="likedislike"/> '+response.numberlike+'</a>'
+                    '<a class="btn dislike" data-nb="'+response.numberDislike+'"><img src="{{ asset('img/dislike.gif') }}" alt="Dislike" class="likedislike"/> '+response.numberDislike+'</a>'
                     ;
                 }else if(response.liked == 2){
-                    class_like = '<a class="btn like" data-nb="'+response.numberlike+'"><i class="icon ion-thumbsup"></i> '+response.numberlike+'</a>'+
-                    '<a class="btn text-red dislike" data-nb="'+response.numberDislike+'"><i class="fa fa-thumbs-down"></i> '+response.numberDislike+'</a>';
+                    class_like = '<a class="btn like" data-nb="'+response.numberlike+'"><img src="{{ asset('img/like.gif') }}" alt="like" class="likedislike"/> '+response.numberlike+'</a>'+
+                    '<a class="btn text-red dislike" data-nb="'+response.numberDislike+'"><img src="{{ asset('img/dislike.gif') }}" alt="Dislike" class="likedislike"/> '+response.numberDislike+'</a>';
                 }else{
-                    class_like = '<a class="btn like" data-nb="'+response.numberlike+'"><i class="icon ion-thumbsup"></i> '+response.numberlike+'</a>'
-                    '<a class="btn dislike" data-nb="'+response.numberDislike+'"><i class="fa fa-thumbs-down"></i> '+response.numberDislike+'</a>'
+                    class_like = '<a class="btn like" data-nb="'+response.numberlike+'"><img src="{{ asset('img/like.gif') }}" alt="like" class="likedislike"/> '+response.numberlike+'</a>'
+                    '<a class="btn dislike" data-nb="'+response.numberDislike+'"><img src="{{ asset('img/dislike.gif') }}" alt="Dislike" class="likedislike"/> '+response.numberDislike+'</a>'
                     ;
                 }
                 parent.html('' + class_like

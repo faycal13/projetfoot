@@ -58,8 +58,8 @@
                 {% endfor %}
                 {% if is_granted('ROLE_USER') %}
                     <div class="reaction" data-post="{{ post.id }}">
-                        <a class="btn {% if liked == 1 %}text-green{% endif%} like" data-nb="{{ postLike }}"><i class="icon ion-thumbsup"></i> {{ postLike }}</a>
-                        <a class="btn {% if liked == 2 %}text-red{% endif%} dislike" data-nb="{{ postDislike }}"><i class="fa fa-thumbs-down"></i> {{ postDislike }}</a>
+                        <a class="btn {% if liked == 1 %}text-green{% endif%} like" data-nb="{{ postLike }}"><img src="{{ asset('img/like.gif') }}" alt="like" class="likedislike"/> {{ postLike }}</a>
+                        <a class="btn {% if liked == 2 %}text-red{% endif%} dislike" data-nb="{{ postDislike }}"><img src="{{ asset('img/dislike.gif') }}" alt="Dislike" class="likedislike"/> {{ postDislike }}</a>
                     </div>
                 {% endif %}
                 <div class="line-divider"></div>
