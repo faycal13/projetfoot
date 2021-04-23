@@ -1156,15 +1156,34 @@ textarea{
     flex-direction: column;
 }
 
+
 .profile-card{
-    background: linear-gradient(to bottom, #ff1313, #ff6054), url("http://placehold.it/1030x430") no-repeat;
+    background:white;
     background-size: cover;
     width: 100%;
     min-height: 90px;
     border-radius: 4px;
-    padding: 10px 20px;
     color: #fff;
     height: 10%;
+    padding: 10px 20px;
+    position:relative;
+}
+
+.profile-card-header{
+    background: url("https://soccerlifestyle.com/wp-content/uploads/2019/05/Why-Are-Soccer-Balls-Black-And-White-soccerlifestyle.jpeg");
+    background-size: cover;
+    border-radius: 4px;
+    width:100%;
+    height:50%;
+    position:relative;
+    text-align:right;
+}
+
+.profile-card-content{
+    background: linear-gradient(to bottom, #b13333, #ad5751), url("http://placehold.it/1030x430") no-repeat;
+    border-radius: 4px;
+    position:relative;
+    text-align:right;
 }
 
 .profile-card img.profile-photo{
@@ -1174,6 +1193,9 @@ textarea{
     height: 70px;
     width: 70px;
     border-radius: 50%;
+    border:soli 2px black;
+    top: 10%; left: 1%;
+
 }
 
 /*Newsfeed Links CSS*/

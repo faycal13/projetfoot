@@ -17,13 +17,23 @@
         ================================================= -->
         <div id="menu-feed" class="col-md-3 static dis-none-mobile">
           <div class="profile-card">
+            <div class="profile-card-header">
+            <h5><a href="{{ path('footballer_editFootballerProfil')}}" class="text-white">{{ app.user.user.name }} {{ app.user.user.firstName }}</a></h5>
+            </div>
+            <div class="profile-card-content">
+            <a href="{{ path('footballer_myfriends') }}" class="text-white"><i class="ion ion-android-person-add"></i> {{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a>
+            </div>
+            <div class="profile-card-img">
             {% if app.session.get('footballer_profil_photo') is not null %}
               <img src="{{ asset(footballer_photo_profil_directory~'/'~app.user.id~'/'~app.session.get('footballer_profil_photo')) }}" alt="" class="img-responsive profile-photo" />
             {% else %}
               <img src="{{ asset('img/default/profil-footballer.png') }}" alt="" class="profile-photo" />
             {% endif %}
-            <h5><a href="{{ path('footballer_editFootballerProfil')}}" class="text-white">{{ app.user.user.name }} {{ app.user.user.firstName }}</a></h5>
-            <a href="{{ path('footballer_myfriends') }}" class="text-white"><i class="ion ion-android-person-add"></i> {{ app.session.get('number_friend') }} ami{% if app.session.get('number_friend') > 1 %}s{% endif %}</a>
+            </div>
+            
+            
+            
+            
           </div><!--profile card ends-->
           <ul class="nav-news-feed">
             <li><img src="{{ asset('img/wall.gif') }}" alt="Mon Mur Icone" class="menu-pics"><div><a href="{{ path('footballer_post_my_post') }}">Mon mur</a></div></li>
