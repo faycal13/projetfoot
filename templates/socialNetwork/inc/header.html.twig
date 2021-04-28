@@ -17,7 +17,7 @@
                 {% if is_granted('ROLE_USER') %}
                     <a style="color: white;font-weight: bold;display: none" class="phone-menu" href="{{ path("footballer_post_feed") }} " role="button" aria-haspopup="true" aria-expanded="false">Fil d'actualités <span></span></a>
 
-                    <a href="{% if app.user.user is not null and app.user.user.footballer is null %}{{ path('footballer_edit_profil') }}{% else %}{{ path('footballer_post_feed') }}{% endif %}"><img class="logo" style="width: 50px;" src="{{ asset('footballer/img/logo.png') }}" alt="logo" /></a>
+                    <a href="{% if app.user.user is not null and app.user.user.footballer is null %}{{ path('footballer_edit_profil') }}{% else %}{{ path('footballer_post_feed') }}{% endif %}"><img class="logo" src="{{ asset('footballer/img/logo.png') }}" alt="logo" /></a>
                 {% elseif is_granted('ROLE_AGENT') %}
                     <a class="navbar-brand" href="{{ path('agent_home') }}"><i class="fa fa-arrow-circle-left"></i> Retour</a>
                 {% else %}

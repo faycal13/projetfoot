@@ -35,9 +35,11 @@
                         <h5><a {% if is_granted('ROLE_USER') and post.footballer.user.id != app.user.user.id %}href="{{ path('footballer_view_my_post',{'id': post.footballer.id}) }}" class="profile-link text-red"{% endif%} style="text-decoration: none">{{ post.footballer.user.firstName }} {{ post.footballer.user.name }}</a></h5>
                     </div>
                     <p class="text-muted">{{ post.creationDate | date('d/m/Y H:i:s') }}</p>
-                    <div style="display: flex;justify-content: space-between;flex-direction: row-reverse;">
-                        {% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<i class="fa fa-close remove-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#supp-modal-{{ post.id }}" style="color:red; cursor: pointer">Supprimer la publication</i>{% endif %}
-                        {% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<br><i class="fa fa-edit edit-post" data-post="{{ post.id }}" data-toggle="modal" data-target="#edit-modal-{{ post.id }}" style="color:green; cursor: pointer">Modifier la publication</i>{% endif %}
+                    <div style="display: flex;justify-content: flex-direction: row;">
+                        <div><img class="editpost" img src="{{ asset('img/suppost.gif') }}"></img></div>
+                        <div style="margin-right:65%;">{% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<a class=" data-post="{{ post.id }}" data-toggle="modal" data-target="#supp-modal-{{ post.id }}" style="color:#FF4B68; cursor: pointer">Supprimer la publication</a>{% endif %}</div>
+                        <div><img class="editpost" img src="{{ asset('img/editerpost.gif') }}"></img></div>
+                        <div>{% if is_granted('ROLE_USER') and post.footballer.user.id == app.user.user.id %}<a class=" data-post="{{ post.id }}" data-toggle="modal" data-target="#edit-modal-{{ post.id }}" style="color:#32CC69; cursor: pointer;">Modifier la publication</a>{% endif %}</div>
                     </div>
                 </div>
                 {% set postLike = 0 %}
