@@ -1196,6 +1196,9 @@ textarea{
     font-weight:bold;
     display:block;
 }
+
+
+
 /*Newsfeed Links CSS*/
 
 ul.nav-news-feed{
@@ -1419,6 +1422,7 @@ ul.online-users li span.online-dot{
 .post-content.welcome-feed{
     padding: 0 40px;
     display: flex;
+    flex-wrap:wrap;
 }
 
 .post-content img.post-image, video.post-video, .google-maps{
@@ -3163,13 +3167,16 @@ ul[id^=ui-id-]{
 .post-comment .profile-link{
     position: relative;
 }
+.editsupp{
+    margin-right:2%;
+}
 
 @media (max-width: 767px) {
     .dis-none-mobile{
         display: none !important;
     }
     header .logo{
-        width: 30px;
+        width: 95px;
     }
     #form-search-footballer{
         width: 300px;
@@ -3182,7 +3189,16 @@ ul[id^=ui-id-]{
         padding: 0;
         margin-top: 25px;
     }
-
+    
+    .editsupp{
+        margin-right:2%;
+    }
+    
+    .menu-pics{
+        vertical-align: middle;
+        width:30px;
+    }
+    
     .container {
         width: initial;
     }
@@ -3280,6 +3296,12 @@ ul[id^=ui-id-]{
 
     .create-post{
         padding: 20px;
+    }
+
+    .mobile-pics{
+        vertical-align: middle;
+        width:28px;
+        margin-top:8px;
     }
 
     .mobile-menu-social-network{

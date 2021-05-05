@@ -1,10 +1,10 @@
 <div class="col-md-3 col-sm-12 menu-profil-info">
     <ul class="edit-menu">
-        <li><i class="fa fa-sticky-note"></i><a class="my-post" href="{{ path('footballer_post_my_post') }}"> Mon mur</a></li>
-        <li><i class="fa fa-user"></i><a class="personal-information" href="{{ path('footballer_edit_profil') }}"> Mes informations personnelles</a></li>
+        <li><img src="{{ asset('img/wall.gif') }}" alt="Mon Mur Icone" class="menu-pics"><div><a href="{{ path('footballer_post_my_post') }}">Mon mur</a></div></li>
+        <li><img src="{{ asset('img/infos-perso.gif') }}" alt="Mes infos persos" class="menu-pics"/><div><a href="{{ path('footballer_edit_profil')}}">Infos Persos</a></div></li>
         {#    <li><i class="icon ion-ios-briefcase-outline"></i><a href="edit-profile-work-edu.html">Education and Work</a></li>#}
-        <li><i class="fa fa-futbol-o"></i><a class="profil-footballer" href="{{ path('footballer_editFootballerProfil')}}"> Mon profil de footballeur</a>{% if app.user.user is not null and app.user.user.footballer is null %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</li>
-        <li><i class="fa fa-address-card"></i><a class="career-footballer" href="{{ path('footballer_editCareer')}}"> Ma carrière</a>{% if app.user.user is not null and app.user.user.footballer is not null and app.user.user.footballer.footballerCarrers is not empty %}{% else %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</li>
+        <li><img src="{{ asset('img/footballer-profil.gif') }}" alt="Ma carrière" class="menu-pics"/><div><a href="{{ path('footballer_editFootballerProfil')}}">Mon Profil Foot</a></div>{% if app.user.user is not null and app.user.user.footballer is null %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</li>
+        <li><img src="{{ asset('img/carriere.gif') }}" alt="Ma carrière" class="menu-pics"/><div><a href="{{ path('footballer_editCareer')}}">Ma Carrière</a></div>{% if app.user.user is not null and app.user.user.footballer is not null and app.user.user.footballer.footballerCarrers is not empty %}{% else %}<i class="fa fa-bell" style="color: #c30000"></i>{% endif %}</li>
         {#    <li><i class="icon ion-ios-settings"></i><a href="edit-profile-settings.html">Account Settings</a></li>#}
         {#    <li><a href="{{ path('footballer_editPassword') }}">Changement de mot de passe</a></li>#}
     </ul>

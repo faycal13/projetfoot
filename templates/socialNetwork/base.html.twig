@@ -25,6 +25,20 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('img/favicone.ico') }}"/>
 </head>
 <body>
+<!--Start of Tawk.to Script
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/60901084b1d5182476b52776/1f4pc11l0';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+-->
 {% if is_granted('ROLE_USER') %}
     {{ render(controller(
         'App\\Controller\\FootballerController::formUser'
@@ -47,10 +61,10 @@
 
 {% block footer %}
     <div style="display:none;" class="phone-menu mobile-menu-social-network">
-        <div><i class="fa fa-home"></i><a href="{{ path("footballer_post_feed") }}">Accueil</a></div>
-        <div><i class="fa fa-envelope"></i><a class="message-title" href="{{ path('social_network_show_conversations') }}">Mes messages {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}<i class="fa fa-comment"></i>{% endif %}{% endif %}</a></div>
-        <div><i class="fa fa-user"></i><a href="{{ path('footballer_post_my_post') }}">Mon mur</a></div>
-        <div><i class="fa fa-address-card"></i><a href="{{ path('footballer_editCareer')}}">Ma carrière</a></div>
+        <div><img src="{{ asset('img/terrain.gif') }}" alt="Accueil" class="mobile-pics"><a href="{{ path('footballer_post_my_post') }}">Accueil</a></div>
+        <div><img src="{{ asset('img/messages.gif') }}" alt="Messages" class="mobile-pics"></img><a href="{{ path('social_network_show_conversations') }}">Mes messages {% if app.user.user is not null %}{% if app.user.user.notifyMessage == 1 %}</a>{% endif %}{% endif %}</a></div>
+        <div><img src="{{ asset('img/wall.gif') }}" alt="Mon Mur" class="mobile-pics"><a href="{{ path('footballer_post_my_post') }}">Mon Mur</a></div>
+        <div><img src="{{ asset('img/carriere.gif') }}" alt="Mon Mur" class="mobile-pics"><a href="{{ path('footballer_editCareer') }}">Ma Carrière</a></div>
     </div>
     {% include ('socialNetwork/inc/footer.html.twig') %}
 {% endblock %}
